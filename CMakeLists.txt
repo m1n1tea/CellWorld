@@ -21,4 +21,4 @@ find_package(glfw3 REQUIRED)
 find_package(glad REQUIRED)
 
 add_subdirectory ("objects")
-add_subdirectory ("2_month_project")
+add_subdirectory ("cell_world")

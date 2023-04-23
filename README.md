@@ -3,7 +3,7 @@ My first project on GitHub.
 ____
 ## How to build project with vcpkg
 
-Download required libraries with this commands:
+Download required libraries with these commands:
 
 ```
 vcpkg install glad[gl-api-33]:x64-windows

@@ -101,7 +101,7 @@ int main()
             ImGui::SetNextWindowSize({ width * 0.5f,height * 0.2f });
             ImGui::Begin("Start screen 1", NULL, window_flags);
             ImGui::SetWindowFontScale(width / 1024.0f);
-            if (ImGui::Button("Create new world", { width * 0.5f, height*0.2f })) {
+            if (ImGui::Button("u smell", { width * 0.5f, height*0.2f })) {
                 current_mode = creation_of_the_world;
             }
             ImGui::End();

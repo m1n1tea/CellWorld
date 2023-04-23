@@ -8,6 +8,6 @@ add_executable (cell_world "cell_world.cpp")
 target_link_libraries(cell_world imgui::imgui glfw glad::glad creature)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET 2_month_project PROPERTY CXX_STANDARD 20)
+  set_property(TARGET cell_world PROPERTY CXX_STANDARD 20)
 endif()
 

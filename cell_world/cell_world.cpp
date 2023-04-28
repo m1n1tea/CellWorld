@@ -71,7 +71,7 @@ int main()
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
     ImFontConfig font_cfg;
-    font_cfg.SizePixels = 32.0f;
+    font_cfg.SizePixels = 64.0f;
     io.Fonts->AddFontDefault(&font_cfg);
     
     int width,height;
@@ -100,7 +100,7 @@ int main()
             ImGui::SetNextWindowPos({ width*0.25f,height * 0.2f });
             ImGui::SetNextWindowSize({ width * 0.5f,height * 0.2f });
             ImGui::Begin("Start screen 1", NULL, window_flags);
-            ImGui::SetWindowFontScale(width / 1024.0f);
+            ImGui::SetWindowFontScale(width / 2048.0f);
             if (ImGui::Button("Create new world", { width * 0.5f, height*0.2f })) {
                 current_mode = creation_of_the_world;
             }
@@ -110,7 +110,7 @@ int main()
             ImGui::SetNextWindowPos({ width * 0.25f,height * 0.6f });
             ImGui::SetNextWindowSize({ width * 0.5f,height * 0.3f });
             ImGui::Begin("Start screen 2", NULL, window_flags);
-            ImGui::SetWindowFontScale(width / 1024.0f);
+            ImGui::SetWindowFontScale(width / 2048.0f);
             if (!file_exists)
                 ImGui::BeginDisabled();
             if (ImGui::Button("Continue", { width * 0.5f, height * 0.2f })) {
@@ -127,7 +127,7 @@ int main()
             ImGui::SetNextWindowPos({ width * 0.15f,height * 0.15f });
             ImGui::SetNextWindowSize({ width * 0.8f,height * 0.8f });
             ImGui::Begin("Creation of a world", NULL, window_flags);
-            ImGui::SetWindowFontScale(width / 1536.0f);
+            ImGui::SetWindowFontScale(width / 3072.0f);
 
 
             ImGui::InputScalar("Seed", ImGuiDataType_U32, &seed);  HelpMarker("if seed=0, program generates random seed");
@@ -171,7 +171,7 @@ int main()
             ImGui::SetNextWindowPos({ 0,0 });
             ImGui::SetNextWindowSize({ width * 1.f,height * 0.1f });
             ImGui::Begin("Interface", NULL, window_flags);
-            ImGui::SetWindowFontScale(width / 1536.0f);
+            ImGui::SetWindowFontScale(width / 3072.0f);
             if (ImGui::Button("Spawn Creature")) {
                 Position pos= test_field.generatePosition();
                 test_field.spawnCreature(pos);

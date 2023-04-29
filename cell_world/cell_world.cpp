@@ -18,14 +18,15 @@ enum Scene{
     simulation_of_the_world
 };
 
-static void HelpMarker(const char* desc)// скопировал из imgui_demo.cpp
+static void HelpMarker(const char* desc, int width)
 {
     ImGui::SameLine();
     ImGui::TextDisabled("(?)"); 
     if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
     {
         ImGui::BeginTooltip();
-        ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+        ImGui::SetWindowFontScale(width / 3072.0f);
+        ImGui::PushTextWrapPos(ImGui::GetFontSize()*35);
         ImGui::TextUnformatted(desc);
         ImGui::PopTextWrapPos();
         ImGui::EndTooltip();
@@ -130,27 +131,31 @@ int main()
             ImGui::SetWindowFontScale(width / 3072.0f);
 
 
-            ImGui::InputScalar("Seed", ImGuiDataType_U32, &seed);  HelpMarker("if seed=0, program generates random seed");
+            ImGui::InputScalar("Seed", ImGuiDataType_U32, &seed);  HelpMarker("if seed=0, program generates random seed",width);
             ImGui::InputScalar("Width", ImGuiDataType_U32 , &size_x);
             ImGui::InputScalar("Height", ImGuiDataType_U32, &size_y);
             ImGui::NewLine();
             ImGui::Text("Coefficients");
             ImGui::InputFloat("Mutation strength",  &Creature::coeff_[mutation_strength]);
-            HelpMarker("defines genome differnce between parent and child \n 0 - child is exact copy of parent \n 1 - child's genome is independent from parent");
+            HelpMarker("defines genome differnce between parent and child \n 0 - child is exact copy of parent \n 1 - child's genome is independent from parent",width);
 
             ImGui::InputFloat("Change speed module cost", &Creature::coeff_[change_speed_module_cost]);
-            HelpMarker("when creature changes speed, creature's energy decreases by coeff*(change_speed_module^2)");
+            HelpMarker("when creature changes speed, creature's energy decreases by coeff*(change_speed_module^2)",width);
 
             ImGui::InputFloat("Weight capacity", &Creature::coeff_[mass_capacity]);
-            HelpMarker("creature's max energy is coeff*creature's mass");
+            HelpMarker("creature's max energy is coeff*creature's mass",width);
+
             ImGui::InputFloat("Weight into energy", &Creature::coeff_[mass_into_energy]);
-            HelpMarker("1*mass <=> coeff*energy \n mass transforms into energy when creature dies \n energy transforms into mass when creature creates child ");
+            HelpMarker("1*mass <=> coeff*energy \n mass transforms into energy when creature dies \n energy transforms into mass when creature creates child ",width);
+            
             ImGui::InputFloat("Starting energy", &Creature::coeff_[starting_energy]);
-            HelpMarker("after spawn creature's energy is coeff*max energy");
+            HelpMarker("after spawn creature's energy is coeff*max energy",width);
+
             ImGui::InputFloat("Weight cost", &Creature::coeff_[mass_cost]);
-            HelpMarker("every simulation step creature's energy decreases by mass*coeff");
+            HelpMarker("every simulation step creature's energy decreases by mass*coeff",width);
+
             ImGui::InputFloat("Braking force", &Creature::coeff_[braking_force]);
-            HelpMarker("every simulation step creature's module speed decreases by coeff");
+            HelpMarker("every simulation step creature's module speed decreases by coeff",width);
 
             if (ImGui::Button("Cancel", { width * 0.3f, height * 0.1f })) {
                 current_mode = start_screen;

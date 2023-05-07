@@ -19,6 +19,8 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:
 find_package(imgui REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glad REQUIRED)
+find_package(OpenMP REQUIRED)
+find_package(Eigen3 CONFIG REQUIRED)
 
 add_subdirectory ("objects")
 add_subdirectory ("cell_world")

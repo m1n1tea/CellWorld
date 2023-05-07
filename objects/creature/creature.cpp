@@ -4,17 +4,6 @@ namespace cellworld{
 
 
 
-ImVec2 operator+(const ImVec2& a, const ImVec2& b) {
-    return ImVec2(a.x+b.x,a.y+b.y);
-}
-
-ImVec2 operator-(const ImVec2& a, const ImVec2& b) {
-    return ImVec2(a.x - b.x, a.y - b.y);
-}
-
-ImVec2 operator*(const float a, const ImVec2& b) {
-    return ImVec2(a * b.x, a * b.y);
-}
 
 
 
@@ -25,25 +14,25 @@ void swapIndependent(T& a, T& b) noexcept {
     b = std::move(tmp);
 }
 
-void  reverse(float& x)
+void  reverse(float& x)//TODO сделать через memcpy на всём массиве, а не на отдельном элементе
 {
-    ++x;
+    if (x<=1)
+        return;
     unsigned int* i = (unsigned int*)&x;
     *i = 0x7EEEEEEE - *i;
 }
 
 
-
 Genome Creature::generateGenome() {
-    std::uniform_real_distribution<float> dis(-4.0, 4.0);
+    std::uniform_real_distribution<float> dis(-4.0f, 4.0f);
     Genome res;
     res.mass= generator_();
     res.mass>>=24; // вес в диапозоне от 0 до 255
     res.mass+=1;
     res.color= generator_();
-    res.color|=0xffff0000; // убираем прозрачность + у всех живых существ синий цвет на 100%
+    res.color|=0x0000ffff; // убираем прозрачность + у всех живых существ синий цвет на 100%
     for (int i = 0; i < res.neuron_network.size(); ++i) {
-            res.neuron_network[i]=dis(generator_);
+        res.neuron_network(i)=dis(generator_);
     }
     return res;
 }
@@ -54,19 +43,19 @@ Creature::Creature(const Genome& genome, const Position& pos):
   pos_x_(pos.first), pos_y_(pos.second), speed_direction_(0), speed_module_(0), 
   energy_limit_(genome.mass*coeff_[mass_capacity]),
   energy_(genome.mass* coeff_[mass_capacity] * coeff_[starting_energy]),
-  input_neurons_{0}, output_neurons_{0}{}
+  input_neurons_(Eigen::MatrixXf::Zero((4 * look_input_count + input_neurons_count), 1)), output_neurons_(Eigen::MatrixXf::Zero(output_neurons_count, 1)) {}
 
 Creature::Creature(float energy, const Position& pos):
   state_(dead), creatures_genome_(energyColor(energy)),
   pos_x_(pos.first), pos_y_(pos.second), speed_direction_(0),
   speed_module_(0), energy_limit_(0), energy_(energy),
-  input_neurons_{ 0 }, output_neurons_{ 0 } {}
+  input_neurons_(), output_neurons_() {}
 
 Creature::Creature(): 
   state_(not_exist), creatures_genome_(base_color_),
   pos_x_(0), pos_y_(0), speed_direction_(0),
   speed_module_(0), energy_limit_(0), energy_(energy),
-  input_neurons_{ 0 }, output_neurons_{ 0 } {}
+  input_neurons_(), output_neurons_() {}
 
 
 
@@ -90,18 +79,19 @@ Genome Creature::createGenome(const Genome& ancestor) {
     if (coeff_[mutation_strength] >= 1) {
         return mutations;
     }
-    unsigned int kids_red= (kids_genome.color & 0xff);
-    unsigned int kids_green = ((kids_genome.color >> 8) & 0xff);
-    unsigned int mutation_red = (mutations.color & 0xff);
-    unsigned int mutation_green = ((mutations.color >> 8) & 0xff);
+    unsigned int kids_red = ((kids_genome.color >> 24) & 0xff);
+    unsigned int kids_green = ((kids_genome.color >> 16) & 0xff);
+    unsigned int mutation_red = ((mutations.color >> 24) & 0xff);
+    unsigned int mutation_green = ((mutations.color >> 16) & 0xff);
     kids_red= mixGen(kids_red, mutation_red);
     kids_red&=0xff;
     kids_green = mixGen(kids_green, mutation_green);
     kids_green &= 0xff;
-    kids_genome.color=IM_COL32(kids_red,kids_green,255,255);
+    kids_genome.color=(kids_red << 24) + (kids_green << 16);
+    kids_genome.color |= 0x0000ffff;
        kids_genome.mass = mixGen(kids_genome.mass, mutations.mass);
     for (int i = 0; i < kids_genome.neuron_network.size(); ++i) {
-             mixGen(kids_genome.neuron_network[i], mutations.neuron_network[i]);
+             mixGen(kids_genome.neuron_network(i), mutations.neuron_network(i));
     }
     return kids_genome;
 }
@@ -120,13 +110,23 @@ void Creature::eat(Creature& victim) {
     victim.energy_=0;
 }
 
+void Creature::pushDead(Creature victim) {
+    if (state_ == not_exist) {
+        *this=std::move(victim);
+        return;
+    }
+    energy_ += victim.energy_;
+    victim.energy_ = 0;
+}
+
 unsigned int Creature::energyColor(int energy) {
     if (energy > 1023)
         energy = 1023;
     if (energy < -1023)
         energy = -1023;
     energy /=8;
-    unsigned int color =IM_COL32((127 - energy), (127 + energy),0,255);
+    unsigned int color = ((127 - energy) << 24) + ((127 + energy) << 16);
+    color |= 0x000000ff;
     return color;
 }
 
@@ -135,15 +135,34 @@ unsigned int Creature::energyColor(int energy) {
 void conjoin(Creature& champion, Creature& candidate) {
         
     if (champion.getState() == not_exist) {
-        swapIndependent(champion, candidate);
+        champion=std::move(candidate);
         return;
     } 
     if (candidate.getState() == alive && (champion.getState() == dead || (champion.getMass() * champion.getSpeed() < candidate.getMass() * candidate.getSpeed()))) {
-        swapIndependent(champion, candidate);
+        champion.die();
+        candidate.eat(champion);
+        champion = std::move(candidate);
+        return;
     }
     candidate.die();
     champion.eat(candidate);
 }
+
+void Creature::buildIO(){
+    if (state_!=alive)
+        return;
+    input_neurons_ = Eigen::MatrixXf::Zero(input_neurons_count, 1);
+    output_neurons_= Eigen::MatrixXf::Zero(output_neurons_count, 1);
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -155,60 +174,55 @@ void conjoin(Creature& champion, Creature& candidate) {
 
 void Creature::reverseInput() {
     for (int i = 0; i < input_neurons_.size(); i++) {
-        reverse(input_neurons_[i]);
+        reverse( input_neurons_.coeffRef(i) );
     }
 }
 
 
 
 void Creature::getInfo() {
-        input_neurons_[pos_x] = pos_x_;
-        input_neurons_[pos_y] = pos_y_;
-        input_neurons_[speed_module]=speed_module_;
-        input_neurons_[energy] = energy_;
-        input_neurons_[bias] = 0;
+        input_neurons_.setZero();
+        input_neurons_.coeffRef(pos_x) = pos_x_;
+        input_neurons_.coeffRef(pos_y) = pos_y_;
+        input_neurons_.coeffRef(speed_module)=speed_module_;
+        input_neurons_.coeffRef(energy) = energy_;
+        input_neurons_.coeffRef(bias) = 1;
 }
 
 void Creature::look(Creature& found, int direction){
     if (direction == up) {
-        input_neurons_[direction* look_input_count+input_neurons_count]=getY()-found.getY();
+        input_neurons_.coeffRef(direction* look_input_count+input_neurons_count)=getY()-found.getY();
         
     }
     if (direction == down) {
-        input_neurons_[direction * look_input_count+ input_neurons_count] = found.getY()-getY();
+        input_neurons_.coeffRef(direction * look_input_count+ input_neurons_count) = found.getY()-getY();
     }
     if (direction == left) {
-        input_neurons_[direction * look_input_count+ input_neurons_count] = getX() - found.getX();
+        input_neurons_.coeffRef(direction * look_input_count+ input_neurons_count) = getX() - found.getX();
     }
     if (direction == right) {
-        input_neurons_[direction * look_input_count+ input_neurons_count] = found.getX() - getX();
+        input_neurons_.coeffRef(direction * look_input_count+ input_neurons_count) = found.getX() - getX();
     }
-    input_neurons_[direction * look_input_count + color_red+ input_neurons_count] = found.getRed();
-    input_neurons_[direction * look_input_count + color_green+ input_neurons_count] = found.getGreen();
-    input_neurons_[direction * look_input_count + color_blue+ input_neurons_count] = found.getBlue();
+    input_neurons_.coeffRef(direction * look_input_count + color_red+ input_neurons_count) = found.getRed();
+    input_neurons_.coeffRef(direction * look_input_count + color_green+ input_neurons_count) = found.getGreen();
+    input_neurons_.coeffRef(direction * look_input_count + color_blue+ input_neurons_count) = found.getBlue();
 }
 
 void Creature::think(){
-    for (int j = 0; j < output_neurons_.size(); ++j) {
-        output_neurons_[j]=0;
-    }
-    for (int i = 0; i < input_neurons_.size();++i) {
-        for (int j=0; j < output_neurons_.size(); ++j){
-            output_neurons_[j]+=input_neurons_[i]*creatures_genome_.neuron_network[i*output_neurons_count+j];
-        }
-    }
+    output_neurons_.noalias() = creatures_genome_.neuron_network*input_neurons_;
+    
 }
 
 void Creature::act(){
-    if (state_!=dead){
+    if (state_==alive){
         speed_direction_=0;
-        if (output_neurons_[vertical_or_horizontal] > 0) {// <=0 вертикально, >0 горизонтально
+        if (output_neurons_.coeff(vertical_or_horizontal) > 0) {// <=0 вертикально, >0 горизонтально
             speed_direction_+=2;
         }
-        if (output_neurons_[decrease_or_increase] > 0) {// <=0 уменьшаем, >0 увеличиваем
+        if (output_neurons_.coeff(decrease_or_increase) > 0) {// <=0 уменьшаем, >0 увеличиваем
             ++speed_direction_;
         }
-        int actual_speed_change= output_neurons_[change_speed_module];
+        int actual_speed_change= output_neurons_.coeff(change_speed_module);
         speed_module_+= actual_speed_change;
         if (speed_module_ < 0) {
             actual_speed_change-=speed_module_;
@@ -282,6 +296,7 @@ Position Field::generatePosition() {
         res.second = dis_y(generator_);
         ++tries;
     }
+    
     return res;
 }
 
@@ -371,25 +386,36 @@ void Field::spawnFood(float energy, const Position& pos) {
 Creature& Field::findCreature(Creature& finder, int direction) {
     int x = finder.getX();
     int y = finder.getY();
-    if (direction == up && y > 0) {
-        --y;
-        while (zoo_[x * size_y_ + y].getState() == not_exist && y > 0)
+    if (direction == up) {
+        do{
             --y;
+            if (y<0)
+                y+=size_y_;
+        }while (zoo_[x * size_y_ + y].getState() == not_exist);
+            
     }
-    if (direction == down && y < size_y_ - 1) {
-        ++y;
-        while (zoo_[x * size_y_ + y].getState() == not_exist && y < size_y_-1)
+    if (direction == down) {
+        do{
             ++y;
+            if (y >= size_y_)
+                y -= size_y_;
+        }while (zoo_[x * size_y_ + y].getState() == not_exist);
+            
     }
-    if (direction == left && x > 0) {
-        --x;
-        while (zoo_[x * size_y_ + y].getState() == not_exist && x > 0)
+    if (direction == left) {
+        do{
             --x;
+            if (x < 0)
+                x += size_x_;
+        }while (zoo_[x * size_y_ + y].getState() == not_exist);
     }
-    if (direction == right && x < size_x_ - 1) {
-        ++x;
-        while (zoo_[x * size_y_ + y].getState() == not_exist && x < size_x_ - 1)
+    if (direction == right) {
+        do{
             ++x;
+            if (x >= size_x_)
+                x -= size_x_;
+        } while (zoo_[x * size_y_ + y].getState() == not_exist);
+            
     }
     return zoo_[x * size_y_ + y];
 }
@@ -400,36 +426,76 @@ void Field::clear() {
 }
 
 void Field::updatePositions(){
+//auto start = std::chrono::steady_clock::now();
+//auto end = std::chrono::steady_clock::now();
+//std::chrono::duration<double> time = end - start;
+//std::cout << "\n" << time.count();
+    
+
     for (int i = 0; i < size_; ++i) {
-            Creature& current = zoo_[i];
-            if (current.getState()== not_exist)
-                continue;
-            if (current.getState() == alive){
-                current.look(findCreature(current,up),up);
-                current.look(findCreature(current, down), down);
-                current.look(findCreature(current, left), left);
-                current.look(findCreature(current, right), right);
-                current.getInfo();
-                current.reverseInput();
-                current.think();
-            }
-            current.act();
-            Creature tmp=current.makeLeftover();
-            conjoin(empty_zoo_[i],tmp);
-            int& x=current.pos_x_;
-            int& y= current.pos_y_;
-            if (!validX(x)) {
-                x%=size_x_;
-                if (x<0)
-                    x+=size_x_;
-            }
-            if (!validY(y)) {
-                y %= size_y_;
-                if (y < 0)
-                    y += size_y_;
-            }
-            conjoin(empty_zoo_[x * size_y_ + y], current);
+        Creature& current = zoo_[i];
+        if (current.getState() == alive){
+            current.look(findCreature(current,up), up);
+            current.look(findCreature(current, down), down);
+            current.look(findCreature(current, left), left);
+            current.look(findCreature(current, right), right);
+            current.getInfo();
+            current.reverseInput();
+        }
     }
+
+    
+   //#pragma omp parallel for schedule(static, 1)
+    for (int i = 0; i < size_; ++i) {
+        
+        if (zoo_[i].getState() == alive) {
+            zoo_[i].think();
+        }
+    }
+
+    for (int i = 0; i < size_; ++i) {
+
+        if (zoo_[i].getState()== not_exist)
+            continue;
+
+        zoo_[i].act();
+
+        if (!validX(zoo_[i].pos_x_)) {
+            zoo_[i].pos_x_ %=size_x_;
+            if (zoo_[i].pos_x_ <0)
+                zoo_[i].pos_x_ +=size_x_;
+        }
+        if (!validY(zoo_[i].pos_y_)) {
+            zoo_[i].pos_y_ %= size_y_;
+            if (zoo_[i].pos_y_ < 0)
+                zoo_[i].pos_y_ += size_y_;
+        }
+        
+    }
+
+
+
+
+
+
+    for (int i = 0; i < size_; ++i) {
+
+        if (zoo_[i].getState() == not_exist)
+            continue;
+
+
+        if (zoo_[i].getEnergy() > zoo_[i].getEnergyLimit()) {
+            empty_zoo_[i].pushDead(zoo_[i].makeLeftover());
+        }
+        conjoin(empty_zoo_[zoo_[i].pos_x_ * size_y_ + zoo_[i].pos_y_], zoo_[i]);
+
+    }
+
+
+
+    
+
+
     swapIndependent(empty_zoo_,zoo_);
     for (int i = 0; i < size_; ++i)
             empty_zoo_[i].stopExisting();
@@ -438,33 +504,45 @@ void Field::updatePositions(){
 void Field::updateStates(){
     for (int i = 0; i < size_; ++i) {
             Creature& current =zoo_[i];
-            if ((current.getState() == alive) && current.getEnergy()<0) {
+            if (current.getState() != alive)
+                continue;
+            if (current.getEnergy()<0) {
                 current.die();
+                continue;
             }
-            if ((current.getState() == alive) && current.wantToReproduce()) {
+            if (current.wantToReproduce()) {
                 spawnCreature(current.makeChild(findClosePosition(current)));
             }
     }
 
 }
 
-void Field::visualise(ImGuiWindow* window) {
-    ImDrawList* draw_list=window->DrawList;
-    ImVec2 start_pos = window->Pos;
-    float square_size_float= (window->Size.x)/size_x_;
-    if (square_size_float >(window->Size.y) / size_y_) {
-        square_size_float =(window->Size.y) / size_y_;
-    }
-    int square_size=square_size_float;
+
+void* Field::createTexture() {
+
+    GLuint texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    
+    return (void*)texture;
+}
+
+
+void Field::updateTexture() {
     for (int i = 0; i < size_x_; ++i) {
         for (int j = 0; j < size_y_; ++j) {
-            ImVec2 start= start_pos+ImVec2(i*square_size,j* square_size);
-            ImVec2 end=start+ImVec2(square_size, square_size);
-            draw_list->AddRectFilled(start,end,getColor({i,j}));
+            colors[j*size_x_+i]=getColor({i,j});
         }
     }
-    
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size_x_, size_y_, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, &(colors[0]));
 }
+void Field::deleteTexture() {
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+
 
 void saveWorld(const char* path, Field* current_field, std::array<float, coefficients_count>* coefficents) {
     std::ofstream safe_file(path, std::ios::binary);
@@ -477,11 +555,11 @@ void saveWorld(const char* path, Field* current_field, std::array<float, coeffic
     int saved=1;
     safe_file << saved << ' ';
     safe_file << x << ' ' << y << ' ';
-    char* converted = new char[sizeof(Creature)];
+    char* converted = new char[sizeof(Creature) - 2 * sizeof(Eigen::MatrixXf)];
     for (int i = 0; i < x * y; ++i) {
         Creature& current = (*current_field)[i];
-        std::memcpy(converted, &current, sizeof(Creature));
-        safe_file.write(converted, sizeof(Creature));
+        std::memcpy(converted, &current, sizeof(Creature) - 2*sizeof(Eigen::MatrixXf));
+        safe_file.write(converted, sizeof(Creature) - 2*sizeof(Eigen::MatrixXf));
     }
     delete[] converted;
     safe_file << ' ';
@@ -507,12 +585,13 @@ void loadWorld(const char* path, Field* current_field, std::array<float, coeffic
     }
     safe_file >> x >> y;
     *current_field=Field(x,y);
-    char* converted= new char[sizeof(Creature)];
+    char* converted= new char[sizeof(Creature) - 2 * sizeof(Eigen::MatrixXf)];
     safe_file.read(converted, 1);
     for (int i = 0; i < x * y; ++i) {
         Creature& current = (*current_field)[i];
-        safe_file.read(converted, sizeof(Creature));
-        std::memcpy(&current, converted, sizeof(Creature));
+        safe_file.read(converted, sizeof(Creature) - 2*sizeof(Eigen::MatrixXf));
+        std::memcpy(&current, converted, sizeof(Creature)-2*sizeof(Eigen::MatrixXf));
+        current.buildIO();
     }
     delete[] converted;
     for (int i = 0; i < coefficients_count; ++i) {

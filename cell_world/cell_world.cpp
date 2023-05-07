@@ -46,8 +46,9 @@ int main()
     bool visualise = 1;
     unsigned int size_x=100;
     unsigned int size_y=50;
-    const char* file="auto_safe";
+    const char* file="last_safe";
     unsigned int file_exists = findFile(file);
+    ImTextureID texture;
     
     Field test_field;
 
@@ -117,6 +118,7 @@ int main()
             if (ImGui::Button("Continue", { width * 0.5f, height * 0.2f })) {
                 loadWorld(file,&test_field,&Creature::coeff_);
                 current_mode=simulation_of_the_world;
+                texture = test_field.createTexture();
             }
             if (!file_exists)
                 ImGui::EndDisabled();
@@ -168,6 +170,7 @@ int main()
                 generator_=std::mt19937(seed);
                 test_field=Field(size_x,size_y);
                 current_mode = simulation_of_the_world;
+                texture=test_field.createTexture();
             }
             ImGui::End();
         }
@@ -208,6 +211,7 @@ int main()
             ImGui::SameLine();
             if (ImGui::Button("Return")) {
                 current_mode=start_screen;
+                test_field.deleteTexture();
             }
             ImGui::SameLine();
             ImGui::Checkbox("Paused", &pause);
@@ -222,11 +226,11 @@ int main()
             ImGui::End();
 
             if (visualise) {
-                ImGui::SetNextWindowPos({ 0,height * 0.1f });
-                ImGui::SetNextWindowSize({ width * 1.f,height * 0.9f });
+                ImGui::SetNextWindowPos({ width * 0.01f,height * 0.1f });
+                ImGui::SetNextWindowSize({ width * 0.99f,height * 0.9f });
                 ImGui::Begin("Field", NULL, window_flags);
-                ImGuiWindow* curr_window = ImGui::GetCurrentWindow();
-                test_field.visualise(curr_window);
+                test_field.updateTexture();
+                ImGui::Image(texture, { width * 0.98f,height * 0.85f });
                 ImGui::End();
             }
         }

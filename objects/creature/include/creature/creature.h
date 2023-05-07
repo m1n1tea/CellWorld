@@ -7,9 +7,13 @@
 #include <array>
 #include <vector>
 #include <random>
-#include "imgui.h"
-#include "imgui_internal.h"
+#define GL_SILENCE_DEPRECATION
+#include<glad/glad.h>
 #include <fstream>
+//#include<iostream>
+#include<omp.h>
+//#include<chrono>
+#include <Eigen/Dense>
 
 
 
@@ -74,8 +78,10 @@ namespace cellworld
     };
 
 
-
-using NeuronNetwork= std::array<float, (4 * look_input_count + input_neurons_count)* output_neurons_count>;//возможно придётся усложнить, но пока как базовый вариант
+using NeuronNetwork = Eigen::Matrix<float,output_neurons_count , (4 * look_input_count + input_neurons_count)>;
+//using InputNeurons = Eigen::Matrix<float, (4 * look_input_count + input_neurons_count), 1>;
+//using OutputNeurons = Eigen::MatrixXf;
+//возможно придётся усложнить, но пока как базовый вариант
 using Position = std::pair<int,int>;
 constexpr Position bad_position={-1,-1};
 
@@ -104,6 +110,7 @@ public:
     Creature makeChild(const Position& pos);
     Creature makeLeftover();
     
+    void buildIO();
     int getState() { return state_; }
     int getDirection(){return speed_direction_;}
     int getSpeed(){return speed_module_;}
@@ -112,7 +119,7 @@ public:
     float getEnergy() { return energy_; }
     float getEnergyLimit(){return energy_limit_;}
     int getMass(){return (creatures_genome_.mass);}
-    bool wantToReproduce() {return output_neurons_[reproduce]>0; }
+    bool wantToReproduce() {return output_neurons_.coeff(reproduce)>0; }
     unsigned int getColor() { return (creatures_genome_.color); }
     unsigned int getRed() { return (getColor() & 0xff); }
     unsigned int getGreen() { return ((getColor()>>8) & 0xff); }
@@ -124,6 +131,7 @@ public:
     void think();
     void act();
     void eat(Creature&);
+    void pushDead(Creature);
     void die();
     void stopExisting(){state_=not_exist;creatures_genome_.color=base_color_;}
 
@@ -135,7 +143,7 @@ public:
     
     inline static std::array<float, coefficients_count> coeff_{0};
 
-    inline static unsigned int base_color_= 0xffAfAfAf;
+    inline static unsigned int base_color_= 0xAfAfAfff;
     
 
 
@@ -154,10 +162,12 @@ private:
 
     Genome creatures_genome_;
 
-    std::array<float, 4 * look_input_count + input_neurons_count> input_neurons_;
-    std::array<float, output_neurons_count> output_neurons_;
+    Eigen::MatrixXf input_neurons_;
+    Eigen::MatrixXf output_neurons_;
     
 };
+
+
 
 
 
@@ -166,7 +176,7 @@ void conjoin(Creature&, Creature&); //решает, что будет, если два существа встре
 class Field{
 
 public:
-    Field(int size_x=0, int size_y=0) : size_x_(size_x), size_y_(size_y), size_(size_x*size_y), zoo_(size_x*size_y, Creature()), empty_zoo_(size_x* size_y, Creature()) {}
+    Field(int size_x=0, int size_y=0) : size_x_(size_x), size_y_(size_y), size_(size_x*size_y), zoo_(size_x*size_y, Creature()), empty_zoo_(size_x* size_y, Creature()), colors(size_x* size_y, Creature::base_color_) {}
     void spawnCreature(const Position& pos);
     void spawnCreature(Creature child);
     void spawnFood(float energy, const Position&);
@@ -176,6 +186,7 @@ public:
     const Creature& operator[](const int& index) const {return zoo_[index];}
     Creature& operator[](const int& index) { return zoo_[index]; }
     unsigned int getColor(const Position& pos) {return getCreature(pos).getColor();}
+    unsigned int getColor(const int& index) { return zoo_[index].getColor(); }
     int sizeX() const { return size_x_; }
     int sizeY() const { return size_y_; }
     bool validX(int x);
@@ -184,7 +195,9 @@ public:
     Position findClosePosition(Creature& ancestor);
     Creature& findCreature(Creature&, int direction);
     void clear();
-    void visualise(ImGuiWindow*);
+    void* createTexture();
+    void updateTexture();
+    void deleteTexture();
     inline static Creature bad_creature=Creature();
 
 private:
@@ -193,7 +206,11 @@ private:
     int size_;
     std::vector<Creature> zoo_;
     std::vector<Creature> empty_zoo_;
+    std::vector<unsigned int> colors;
 };
+
+
+
 
 void saveWorld(const char* path, Field* current_field, std::array<float, coefficients_count>* coefficents);
 bool findFile(const char* path);

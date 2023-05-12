@@ -2,25 +2,26 @@
 
 #ifndef EVOLVING_WORLD_2023_Q2
 #define EVOLVING_WORLD_2023_Q2
-
-
+#define EIGEN_NO_DEBUG
 #include <array>
 #include <vector>
 #include <random>
 #define GL_SILENCE_DEPRECATION
 #include<glad/glad.h>
 #include <fstream>
-//#include<iostream>
+#include<iostream>
 #include<omp.h>
-//#include<chrono>
-#include <Eigen/Dense>
+#include<chrono>
+#include <Eigen/Core>
 
 
 
-inline std::mt19937 generator_;
+
 
 namespace cellworld
 {
+    inline std::mt19937 generator_;
+    inline std::uniform_real_distribution<float> dis(-4.0f, 4.0f);
 
     enum State {
         not_exist,
@@ -79,9 +80,6 @@ namespace cellworld
 
 
 using NeuronNetwork = Eigen::Matrix<float,output_neurons_count , (4 * look_input_count + input_neurons_count)>;
-//using InputNeurons = Eigen::Matrix<float, (4 * look_input_count + input_neurons_count), 1>;
-//using OutputNeurons = Eigen::MatrixXf;
-//возможно придётся усложнить, но пока как базовый вариант
 using Position = std::pair<int,int>;
 constexpr Position bad_position={-1,-1};
 
@@ -107,35 +105,38 @@ public:
     Creature& operator=(const Creature&) = default;
     Creature& operator=(Creature&&) = default;
 
-    Creature makeChild(const Position& pos);
-    Creature makeLeftover();
+    void makeAlive(Creature& ancestor, const Position& pos);
+    
     
     void buildIO();
-    int getState() { return state_; }
-    int getDirection(){return speed_direction_;}
-    int getSpeed(){return speed_module_;}
-    int getX() { return pos_x_; }
-    int getY() { return pos_y_; }
-    float getEnergy() { return energy_; }
-    float getEnergyLimit(){return energy_limit_;}
-    int getMass(){return (creatures_genome_.mass);}
-    bool wantToReproduce() {return output_neurons_.coeff(reproduce)>0; }
-    unsigned int getColor() { return (creatures_genome_.color); }
-    unsigned int getRed() { return (getColor() & 0xff); }
-    unsigned int getGreen() { return ((getColor()>>8) & 0xff); }
-    unsigned int getBlue() { return((getColor() >> 16) & 0xff); }
+    const int& getState() const { return state_; }
+    const int& getDirection() const {return speed_direction_;}
+    const int& getSpeed() const {return speed_module_;}
+    int& getX();
+    int& getY();
+    float Leftover();
+    const float& getEnergy() const  { return energy_; }
+    const float& getEnergyLimit() const {return energy_limit_;}
+    const int& getMass() const {return (creatures_genome_.mass);}
+    bool wantToReproduce()const {return (output_neurons_.size()!=0) && (output_neurons_.coeff(reproduce)>0); }
+    const unsigned int& getColor() const { return (creatures_genome_.color); }
+    unsigned int getRed() const { return (getColor() & 0xff); }
+    unsigned int getGreen() const { return ((getColor()>>8) & 0xff); }
+    unsigned int getBlue() const { return((getColor() >> 16) & 0xff); }
     
     void look(Creature&, int direction);
     void getInfo();
     void reverseInput();
+    void prepare();
     void think();
     void act();
     void eat(Creature&);
-    void pushDead(Creature);
+    void addEnergy(const float& energy);
     void die();
     void stopExisting(){state_=not_exist;creatures_genome_.color=base_color_;}
 
     static Genome generateGenome();
+    static void generateGenome(Genome&);
     static void mixGen(float& gen1, const float& gen2);
     static unsigned int mixGen(const unsigned int& gen1, const unsigned int& gen2);
     static Genome createGenome(const Genome& ancestor);
@@ -161,39 +162,41 @@ private:
     int speed_direction_;
 
     Genome creatures_genome_;
-
+    
     Eigen::MatrixXf input_neurons_;
     Eigen::MatrixXf output_neurons_;
+    std::tuple<int,int,float> tmp_;
     
 };
 
 
 
 
-
+void conjoin(Creature*&, Creature*&);
 void conjoin(Creature&, Creature&); //решает, что будет, если два существа встретились
 
 class Field{
 
 public:
-    Field(int size_x=0, int size_y=0) : size_x_(size_x), size_y_(size_y), size_(size_x*size_y), zoo_(size_x*size_y, Creature()), empty_zoo_(size_x* size_y, Creature()), colors(size_x* size_y, Creature::base_color_) {}
+    Field(int size_x=0, int size_y=0);
     void spawnCreature(const Position& pos);
     void spawnCreature(Creature child);
     void spawnFood(float energy, const Position&);
     void updatePositions();
     void updateStates();
     Creature& getCreature(const Position& pos);
-    const Creature& operator[](const int& index) const {return zoo_[index];}
-    Creature& operator[](const int& index) { return zoo_[index]; }
-    unsigned int getColor(const Position& pos) {return getCreature(pos).getColor();}
-    unsigned int getColor(const int& index) { return zoo_[index].getColor(); }
+    const Creature& getCreature(const Position& pos) const;
+    const Creature& operator[](const int& index) const {return *zoo_ptr_[index];}
+    Creature& operator[](const int& index) { return *zoo_ptr_[index]; }
+    unsigned int getColor(const Position& pos)const {return getCreature(pos).getColor();}
+    unsigned int getColor(const int& index) const { return zoo_ptr_[index]->getColor(); }
     int sizeX() const { return size_x_; }
     int sizeY() const { return size_y_; }
-    bool validX(int x);
-    bool validY(int y);
+    bool validX(const int& x) const;
+    bool validY(const int& y) const;
     Position generatePosition();
-    Position findClosePosition(Creature& ancestor);
-    Creature& findCreature(Creature&, int direction);
+    Position findClosePosition(Creature* ancestor);
+    Creature& findCreature(Creature*, int direction);
     void clear();
     void* createTexture();
     void updateTexture();
@@ -204,9 +207,11 @@ private:
     int size_x_;
     int size_y_;
     int size_;
-    std::vector<Creature> zoo_;
-    std::vector<Creature> empty_zoo_;
+    std::vector<Creature*> zoo_ptr_;
+    std::vector<Creature*> empty_zoo_ptr_;
+    std::vector<Creature> storage_;
     std::vector<unsigned int> colors;
+    
 };
 
 

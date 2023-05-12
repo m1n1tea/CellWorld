@@ -24,7 +24,7 @@ void  reverse(float& x)//TODO сделать через memcpy на всём м�
 
 
 Genome Creature::generateGenome() {
-    std::uniform_real_distribution<float> dis(-4.0f, 4.0f);
+    
     Genome res;
     res.mass= generator_();
     res.mass>>=24; // вес в диапозоне от 0 до 255
@@ -37,13 +37,27 @@ Genome Creature::generateGenome() {
     return res;
 }
 
+void Creature::generateGenome(Genome& res) {
+    #pragma omp critical
+    {
+        res.mass = generator_();
+        res.mass >>= 24;
+        res.mass += 1;
+        res.color = generator_();
+        res.color |= 0x0000ffff;
+        for (int i = 0; i < res.neuron_network.size(); ++i) {
+            res.neuron_network(i) = dis(generator_);
+        }
+    }
+}
+
 
 Creature::Creature(const Genome& genome, const Position& pos):
   state_(alive),creatures_genome_(genome),
   pos_x_(pos.first), pos_y_(pos.second), speed_direction_(0), speed_module_(0), 
   energy_limit_(genome.mass*coeff_[mass_capacity]),
   energy_(genome.mass* coeff_[mass_capacity] * coeff_[starting_energy]),
-  input_neurons_(Eigen::MatrixXf::Zero((4 * look_input_count + input_neurons_count), 1)), output_neurons_(Eigen::MatrixXf::Zero(output_neurons_count, 1)) {}
+  input_neurons_(Eigen::MatrixXf::Zero((4 * look_input_count + input_neurons_count), 1)), output_neurons_() {}
 
 Creature::Creature(float energy, const Position& pos):
   state_(dead), creatures_genome_(energyColor(energy)),
@@ -54,10 +68,20 @@ Creature::Creature(float energy, const Position& pos):
 Creature::Creature(): 
   state_(not_exist), creatures_genome_(base_color_),
   pos_x_(0), pos_y_(0), speed_direction_(0),
-  speed_module_(0), energy_limit_(0), energy_(energy),
+  speed_module_(0), energy_limit_(0), energy_(0),
   input_neurons_(), output_neurons_() {}
 
 
+
+int& Creature::getX() {
+    std::get<0>(tmp_)=pos_x_;
+    return std::get<0>(tmp_);
+}
+
+int& Creature::getY() {
+    std::get<1>(tmp_) = pos_y_;
+    return std::get<1>(tmp_);
+}
 
 
 void Creature::mixGen(float& gen1,const float& gen2) {
@@ -108,15 +132,18 @@ void Creature::die() {
 void Creature::eat(Creature& victim) {
     energy_+=victim.energy_;
     victim.energy_=0;
+    if (state_ == dead)
+        creatures_genome_.color = energyColor(energy_);
 }
 
-void Creature::pushDead(Creature victim) {
+void Creature::addEnergy(const float& energy) {
     if (state_ == not_exist) {
-        *this=std::move(victim);
+        *this=Creature(energy,{pos_x_,pos_y_});
         return;
     }
-    energy_ += victim.energy_;
-    victim.energy_ = 0;
+    energy_ += energy;
+    if (state_==dead)
+        creatures_genome_.color=energyColor(energy_);
 }
 
 unsigned int Creature::energyColor(int energy) {
@@ -125,19 +152,30 @@ unsigned int Creature::energyColor(int energy) {
     if (energy < -1023)
         energy = -1023;
     energy /=8;
-    unsigned int color = ((127 - energy) << 24) + ((127 + energy) << 16);
-    color |= 0x000000ff;
-    return color;
+    return (((127 - energy) << 24) + ((127 + energy) << 16) | 0x000000ff);
 }
 
 
 
-void conjoin(Creature& champion, Creature& candidate) {
+void conjoin( Creature*& champion, Creature*& candidate) {
         
+    if (champion->getState() == not_exist) {
+        swapIndependent(champion,candidate);
+        return;
+    } 
+    if (candidate->getState() == alive && (champion->getState() == dead || (champion->getMass() * champion->getSpeed() < candidate->getMass() * candidate->getSpeed()))) {
+        swapIndependent(champion, candidate);
+    }
+    candidate->die();
+    champion->eat(*candidate);
+}
+
+void conjoin(Creature& champion, Creature& candidate) {
+
     if (champion.getState() == not_exist) {
         champion=std::move(candidate);
         return;
-    } 
+    }
     if (candidate.getState() == alive && (champion.getState() == dead || (champion.getMass() * champion.getSpeed() < candidate.getMass() * candidate.getSpeed()))) {
         champion.die();
         candidate.eat(champion);
@@ -151,23 +189,9 @@ void conjoin(Creature& champion, Creature& candidate) {
 void Creature::buildIO(){
     if (state_!=alive)
         return;
-    input_neurons_ = Eigen::MatrixXf::Zero(input_neurons_count, 1);
+    input_neurons_ = Eigen::MatrixXf::Zero((4 * look_input_count + input_neurons_count), 1);
     output_neurons_= Eigen::MatrixXf::Zero(output_neurons_count, 1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -222,7 +246,8 @@ void Creature::act(){
         if (output_neurons_.coeff(decrease_or_increase) > 0) {// <=0 уменьшаем, >0 увеличиваем
             ++speed_direction_;
         }
-        int actual_speed_change= output_neurons_.coeff(change_speed_module);
+        int& actual_speed_change=std::get<0>(tmp_);
+        actual_speed_change= output_neurons_.coeff(change_speed_module);
         speed_module_+= actual_speed_change;
         if (speed_module_ < 0) {
             actual_speed_change-=speed_module_;
@@ -252,27 +277,67 @@ void Creature::act(){
 
 }
 
-Creature Creature::makeChild(const Position& pos) {
-    if (pos==bad_position)
-        return Creature();
-    Creature child(createGenome(creatures_genome_), pos);
-    energy_-=child.creatures_genome_.mass*coeff_[mass_into_energy];
-    if (energy_ > 0) {
-        energy_/=2.0f;
-        child.energy_=energy_;
+void Creature::makeAlive(Creature& ancestor,const Position& pos) {
+    state_=alive;
+    pos_x_=pos.first;
+    pos_y_=pos.second;
+    Genome& kids_genome=creatures_genome_;
+    Genome& ancestors_genome= ancestor.creatures_genome_;
+    if (coeff_[mutation_strength] > 0 && coeff_[mutation_strength] < 1) {
+        generateGenome(kids_genome);
+        unsigned int kids_red = ((ancestors_genome.color >> 24) & 0xff);
+        unsigned int kids_green = ((ancestors_genome.color >> 16) & 0xff);
+        unsigned int mutation_red = ((kids_genome.color >> 24) & 0xff);
+        unsigned int mutation_green = ((kids_genome.color >> 16) & 0xff);
+        kids_red = mixGen(kids_red, mutation_red);
+        kids_green = mixGen(kids_green, mutation_green);
+        kids_red &= 0xff;
+        
+        kids_green &= 0xff;
+        kids_genome.color = (kids_red << 24) | (kids_green << 16);
+        kids_genome.color |= 0x0000ffff;
+        kids_genome.mass = mixGen(kids_genome.mass, ancestors_genome.mass);
+        for (int i = 0; i < kids_genome.neuron_network.size(); ++i) {
+            mixGen(kids_genome.neuron_network(i), ancestors_genome.neuron_network(i));
+        }
     }
-    else {
-        child.energy_=0;
+    else if (coeff_[mutation_strength] <= 0) {
+        kids_genome=ancestors_genome;
     }
-    return child;
+    else if (coeff_[mutation_strength] >=1) {
+        generateGenome(kids_genome);
+    }
+    ancestor.energy_ -= kids_genome.mass * coeff_[mass_into_energy];
+    ancestor.energy_ /= 2.0f;
+    energy_+= ancestor.energy_;
+    energy_limit_ = kids_genome.mass * coeff_[mass_capacity];
+    input_neurons_= Eigen::MatrixXf::Zero((4 * look_input_count + input_neurons_count), 1);
+    
 }
 
-Creature Creature::makeLeftover() {
-    if (energy_<=energy_limit_ || state_==dead)
-        return Creature();
-    float extra_energy= energy_ - energy_limit_+0.01f;
-    energy_=energy_limit_-0.01f;
-    return Creature(extra_energy,{getX(), getY()});
+float Creature::Leftover() {
+    std::get<2>(tmp_)= energy_- energy_limit_;
+    energy_=energy_limit_;
+    return std::get<2>(tmp_);
+}
+
+void Creature::prepare() {
+
+}
+
+
+
+
+
+
+Field::Field(int size_x, int size_y) : size_x_(size_x), size_y_(size_y), size_(size_x* size_y), zoo_ptr_(size_x* size_y), empty_zoo_ptr_(size_x* size_y), storage_(2*size_x* size_y), colors(size_x* size_y, Creature::base_color_) {
+    for (int i=0;i<size_;++i) {
+        zoo_ptr_[i]=&storage_[i];
+    }
+        
+    for (int i = 0; i < size_; ++i) {
+        empty_zoo_ptr_[i] = &storage_[i+size_];
+    }
 }
 
 
@@ -288,7 +353,7 @@ Position Field::generatePosition() {
     std::uniform_int_distribution<int> dis_y(0, size_y_ - 1);
     Position res = { dis_x(generator_),dis_y(generator_) };
     int tries=0;
-    while (zoo_[res.first * size_y_ + res.second].getState() != not_exist) {
+    while (zoo_ptr_[res.first * size_y_ + res.second]->getState() != not_exist) {
         if (tries == 100) {
             return bad_position;
         }
@@ -302,56 +367,62 @@ Position Field::generatePosition() {
 
 Creature& Field::getCreature(const Position& pos) { 
     if (pos!=bad_position)
-        return zoo_[pos.first*size_y_+pos.second]; 
+        return *(zoo_ptr_[pos.first*size_y_+pos.second]); 
+    return bad_creature;
+}
+
+const Creature& Field::getCreature(const Position& pos) const {
+    if (pos != bad_position)
+        return *(zoo_ptr_[pos.first * size_y_ + pos.second]);
     return bad_creature;
 }
 
 
-Position Field::findClosePosition(Creature& ancestor) {
-    int x=ancestor.getX();
-    int y=ancestor.getY();
-    int direction= ancestor.getDirection();
+Position Field::findClosePosition(Creature* ancestor) {
+    int& x=ancestor->getX();
+    int& y=ancestor->getY();
+    const int& direction= ancestor->getDirection();
 
     if (direction == down) {
         if (y!=0){
-            if (zoo_[x*size_y_+y-1].getState()!=alive)
+            if (zoo_ptr_[x*size_y_+y-1]->getState()!=alive)
                 return {x,y-1};
         }
         else{
-            if (zoo_[x * size_y_ + size_y_ - 1].getState() != alive)
+            if (zoo_ptr_[x * size_y_ + size_y_ - 1]->getState() != alive)
                 return { x,size_y_ - 1 };
         }
     }
 
     if (direction == up) {
         if (y != size_y_ - 1){
-            if (zoo_[x * size_y_ + y + 1].getState() != alive)
+            if (zoo_ptr_[x * size_y_ + y + 1]->getState() != alive)
                 return { x,y + 1 };
         }
         else{
-            if (zoo_[x * size_y_].getState() != alive)
+            if (zoo_ptr_[x * size_y_]->getState() != alive)
                 return { x, 0};
         }
     }
 
     if (direction == right) {
         if (x!=0){
-            if (zoo_[(x-1) * size_y_ + y].getState() != alive)
+            if (zoo_ptr_[(x-1) * size_y_ + y]->getState() != alive)
                 return { x-1,y };
         }
         else{
-            if (zoo_[(size_x_ - 1) * size_y_ + y].getState() != alive)
+            if (zoo_ptr_[(size_x_ - 1) * size_y_ + y]->getState() != alive)
                 return { size_x_ - 1,y };
         }
     }
 
     if (direction == left) {
         if (x != size_x_ - 1){
-            if (zoo_[(x+1) * size_y_ + y].getState() != alive)
+            if (zoo_ptr_[(x+1) * size_y_ + y]->getState() != alive)
                 return { x+1,y };
         }
         else{
-            if (zoo_[y].getState() != alive)
+            if (zoo_ptr_[y]->getState() != alive)
                 return { 0,y };
         }
     }
@@ -360,21 +431,22 @@ Position Field::findClosePosition(Creature& ancestor) {
 }
 
 
-bool Field::validX(int x) {
+bool Field::validX(const int& x) const{
     return (x >= 0 &&  x < size_x_);
 }
 
-bool Field::validY(int y) {
+bool Field::validY(const int& y) const  {
     return (y >= 0 && y < size_y_);
 }
 
 void Field::spawnCreature(const Position& pos){
     if (pos != bad_position)
-        zoo_[pos.first * size_y_ + pos.second]=Creature(Creature::generateGenome(), pos);
+        *zoo_ptr_[pos.first * size_y_ + pos.second]=Creature(Creature::generateGenome(), pos);
 }
 
 void Field::spawnCreature(Creature child) {
-    conjoin(zoo_[child.getX() * size_y_ + child.getY()], child);
+    
+    conjoin(*zoo_ptr_[child.getX() * size_y_ + child.getY()], child);
 }
 void Field::spawnFood(float energy, const Position& pos) {
     spawnCreature(Creature(energy,pos));
@@ -383,46 +455,45 @@ void Field::spawnFood(float energy, const Position& pos) {
 
 
 
-Creature& Field::findCreature(Creature& finder, int direction) {
-    int x = finder.getX();
-    int y = finder.getY();
+Creature& Field::findCreature(Creature* finder, int direction) {
+    int& x = finder->getX();
+    int& y = finder->getY();
     if (direction == up) {
         do{
             --y;
             if (y<0)
-                y+=size_y_;
-        }while (zoo_[x * size_y_ + y].getState() == not_exist);
+                y=size_y_-1;
+        }while (zoo_ptr_[x * size_y_ + y]->getState() == not_exist);
             
     }
     if (direction == down) {
         do{
             ++y;
-            if (y >= size_y_)
-                y -= size_y_;
-        }while (zoo_[x * size_y_ + y].getState() == not_exist);
+            if (y == size_y_)
+                y = 0;
+        }while (zoo_ptr_[x * size_y_ + y]->getState() == not_exist);
             
     }
     if (direction == left) {
         do{
             --x;
             if (x < 0)
-                x += size_x_;
-        }while (zoo_[x * size_y_ + y].getState() == not_exist);
+                x = size_x_-1;
+        }while (zoo_ptr_[x * size_y_ + y]->getState() == not_exist);
     }
     if (direction == right) {
         do{
             ++x;
-            if (x >= size_x_)
-                x -= size_x_;
-        } while (zoo_[x * size_y_ + y].getState() == not_exist);
+            if (x == size_x_)
+                x = 0;
+        } while (zoo_ptr_[x * size_y_ + y]->getState() == not_exist);
             
     }
-    return zoo_[x * size_y_ + y];
+    return *zoo_ptr_[x * size_y_ + y];
 }
 
 void Field::clear() {
-    zoo_=std::vector(size_x_ * size_y_, Creature());
-    empty_zoo_ = std::vector(size_x_ * size_y_, Creature());
+    *this=Field(size_x_,size_y_);
 }
 
 void Field::updatePositions(){
@@ -432,86 +503,89 @@ void Field::updatePositions(){
 //std::cout << "\n" << time.count();
     
 
-    for (int i = 0; i < size_; ++i) {
-        Creature& current = zoo_[i];
+    #pragma omp parallel for
+    for (int i = 0; i < size_; ++i){
+        
+        Creature& current = *zoo_ptr_[i];
         if (current.getState() == alive){
-            current.look(findCreature(current,up), up);
-            current.look(findCreature(current, down), down);
-            current.look(findCreature(current, left), left);
-            current.look(findCreature(current, right), right);
+            current.look(findCreature(zoo_ptr_[i],up), up);
+            current.look(findCreature(zoo_ptr_[i], down), down);
+            current.look(findCreature(zoo_ptr_[i], left), left);
+            current.look(findCreature(zoo_ptr_[i], right), right);
             current.getInfo();
             current.reverseInput();
         }
-    }
-
-    
-   //#pragma omp parallel for schedule(static, 1)
-    for (int i = 0; i < size_; ++i) {
-        
-        if (zoo_[i].getState() == alive) {
-            zoo_[i].think();
-        }
-    }
-
-    for (int i = 0; i < size_; ++i) {
-
-        if (zoo_[i].getState()== not_exist)
-            continue;
-
-        zoo_[i].act();
-
-        if (!validX(zoo_[i].pos_x_)) {
-            zoo_[i].pos_x_ %=size_x_;
-            if (zoo_[i].pos_x_ <0)
-                zoo_[i].pos_x_ +=size_x_;
-        }
-        if (!validY(zoo_[i].pos_y_)) {
-            zoo_[i].pos_y_ %= size_y_;
-            if (zoo_[i].pos_y_ < 0)
-                zoo_[i].pos_y_ += size_y_;
-        }
         
     }
-
-
-
-
-
-
+    
+   
+    #pragma omp parallel for
     for (int i = 0; i < size_; ++i) {
-
-        if (zoo_[i].getState() == not_exist)
-            continue;
-
-
-        if (zoo_[i].getEnergy() > zoo_[i].getEnergyLimit()) {
-            empty_zoo_[i].pushDead(zoo_[i].makeLeftover());
+        
+        if (zoo_ptr_[i]->getState() == alive) {
+            zoo_ptr_[i]->think();
         }
-        conjoin(empty_zoo_[zoo_[i].pos_x_ * size_y_ + zoo_[i].pos_y_], zoo_[i]);
-
     }
 
 
+    #pragma omp parallel for
+    for (int i = 0; i < size_; ++i) {
 
+        if (zoo_ptr_[i]->getState()== not_exist)
+            continue;
+
+        zoo_ptr_[i]->act();
+
+        if (!validX(zoo_ptr_[i]->pos_x_)) {
+            zoo_ptr_[i]->pos_x_ %=size_x_;
+            if (zoo_ptr_[i]->pos_x_ <0)
+                zoo_ptr_[i]->pos_x_ +=size_x_;
+        }
+        if (!validY(zoo_ptr_[i]->pos_y_)) {
+            zoo_ptr_[i]->pos_y_ %= size_y_;
+            if (zoo_ptr_[i]->pos_y_ < 0)
+                zoo_ptr_[i]->pos_y_ += size_y_;
+        }
+        
+    }
+
+
+    #pragma omp parallel for
+    for (int i = 0; i < size_; ++i) {
+
+        if (zoo_ptr_[i]->getState() == not_exist)
+            continue;
+
+
+        if (zoo_ptr_[i]->getEnergy() > zoo_ptr_[i]->getEnergyLimit()) {
+            empty_zoo_ptr_[i]->addEnergy(zoo_ptr_[i]->Leftover());
+        }
+        
+        conjoin(empty_zoo_ptr_[zoo_ptr_[i]->pos_x_ * size_y_ + zoo_ptr_[i]->pos_y_], zoo_ptr_[i]);
+
+    }
     
-
-
-    swapIndependent(empty_zoo_,zoo_);
+    swapIndependent(empty_zoo_ptr_,zoo_ptr_);
     for (int i = 0; i < size_; ++i)
-            empty_zoo_[i].stopExisting();
+            empty_zoo_ptr_[i]->stopExisting();
+
 }
 
 void Field::updateStates(){
+#pragma omp parallel for ordered
     for (int i = 0; i < size_; ++i) {
-            Creature& current =zoo_[i];
-            if (current.getState() != alive)
+            if (zoo_ptr_[i]->getState() != alive)
                 continue;
-            if (current.getEnergy()<0) {
-                current.die();
+            if (zoo_ptr_[i]->getEnergy()<0) {
+                zoo_ptr_[i]->die();
                 continue;
             }
-            if (current.wantToReproduce()) {
-                spawnCreature(current.makeChild(findClosePosition(current)));
+            if (zoo_ptr_[i]->wantToReproduce()) {
+                Position child_pos= findClosePosition(zoo_ptr_[i]);
+                if (child_pos != bad_position) {
+                    getCreature(child_pos).makeAlive(*zoo_ptr_[i],child_pos);
+                }
+                
             }
     }
 
@@ -552,14 +626,15 @@ void saveWorld(const char* path, Field* current_field, std::array<float, coeffic
     }
     int x = current_field->sizeX();
     int y = current_field->sizeY();
+    constexpr int creature_size = sizeof(Genome) + sizeof(float) * 2 + sizeof(int) * 5;
     int saved=1;
     safe_file << saved << ' ';
     safe_file << x << ' ' << y << ' ';
-    char* converted = new char[sizeof(Creature) - 2 * sizeof(Eigen::MatrixXf)];
-    for (int i = 0; i < x * y; ++i) {
+    char* converted = new char[creature_size];
+    for (int i = 0; i <x * y; ++i) {
         Creature& current = (*current_field)[i];
-        std::memcpy(converted, &current, sizeof(Creature) - 2*sizeof(Eigen::MatrixXf));
-        safe_file.write(converted, sizeof(Creature) - 2*sizeof(Eigen::MatrixXf));
+        std::memcpy(converted, &current, creature_size);
+        safe_file.write(converted, creature_size);
     }
     delete[] converted;
     safe_file << ' ';
@@ -585,12 +660,13 @@ void loadWorld(const char* path, Field* current_field, std::array<float, coeffic
     }
     safe_file >> x >> y;
     *current_field=Field(x,y);
-    char* converted= new char[sizeof(Creature) - 2 * sizeof(Eigen::MatrixXf)];
+    constexpr int creature_size = sizeof(Genome) +sizeof(float)*2 + sizeof(int)*5;
+    char* converted= new char[creature_size];
     safe_file.read(converted, 1);
     for (int i = 0; i < x * y; ++i) {
         Creature& current = (*current_field)[i];
-        safe_file.read(converted, sizeof(Creature) - 2*sizeof(Eigen::MatrixXf));
-        std::memcpy(&current, converted, sizeof(Creature)-2*sizeof(Eigen::MatrixXf));
+        safe_file.read(converted, creature_size);
+        std::memcpy(&current, converted, creature_size);
         current.buildIO();
     }
     delete[] converted;

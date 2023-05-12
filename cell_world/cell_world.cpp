@@ -7,6 +7,7 @@
 #include<glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <creature/creature.h>
+#include<chrono>
 
 using namespace cellworld;
 
@@ -39,6 +40,7 @@ static void HelpMarker(const char* desc, int width)
 
 int main()
 {   
+    Eigen::initParallel();
     std::random_device rd;
     int current_mode=start_screen;
     unsigned int seed=0;

@@ -9,9 +9,7 @@
 #define GL_SILENCE_DEPRECATION
 #include<glad/glad.h>
 #include <fstream>
-#include<iostream>
 #include<omp.h>
-#include<chrono>
 #include <Eigen/Core>
 
 
@@ -217,9 +215,9 @@ private:
 
 
 
-void saveWorld(const char* path, Field* current_field, std::array<float, coefficients_count>* coefficents);
+void saveWorld(const char* path, Field* current_field, std::array<float, coefficients_count>* coefficents,unsigned int seed);
 bool findFile(const char* path);
-void loadWorld(const char* path, Field* current_field, std::array<float, coefficients_count>* coefficents);
+void loadWorld(const char* path, Field* current_field, std::array<float, coefficients_count>* coefficents, unsigned int& seed);
 
 
 

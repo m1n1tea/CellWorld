@@ -7,13 +7,6 @@ namespace cellworld{
 
 
 
-template<typename T>
-void swapIndependent(T& a, T& b) noexcept {
-    T tmp(std::move(a));
-    a = std::move(b);
-    b = std::move(tmp);
-}
-
 void  reverse(float& x)//TODO сделать через memcpy на всём массиве, а не на отдельном элементе
 {
     if (x<=1)
@@ -160,11 +153,11 @@ unsigned int Creature::energyColor(int energy) {
 void conjoin( Creature*& champion, Creature*& candidate) {
         
     if (champion->getState() == not_exist) {
-        swapIndependent(champion,candidate);
+        std::swap(champion,candidate);
         return;
     } 
     if (candidate->getState() == alive && (champion->getState() == dead || (champion->getMass() * champion->getSpeed() < candidate->getMass() * candidate->getSpeed()))) {
-        swapIndependent(champion, candidate);
+        std::swap(champion, candidate);
     }
     candidate->die();
     champion->eat(*candidate);
@@ -565,7 +558,7 @@ void Field::updatePositions(){
 
     }
     
-    swapIndependent(empty_zoo_ptr_,zoo_ptr_);
+    std::swap(empty_zoo_ptr_,zoo_ptr_);
     for (int i = 0; i < size_; ++i)
             empty_zoo_ptr_[i]->stopExisting();
 
@@ -618,7 +611,7 @@ void Field::deleteTexture() {
 
 
 
-void saveWorld(const char* path, Field* current_field, std::array<float, coefficients_count>* coefficents) {
+void saveWorld(const char* path, Field* current_field, std::array<float, coefficients_count>* coefficents, unsigned int seed) {
     std::ofstream safe_file(path, std::ios::binary);
     if (!safe_file) {
         safe_file.close();
@@ -629,7 +622,10 @@ void saveWorld(const char* path, Field* current_field, std::array<float, coeffic
     constexpr int creature_size = sizeof(Genome) + sizeof(float) * 2 + sizeof(int) * 5;
     int saved=1;
     safe_file << saved << ' ';
-    safe_file << x << ' ' << y << ' ';
+    safe_file << x << ' ' << y << ' ' << seed << ' ';
+    for (int i = 0; i < coefficients_count; ++i) {
+        safe_file << (*coefficents)[i] << ' ';
+    }
     char* converted = new char[creature_size];
     for (int i = 0; i <x * y; ++i) {
         Creature& current = (*current_field)[i];
@@ -638,14 +634,11 @@ void saveWorld(const char* path, Field* current_field, std::array<float, coeffic
     }
     delete[] converted;
     safe_file << ' ';
-    for (int i = 0; i < coefficients_count; ++i) {
-        safe_file << (*coefficents)[i] << ' ';
-    }
     safe_file << generator_;
     safe_file.close();
 }
 
-void loadWorld(const char* path, Field* current_field, std::array<float, coefficients_count>* coefficents) {
+void loadWorld(const char* path, Field* current_field, std::array<float, coefficients_count>* coefficents, unsigned int& seed) {
     std::ifstream safe_file(path, std::ios::binary);
     if (!safe_file) {
         safe_file.close();
@@ -658,7 +651,12 @@ void loadWorld(const char* path, Field* current_field, std::array<float, coeffic
         safe_file.close();
         return;
     }
-    safe_file >> x >> y;
+
+    safe_file >> x >> y >> seed;
+    for (int i = 0; i < coefficients_count; ++i) {
+        safe_file >> (*coefficents)[i];
+    }
+
     *current_field=Field(x,y);
     constexpr int creature_size = sizeof(Genome) +sizeof(float)*2 + sizeof(int)*5;
     char* converted= new char[creature_size];
@@ -670,24 +668,11 @@ void loadWorld(const char* path, Field* current_field, std::array<float, coeffic
         current.buildIO();
     }
     delete[] converted;
-    for (int i = 0; i < coefficients_count; ++i) {
-        safe_file >> (*coefficents)[i];
-    }
     safe_file >> generator_;
     safe_file.close();
 }
 
- bool findFile(const char* path) {
-    std::ifstream safe_file(path, std::ios::binary);
-    if (!safe_file) {
-        safe_file.close();
-        return false;
-    }
-    int check;
-    safe_file >> check;
-    safe_file.close();
-    return (check==1);
-}
+
 
 
 

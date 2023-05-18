@@ -130,13 +130,12 @@ void Creature::eat(Creature& victim) {
 }
 
 void Creature::addEnergy(const float& energy) {
-    if (state_ == not_exist) {
-        *this=Creature(energy,{pos_x_,pos_y_});
-        return;
-    }
     energy_ += energy;
-    if (state_==dead)
-        creatures_genome_.color=energyColor(energy_);
+    if (state_ != alive) {
+        state_=dead;
+        creatures_genome_.color = energyColor(energy_);
+    }
+        
 }
 
 unsigned int Creature::energyColor(int energy) {
@@ -323,13 +322,22 @@ void Creature::prepare() {
 
 
 
-Field::Field(int size_x, int size_y) : size_x_(size_x), size_y_(size_y), size_(size_x* size_y), zoo_ptr_(size_x* size_y), empty_zoo_ptr_(size_x* size_y), storage_(2*size_x* size_y), colors(size_x* size_y, Creature::base_color_) {
+Field::Field(int size_x, int size_y) : size_x_(size_x), size_y_(size_y), size_(size_x* size_y), zoo_ptr_(size_x* size_y),
+ empty_zoo_ptr_(size_x* size_y), storage_(2*size_x* size_y), colors_(size_x* size_y, Creature::base_color_),texture_(nullptr) {
     for (int i=0;i<size_;++i) {
         zoo_ptr_[i]=&storage_[i];
     }
         
     for (int i = 0; i < size_; ++i) {
         empty_zoo_ptr_[i] = &storage_[i+size_];
+    }
+    for (int i = 0; i < size_x_; ++i) {
+        for (int j = 0; j < size_y_; ++j) {
+            zoo_ptr_[i * size_y + j]->pos_x_ = i;
+            zoo_ptr_[i * size_y + j]->pos_y_ = j;
+            empty_zoo_ptr_[i * size_y + j]->pos_x_ = i;
+            empty_zoo_ptr_[i * size_y + j]->pos_y_ = j;
+        }
     }
 }
 
@@ -585,7 +593,7 @@ void Field::updateStates(){
 }
 
 
-void* Field::createTexture() {
+void Field::createTexture() {
 
     GLuint texture;
     glGenTextures(1, &texture);
@@ -593,17 +601,17 @@ void* Field::createTexture() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     
-    return (void*)texture;
+    texture_= (void*)texture;
 }
 
 
 void Field::updateTexture() {
     for (int i = 0; i < size_x_; ++i) {
         for (int j = 0; j < size_y_; ++j) {
-            colors[j*size_x_+i]=getColor({i,j});
+            colors_[j*size_x_+i]=getColor({i,j});
         }
     }
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size_x_, size_y_, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, &(colors[0]));
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size_x_, size_y_, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, &(colors_[0]));
 }
 void Field::deleteTexture() {
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -611,66 +619,7 @@ void Field::deleteTexture() {
 
 
 
-void saveWorld(const char* path, Field* current_field, std::array<float, coefficients_count>* coefficents, unsigned int seed) {
-    std::ofstream safe_file(path, std::ios::binary);
-    if (!safe_file) {
-        safe_file.close();
-        return;
-    }
-    int x = current_field->sizeX();
-    int y = current_field->sizeY();
-    constexpr int creature_size = sizeof(Genome) + sizeof(float) * 2 + sizeof(int) * 5;
-    int saved=1;
-    safe_file << saved << ' ';
-    safe_file << x << ' ' << y << ' ' << seed << ' ';
-    for (int i = 0; i < coefficients_count; ++i) {
-        safe_file << (*coefficents)[i] << ' ';
-    }
-    char* converted = new char[creature_size];
-    for (int i = 0; i <x * y; ++i) {
-        Creature& current = (*current_field)[i];
-        std::memcpy(converted, &current, creature_size);
-        safe_file.write(converted, creature_size);
-    }
-    delete[] converted;
-    safe_file << ' ';
-    safe_file << generator_;
-    safe_file.close();
-}
 
-void loadWorld(const char* path, Field* current_field, std::array<float, coefficients_count>* coefficents, unsigned int& seed) {
-    std::ifstream safe_file(path, std::ios::binary);
-    if (!safe_file) {
-        safe_file.close();
-        return;
-    }
-    int x,y;
-    int check;
-    safe_file >> check;
-    if (check!=1) {
-        safe_file.close();
-        return;
-    }
-
-    safe_file >> x >> y >> seed;
-    for (int i = 0; i < coefficients_count; ++i) {
-        safe_file >> (*coefficents)[i];
-    }
-
-    *current_field=Field(x,y);
-    constexpr int creature_size = sizeof(Genome) +sizeof(float)*2 + sizeof(int)*5;
-    char* converted= new char[creature_size];
-    safe_file.read(converted, 1);
-    for (int i = 0; i < x * y; ++i) {
-        Creature& current = (*current_field)[i];
-        safe_file.read(converted, creature_size);
-        std::memcpy(&current, converted, creature_size);
-        current.buildIO();
-    }
-    delete[] converted;
-    safe_file >> generator_;
-    safe_file.close();
-}
 
 
 

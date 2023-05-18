@@ -116,7 +116,7 @@ public:
     const float& getEnergy() const  { return energy_; }
     const float& getEnergyLimit() const {return energy_limit_;}
     const int& getMass() const {return (creatures_genome_.mass);}
-    bool wantToReproduce()const {return (output_neurons_.size()!=0) && (output_neurons_.coeff(reproduce)>0); }
+    bool wantToReproduce()const {return (output_neurons_.size()!=0) && is_breedable && (output_neurons_.coeff(reproduce)>0); }
     const unsigned int& getColor() const { return (creatures_genome_.color); }
     unsigned int getRed() const { return (getColor() & 0xff); }
     unsigned int getGreen() const { return ((getColor()>>8) & 0xff); }
@@ -141,6 +141,7 @@ public:
     static unsigned int energyColor(int energy);
     
     inline static std::array<float, coefficients_count> coeff_{0};
+    inline static bool is_breedable=1;
 
     inline static unsigned int base_color_= 0xAfAfAfff;
     
@@ -190,13 +191,15 @@ public:
     unsigned int getColor(const int& index) const { return zoo_ptr_[index]->getColor(); }
     int sizeX() const { return size_x_; }
     int sizeY() const { return size_y_; }
+    int size() const { return size_; }
     bool validX(const int& x) const;
     bool validY(const int& y) const;
     Position generatePosition();
     Position findClosePosition(Creature* ancestor);
     Creature& findCreature(Creature*, int direction);
     void clear();
-    void* createTexture();
+    void createTexture();
+    void* getTexture() { return texture_; }
     void updateTexture();
     void deleteTexture();
     inline static Creature bad_creature=Creature();
@@ -208,16 +211,16 @@ private:
     std::vector<Creature*> zoo_ptr_;
     std::vector<Creature*> empty_zoo_ptr_;
     std::vector<Creature> storage_;
-    std::vector<unsigned int> colors;
+protected:
+    std::vector<unsigned int> colors_;
+    void* texture_;
     
 };
 
 
 
 
-void saveWorld(const char* path, Field* current_field, std::array<float, coefficients_count>* coefficents,unsigned int seed);
-bool findFile(const char* path);
-void loadWorld(const char* path, Field* current_field, std::array<float, coefficients_count>* coefficents, unsigned int& seed);
+
 
 
 

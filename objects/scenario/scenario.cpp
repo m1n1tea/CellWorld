@@ -1,0 +1,214 @@
+﻿#include "scenario/scenario.h"
+namespace cellworld{
+    Scenario::Scenario(): Field(), is_cycle_(0), initial_population_(0), cycle_len_(-1), iteraion_(0), rewards_() {}
+    Scenario::Scenario(int size_x, int size_y) : Field(size_x, size_y), is_cycle_(0), initial_population_(0), cycle_len_(-1), iteraion_(0), 
+              rewards_(size_x*size_y,0), rewards_backup_(size_x* size_y, 0){}
+
+    void Scenario::makeOneStep(){
+        giveRewards();
+        updatePositions();
+        updateStates();
+        ++iteraion_;
+    }
+
+    void Scenario::makeNew() {
+        iteraion_=0;
+        clear();
+    }
+
+
+    void Scenario::spawnCreatures(int amount){
+        if (amount>size())
+            amount=size();
+        initial_population_=amount;
+        std::vector<int> positions(size());
+        for (int i = 0; i < size(); ++i) {
+            positions[i]=i;
+        }
+        std::shuffle(positions.begin(),positions.end(),generator_);
+        for (int i = 0; i < amount; ++i) {
+            Position current={positions[i] / sizeY(), positions[i] % sizeY()};
+            getCreature(current)=Creature(Creature::generateGenome(),current);
+        }
+    }
+
+
+    void Scenario::makeRewards(Position pos1, Position pos2, float strength){
+        if (pos2.first < pos1.first)
+            std::swap(pos1.first, pos2.first);
+
+        if (pos2.second < pos1.second)
+            std::swap(pos1.second, pos2.second);
+
+        if (pos1.first < 0)
+            pos1.first = 0;
+
+        if (pos1.second < 0)
+            pos1.second = 0;
+
+        if (pos2.first > sizeX())
+            pos2.first = sizeX();
+
+        if (pos2.second > sizeY())
+            pos2.second = sizeY();
+        rewards_backup_ = rewards_;
+        for (int i = pos1.first; i <= pos2.first; ++i) {
+            for (int j = pos1.second; j <= pos2.second; ++j) {
+                rewards_[i * sizeY() + j] = strength;
+            }
+        }
+    }
+    
+    void Scenario::resetRewards() {
+        rewards_backup_ = rewards_;
+        for (float& x : rewards_) {
+            x = 0;
+        }
+    }
+
+
+    
+    
+    void Scenario::updateRewardsTexture() {
+        for (int i = 0; i < sizeX(); ++i) {
+            for (int j = 0; j < sizeY(); ++j) {
+                if (rewards_[i*sizeY()+j]==0){
+                    colors_[j * sizeX() + i]=0;
+                }
+                else{
+                    colors_[j * sizeX() + i] = Creature::energyColor(rewards_[i * sizeY() + j]);
+                    colors_[j * sizeX() + i] ^= 128;
+                }
+            }
+        }
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, sizeX(), sizeY(), 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, &(colors_[0]));
+    }
+     
+
+    
+
+
+    Position Scenario::convertInput(ImVec2 begin, ImVec2 input, int square_size) {
+        ImVec2 relative_pos={input.x-begin.x,input.y-begin.y};
+        Position result={relative_pos.x/square_size,relative_pos.y / square_size};
+        return result;
+    }
+
+    void Scenario::rewardsEditor(ImVec2 window_pos, ImVec2 window_size, float strength, ImTextureID texture) {
+        int square_size = window_size.x / sizeX();
+        if (square_size > window_size.y / sizeY())
+            square_size = window_size.y / sizeY();
+        ImVec2 opposite_corner={window_pos.x+ sizeX() * square_size,window_pos.y + sizeY() * square_size};
+        unsigned int base_color = Creature::base_color_;
+        base_color=IM_COL32(base_color>>24, ((base_color >> 16) & 0xff), ((base_color >> 8) & 0xff), (base_color & 0xff));
+        ImGui::GetWindowDrawList()->AddRectFilled(window_pos, opposite_corner, base_color);
+        ImGui::InvisibleButton("##foo",window_size);
+        if (ImGui::IsItemDeactivated()) {
+            Position pos1 = convertInput(window_pos, ImGui::GetIO().MouseClickedPos[0], square_size);
+            Position pos2= convertInput(window_pos, ImGui::GetIO().MousePos, square_size);
+            
+            makeRewards(pos1, pos2, strength);
+            updateRewardsTexture();
+        }
+        ImGui::SameLine(0.01f);
+        ImGui::Image(texture, { sizeX() * square_size * 1.f, sizeY() * square_size * 1.f });
+    }
+
+    void Scenario::giveRewards() {
+        #pragma omp parallel for
+        for (int i = 0; i < size(); ++i) {
+            if((*this)[i].getState()==alive)
+                (*this)[i].addEnergy(rewards_[i]);
+        }
+    }
+
+
+    void saveWorld(const char* path, Scenario* current_field, unsigned int seed) {
+        std::ofstream safe_file(path, std::ios::binary);
+        if (!safe_file) {
+            safe_file.close();
+            return;
+        }
+        int x = current_field->sizeX();
+        int y = current_field->sizeY();
+        constexpr int creature_size = sizeof(Genome) + sizeof(float) * 2 + sizeof(int) * 5;
+        int saved = 1;
+        safe_file << saved << ' ';
+        safe_file << x << ' ' << y << ' ' << seed << ' ';
+        for (int i = 0; i < coefficients_count; ++i) {
+            safe_file << Creature::coeff_[i] << ' ';
+        }
+        safe_file << Creature::is_breedable << " ";
+        char* converted = new char[creature_size];
+        for (int i = 0; i < x * y; ++i) {
+            Creature& current = (*current_field)[i];
+            std::memcpy(converted, &current, creature_size);
+            safe_file.write(converted, creature_size);
+        }
+        delete[] converted;
+        converted = new char[4 * current_field->size()];
+
+        std::memcpy(converted, &current_field->rewards_[0], 4 * current_field->size());
+        safe_file.write(converted, 4 * current_field->size());
+
+        std::memcpy(converted, &current_field->rewards_backup_[0], 4 * current_field->size());
+        safe_file.write(converted, 4 * current_field->size());
+
+        delete[] converted;
+        safe_file << ' ' << current_field->is_cycle_ << ' ' << current_field->cycle_len_ << ' ' << current_field->iteraion_ << ' ' << current_field->initial_population_ << ' ';
+        safe_file << generator_;
+        safe_file.close();
+    }
+
+    void loadWorld(const char* path, Scenario* current_field, unsigned int& seed) {
+        std::ifstream safe_file(path, std::ios::binary);
+        if (!safe_file) {
+            safe_file.close();
+            return;
+        }
+        int x, y;
+        int check;
+        safe_file >> check;
+        if (check != 1) {
+            safe_file.close();
+            return;
+        }
+
+        safe_file >> x >> y >> seed;
+        for (int i = 0; i < coefficients_count; ++i) {
+            safe_file >> Creature::coeff_[i];
+        }
+        safe_file >> Creature::is_breedable;
+        *current_field = Scenario(x, y);
+        constexpr int creature_size = sizeof(Genome) + sizeof(float) * 2 + sizeof(int) * 5;
+        char* converted = new char[creature_size];
+        safe_file.read(converted, 1);
+        for (int i = 0; i < x * y; ++i) {
+            Creature& current = (*current_field)[i];
+            safe_file.read(converted, creature_size);
+            std::memcpy(&current, converted, creature_size);
+            current.buildIO();
+        }
+        delete[] converted;
+        
+        converted = new char[4 * current_field->size()];
+
+        safe_file.read(converted, 4 * current_field->size());
+        std::memcpy( &current_field->rewards_[0], converted, 4 * current_field->size());
+        safe_file.read(converted, 4 * current_field->size());
+        std::memcpy(&current_field->rewards_backup_[0], converted, 4 * current_field->size());
+        
+        delete[] converted;
+
+        safe_file >> current_field->is_cycle_ >> current_field->cycle_len_ >> current_field->iteraion_ >> current_field->initial_population_;
+
+        safe_file >> generator_;
+        safe_file.close();
+    }
+    
+
+}
+
+
+
+

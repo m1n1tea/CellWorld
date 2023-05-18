@@ -6,6 +6,7 @@
 #include "imgui.h"
 #include<creature/creature.h>
 #include<save_system/save_system.h>
+#include<scenario/scenario.h>
 #include "imgui_stdlib.h"
 namespace cellworld {
 
@@ -21,8 +22,8 @@ namespace cellworld {
     public:
         static const ImGuiWindowFlags invisibleWindow = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoMove
             | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize;
-        static const ImGuiWindowFlags scrollBarOnly = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoMove
-            | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize;
+        static const ImGuiWindowFlags scrollBarOnly = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize 
+            | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize;
     };
 
 
@@ -44,10 +45,10 @@ namespace cellworld {
     
     class UI {
     public:
-        UI() : scene_(0), previous_scene_(0), scene_is_changed_(0), width_(1), height_(1), seed_(0) {}
+        UI() : scene_(0), previous_scene_(0), scene_is_changed_(0), width_(1), height_(1), seed_(0), scenario_(100,50) {}
         void updateWindowSize(int width, int height){ width_ =width; height_= height;}
         void loadScene();
-        FileSystem file_names_;
+        
     private:
         void sceneUpdate(int scene);
         void startScreen();
@@ -58,9 +59,12 @@ namespace cellworld {
         int scene_;
         int previous_scene_;
         bool scene_is_changed_;
+
         int width_;
         int height_;
-        Field init_field_;
+
+        FileSystem file_names_;
+        Scenario scenario_;
         unsigned int seed_;
     };  
 }

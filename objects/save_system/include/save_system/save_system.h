@@ -12,8 +12,8 @@
 namespace cellworld {
     class FileSystem {
     public:
-        FileSystem(const char* name) : store_names_file_(name) { store_names_file_+=".txt"; }
-        FileSystem() : store_names_file_("file_names.txt") {}
+        FileSystem(std::string name);
+        FileSystem();
         void addFileName(const char* file_name);
         void removeFileName(int index);
         void saveFileNames();

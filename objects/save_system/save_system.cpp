@@ -14,6 +14,15 @@ namespace cellworld {
         return (check == 1);
     }
 
+
+    FileSystem::FileSystem(std::string name) : store_names_file_(name) { 
+        store_names_file_ += ".txt";
+        loadFileNames();
+    }
+    FileSystem::FileSystem() : store_names_file_("file_names.txt"){
+        loadFileNames();
+    }
+
     void FileSystem::addFileName(const char* file_name) {
         files_.emplace_back(file_name);
     }

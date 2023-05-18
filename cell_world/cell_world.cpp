@@ -49,9 +49,8 @@ int main()
     
     int width,height;
     UI user_inteface;
-    user_inteface.file_names_.loadFileNames();
-    user_inteface.file_names_.checkFileNames();
-    user_inteface.file_names_.saveFileNames();
+
+
 
     while (!glfwWindowShouldClose(window))
     {
@@ -60,7 +59,6 @@ int main()
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        //float fps=ImGui::GetIO().Framerate;
         glfwGetWindowSize(window, &width, &height);
 
         user_inteface.updateWindowSize(width,height);

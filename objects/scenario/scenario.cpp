@@ -5,9 +5,9 @@ namespace cellworld{
               rewards_(size_x*size_y,0), rewards_backup_(size_x* size_y, 0){}
 
     void Scenario::makeOneStep(){
-        giveRewards();
         updatePositions();
         updateStates();
+        giveRewards();
         ++iteraion_;
     }
 
@@ -114,11 +114,13 @@ namespace cellworld{
         ImGui::Image(texture, { sizeX() * square_size * 1.f, sizeY() * square_size * 1.f });
     }
 
+
     void Scenario::giveRewards() {
         #pragma omp parallel for
         for (int i = 0; i < size(); ++i) {
-            if((*this)[i].getState()==alive)
-                (*this)[i].addEnergy(rewards_[i]);
+            if (getCreature(i).getState() == alive && rewards_[i]!=0.f) {
+                getCreature(i).addEnergy(rewards_[i]);
+            }
         }
     }
 

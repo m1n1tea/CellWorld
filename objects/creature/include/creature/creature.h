@@ -15,7 +15,6 @@
 
 
 
-
 namespace cellworld
 {
     inline std::mt19937 generator_;
@@ -118,9 +117,9 @@ public:
     const int& getMass() const {return (creatures_genome_.mass);}
     bool wantToReproduce()const {return (output_neurons_.size()!=0) && is_breedable && (output_neurons_.coeff(reproduce)>0); }
     const unsigned int& getColor() const { return (creatures_genome_.color); }
-    unsigned int getRed() const { return (getColor() & 0xff); }
-    unsigned int getGreen() const { return ((getColor()>>8) & 0xff); }
-    unsigned int getBlue() const { return((getColor() >> 16) & 0xff); }
+    unsigned int getBlue() const { return((getColor() >> 8) & 0xff); }
+    unsigned int getGreen() const { return((getColor() >> 16) & 0xff); }
+    unsigned int getRed() const { return((getColor() >> 24) & 0xff); }
     
     void look(Creature&, int direction);
     void getInfo();
@@ -131,7 +130,7 @@ public:
     void eat(Creature&);
     void addEnergy(const float& energy);
     void die();
-    void stopExisting(){state_=not_exist;creatures_genome_.color=base_color_;}
+    void stopExisting(){state_=not_exist;creatures_genome_.color=base_color_; energy_=0;}
 
     static Genome generateGenome();
     static void generateGenome(Genome&);
@@ -183,10 +182,16 @@ public:
     void spawnFood(float energy, const Position&);
     void updatePositions();
     void updateStates();
-    Creature& getCreature(const Position& pos);
+
     const Creature& getCreature(const Position& pos) const;
+    Creature& getCreature(const Position& pos);
+
+    const Creature& getCreature(const int& index) const { return *zoo_ptr_[index]; }
+    Creature& getCreature(const int& index) { return *zoo_ptr_[index]; }
+
     const Creature& operator[](const int& index) const {return *zoo_ptr_[index];}
     Creature& operator[](const int& index) { return *zoo_ptr_[index]; }
+
     unsigned int getColor(const Position& pos)const {return getCreature(pos).getColor();}
     unsigned int getColor(const int& index) const { return zoo_ptr_[index]->getColor(); }
     int sizeX() const { return size_x_; }
@@ -203,6 +208,8 @@ public:
     void updateTexture();
     void deleteTexture();
     inline static Creature bad_creature=Creature();
+    
+    int countCreatures(int type);
 
 private:
     int size_x_;

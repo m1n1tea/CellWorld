@@ -9,7 +9,6 @@
 #include<vector>
 #include<random>
 #include<omp.h>
-#include<iostream>
 namespace cellworld {
     class Scenario: public Field {
         friend void saveWorld(const char* path, Scenario* current_field, unsigned int seed);

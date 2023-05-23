@@ -131,7 +131,10 @@ void Creature::eat(Creature& victim) {
 
 void Creature::addEnergy(const float& energy) {
     energy_ += energy;
-    if (state_ != alive) {
+    if (state_ == dead) {
+        creatures_genome_.color = energyColor(energy_);
+    }
+    if (state_ == not_exist) {
         state_=dead;
         creatures_genome_.color = energyColor(energy_);
     }
@@ -165,13 +168,13 @@ void conjoin( Creature*& champion, Creature*& candidate) {
 void conjoin(Creature& champion, Creature& candidate) {
 
     if (champion.getState() == not_exist) {
-        champion=std::move(candidate);
+        std::swap(champion, candidate);
         return;
     }
     if (candidate.getState() == alive && (champion.getState() == dead || (champion.getMass() * champion.getSpeed() < candidate.getMass() * candidate.getSpeed()))) {
         champion.die();
         candidate.eat(champion);
-        champion = std::move(candidate);
+        std::swap(champion, candidate);
         return;
     }
     candidate.die();
@@ -503,7 +506,6 @@ void Field::updatePositions(){
 //std::chrono::duration<double> time = end - start;
 //std::cout << "\n" << time.count();
     
-
     #pragma omp parallel for
     for (int i = 0; i < size_; ++i){
         
@@ -519,7 +521,6 @@ void Field::updatePositions(){
         
     }
     
-   
     #pragma omp parallel for
     for (int i = 0; i < size_; ++i) {
         
@@ -527,7 +528,6 @@ void Field::updatePositions(){
             zoo_ptr_[i]->think();
         }
     }
-
 
     #pragma omp parallel for
     for (int i = 0; i < size_; ++i) {
@@ -549,32 +549,38 @@ void Field::updatePositions(){
         }
         
     }
-
+    #pragma omp parallel for
+    for (int i = 0; i < size_; ++i) {
+        if (zoo_ptr_[i]->getState()==alive && (zoo_ptr_[i]->getEnergy() > zoo_ptr_[i]->getEnergyLimit())){
+            empty_zoo_ptr_[i]->addEnergy(zoo_ptr_[i]->Leftover());
+        }
+    }
 
     #pragma omp parallel for
     for (int i = 0; i < size_; ++i) {
-
-        if (zoo_ptr_[i]->getState() == not_exist)
-            continue;
-
-
-        if (zoo_ptr_[i]->getEnergy() > zoo_ptr_[i]->getEnergyLimit()) {
-            empty_zoo_ptr_[i]->addEnergy(zoo_ptr_[i]->Leftover());
+        if (zoo_ptr_[i]->getState() != not_exist) {
+            conjoin(empty_zoo_ptr_[zoo_ptr_[i]->pos_x_ * size_y_ + zoo_ptr_[i]->pos_y_], zoo_ptr_[i]);
         }
-        
-        conjoin(empty_zoo_ptr_[zoo_ptr_[i]->pos_x_ * size_y_ + zoo_ptr_[i]->pos_y_], zoo_ptr_[i]);
-
+            
     }
-    
+
     std::swap(empty_zoo_ptr_,zoo_ptr_);
-    for (int i = 0; i < size_; ++i)
-            empty_zoo_ptr_[i]->stopExisting();
+    for (int i = 0; i < size_x_; ++i) {
+        for (int j = 0; j < size_y_; ++j) {
+            empty_zoo_ptr_[i * size_y_ + j]->stopExisting();
+            empty_zoo_ptr_[i * size_y_ + j]->pos_x_ = i;
+            empty_zoo_ptr_[i * size_y_ + j]->pos_y_ = j;
+        }
+    }
+            
 
 }
 
 void Field::updateStates(){
-#pragma omp parallel for ordered
+
+    #pragma omp parallel for ordered
     for (int i = 0; i < size_; ++i) {
+
             if (zoo_ptr_[i]->getState() != alive)
                 continue;
             if (zoo_ptr_[i]->getEnergy()<0) {
@@ -617,7 +623,13 @@ void Field::deleteTexture() {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-
+int Field::countCreatures(int type) {
+    int ans=0;
+    for (Creature* current: zoo_ptr_)
+        if (current->getState()==type)
+            ++ans;
+    return ans;
+}
 
 
 

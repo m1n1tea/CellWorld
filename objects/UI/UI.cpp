@@ -76,12 +76,12 @@ namespace cellworld{
         }
 
 
-        ImGui::SetNextWindowPos({ width_ * 0.15f,height_ * 0.05f });
-        ImGui::SetNextWindowSize({ width_ * 0.8f,height_ * 0.9f });
+        ImGui::SetNextWindowPos({ 0,height_ * 0.05f });
+        ImGui::SetNextWindowSize({ width_ * 1.f,height_ * 0.9f });
         ImGui::Begin("Creation of a world", NULL, WindowTemplates::scrollBarOnly);
         ImGui::SetWindowFontScale(width_ / 3072.0f);
 
-        ImGui::Indent(width_ * 0.2f);
+        ImGui::Indent(width_ * 0.35f);
         if (ImGui::Button("Reset all", { width_ * 0.3f,height_ * 0.1f })) {
             size_x = 100;
             size_y = 50;
@@ -93,9 +93,9 @@ namespace cellworld{
             scenario_.resetRewards();
             scenario_.updateRewardsTexture();
         }
-        ImGui::Unindent(width_ * 0.2f);
+        ImGui::Unindent(width_ * 0.35f);
         ImGui::NewLine();
-        
+        ImGui::Indent(width_ * 0.15f);
         ImGui::Checkbox("breed", &Creature::is_breedable);
         ImGui::InputScalar("seed", ImGuiDataType_U32, &seed_);  HelpMarker("if seed_=0, program generates random seed_", width_);
         ImGui::InputScalar("width", ImGuiDataType_U32, &size_x);
@@ -136,11 +136,19 @@ namespace cellworld{
             scenario_.resetRewards();
             scenario_.updateRewardsTexture();
         }
-        ImGui::BeginChild("Rewards editor", { width_ * 0.99f,height_ * 0.9f },0,WindowTemplates::invisibleWindow);
-        scenario_.rewardsEditor(ImGui::GetWindowPos(), ImGui::GetWindowSize(),strenght,scenario_.getTexture());
-        ImGui::EndChild();
+        ImGui::Unindent(width_ * 0.15f);
         ImGui::NewLine();
 
+
+        ImGui::Indent(width_ * 0.1f);
+        ImGui::BeginChild("Rewards editor", { width_ * 0.85f,height_ * 0.75f },0,WindowTemplates::invisibleWindow);
+        scenario_.rewardsEditor(ImGui::GetWindowPos(), ImGui::GetWindowSize(),strenght,scenario_.getTexture());
+        ImGui::EndChild();
+        ImGui::Unindent(width_ * 0.1f);
+        
+
+
+        ImGui::Indent(width_ * 0.15f);
         if (ImGui::Button("Return", { width_ * 0.3f, height_ * 0.1f })) {
             scenario_.deleteTexture();
             sceneUpdate(start_screen);
@@ -155,6 +163,7 @@ namespace cellworld{
             scenario_.deleteTexture();
             sceneUpdate(simulation_of_the_world);
         }
+        ImGui::Unindent(width_ * 0.15f);
         ImGui::End();
     }
 
@@ -271,7 +280,7 @@ namespace cellworld{
                     square_size= height_ * 0.85f / scenario_.sizeY();
             ImGui::Image(scenario_.getTexture(), {scenario_.sizeX() * square_size * 1.f,  scenario_.sizeY() * square_size * 1.f});
             if (show_rewards) {
-                ImGui::SameLine(0.01f);
+                ImGui::SameLine(8.f);//не понимаю почему 8
                 ImGui::Image(rewards_texture_, { scenario_.sizeX() * square_size * 1.f,  scenario_.sizeY() * square_size * 1.f });
             }
             ImGui::End();

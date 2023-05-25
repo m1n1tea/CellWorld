@@ -103,6 +103,7 @@ public:
     Creature& operator=(Creature&&) = default;
 
     void makeAlive(Creature& ancestor, const Position& pos);
+    void makeAlive(const Position& pos);
     
     
     void buildIO();
@@ -120,6 +121,7 @@ public:
     unsigned int getBlue() const { return((getColor() >> 8) & 0xff); }
     unsigned int getGreen() const { return((getColor() >> 16) & 0xff); }
     unsigned int getRed() const { return((getColor() >> 24) & 0xff); }
+    const Genome& getGenome(){ return creatures_genome_; }
     
     void look(Creature&, int direction);
     void getInfo();
@@ -130,7 +132,7 @@ public:
     void eat(Creature&);
     void addEnergy(const float& energy);
     void die();
-    void stopExisting(){state_=not_exist;creatures_genome_.color=base_color_; energy_=0;}
+    void stopExisting(){state_=not_exist;creatures_genome_.color=base_color_; energy_=0; speed_module_=0;}
 
     static Genome generateGenome();
     static void generateGenome(Genome&);
@@ -215,10 +217,11 @@ private:
     int size_x_;
     int size_y_;
     int size_;
+
+protected:
     std::vector<Creature*> zoo_ptr_;
     std::vector<Creature*> empty_zoo_ptr_;
     std::vector<Creature> storage_;
-protected:
     std::vector<unsigned int> colors_;
     void* texture_;
     

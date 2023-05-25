@@ -1,14 +1,20 @@
 ﻿#include "scenario/scenario.h"
 namespace cellworld{
-    Scenario::Scenario(): Field(), is_cycle_(0), initial_population_(0), cycle_len_(-1), iteraion_(0), rewards_() {}
-    Scenario::Scenario(int size_x, int size_y) : Field(size_x, size_y), is_cycle_(0), initial_population_(0), cycle_len_(-1), iteraion_(0), 
-              rewards_(size_x*size_y,0), rewards_backup_(size_x* size_y, 0){}
+    Scenario::Scenario(): Field(), initial_population_(0), cycle_len_(0), iteraion_(0) {}
+    Scenario::Scenario(int size_x, int size_y) : Field(size_x, size_y), initial_population_(0), cycle_len_(0), iteraion_(0), 
+              rewards_(size_x*size_y,0), rewards_backup_(size_x* size_y, 0),positions_(size_x* size_y, 0){
+    survivors_.reserve(size());
+}
 
     void Scenario::makeOneStep(){
         updatePositions();
         updateStates();
         giveRewards();
         ++iteraion_;
+        if (iteraion_ == cycle_len_) {
+            iteraion_=0;
+            newCycle();
+        }
     }
 
     void Scenario::makeNew() {
@@ -16,18 +22,64 @@ namespace cellworld{
         clear();
     }
 
+    void Scenario::newCycle() {
+        int random_creatures=initial_population_/8;
+        
+        for (int i = 0; i < size(); ++i) {
+            if (getCreature(i).getState() == alive) {
+                survivors_.push_back(&getCreature(i));
+            }
+        }
+        std::swap(zoo_ptr_,empty_zoo_ptr_);
+        std::shuffle(survivors_.begin(), survivors_.end(), generator_);
+
+        int even_part= (initial_population_-random_creatures)/survivors_.size();
+        int random_part=(initial_population_-random_creatures) % survivors_.size();
+        
+        
+        for (int i = 0; i < size(); ++i) {
+            positions_[i] = i;
+        }
+        std::shuffle(positions_.begin(), positions_.end(), generator_);
+        int spawned_creatures = 0;
+
+        for (int i = 0; i < random_creatures; ++i) {
+            Position current = { positions_[spawned_creatures] / sizeY(), positions_[spawned_creatures] % sizeY() };
+            ++spawned_creatures;
+            getCreature(current).makeAlive(current);
+        }
+
+        for (Creature*& ancestor : survivors_) {
+
+            for(int i=0;i<even_part;++i){
+                Position current = { positions_[spawned_creatures] / sizeY(), positions_[spawned_creatures] % sizeY() };
+                ++spawned_creatures;
+                getCreature(current).makeAlive(*ancestor,current);
+            }
+            
+        }
+
+        for (int i = 0; i < random_part; ++i) {
+            Position current = { positions_[spawned_creatures] / sizeY(), positions_[spawned_creatures] % sizeY() };
+            ++spawned_creatures;
+            getCreature(current).makeAlive(*survivors_[i], current);
+        }
+        survivors_.clear();
+        for (int i = 0; i < size(); ++i) {
+            empty_zoo_ptr_[i]->stopExisting();
+        }
+    }
 
     void Scenario::spawnCreatures(int amount){
         if (amount>size())
             amount=size();
         initial_population_=amount;
-        std::vector<int> positions(size());
         for (int i = 0; i < size(); ++i) {
-            positions[i]=i;
+            positions_[i]=i;
         }
-        std::shuffle(positions.begin(),positions.end(),generator_);
+        std::shuffle(positions_.begin(),positions_.end(),generator_);
         for (int i = 0; i < amount; ++i) {
-            Position current={positions[i] / sizeY(), positions[i] % sizeY()};
+            Position current={positions_[i] / sizeY(), positions_[i] % sizeY()};
             getCreature(current)=Creature(Creature::generateGenome(),current);
         }
     }
@@ -157,7 +209,7 @@ namespace cellworld{
         safe_file.write(converted, 4 * current_field->size());
 
         delete[] converted;
-        safe_file << ' ' << current_field->is_cycle_ << ' ' << current_field->cycle_len_ << ' ' << current_field->iteraion_ << ' ' << current_field->initial_population_ << ' ';
+        safe_file << ' ' << current_field->cycle_len_ << ' ' << current_field->iteraion_ << ' ' << current_field->initial_population_ << ' ';
         safe_file << generator_;
         safe_file.close();
     }
@@ -202,7 +254,7 @@ namespace cellworld{
         
         delete[] converted;
 
-        safe_file >> current_field->is_cycle_ >> current_field->cycle_len_ >> current_field->iteraion_ >> current_field->initial_population_;
+        safe_file >> current_field->cycle_len_ >> current_field->iteraion_ >> current_field->initial_population_;
 
         safe_file >> generator_;
         safe_file.close();

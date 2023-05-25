@@ -307,7 +307,17 @@ void Creature::makeAlive(Creature& ancestor,const Position& pos) {
     energy_+= ancestor.energy_;
     energy_limit_ = kids_genome.mass * coeff_[mass_capacity];
     input_neurons_= Eigen::MatrixXf::Zero((4 * look_input_count + input_neurons_count), 1);
-    
+}
+
+void Creature::makeAlive(const Position& pos) {
+    state_ = alive;
+    pos_x_ = pos.first;
+    pos_y_ = pos.second;
+    Genome& kids_genome = creatures_genome_;
+    generateGenome(kids_genome);
+    energy_limit_ = kids_genome.mass * coeff_[mass_capacity];
+    energy_=energy_limit_*coeff_[starting_energy];
+    input_neurons_ = Eigen::MatrixXf::Zero((4 * look_input_count + input_neurons_count), 1);
 }
 
 float Creature::Leftover() {

@@ -20,28 +20,31 @@ namespace cellworld {
 
         void makeNew();
         void makeOneStep();
-        void spawnCreatures(int amount);//использовать только на пустом поле
-        void makeRewards(Position,Position, float strength);//за нахожение на прямоугольнике, заданный двумя позициями, существо каждый ход получает энергию=strength
-        void rewardsEditor(ImVec2 window_pos, ImVec2 window_size, float strength, ImTextureID texture);
-        void giveRewards();
 
-        void makeCycle(int len);
-        void newCycle();
-        void CancelRewardsChange(){ std::swap(rewards_, rewards_backup_); }
+        void spawnCreatures(int amount);//использовать только на пустом поле
+
+        void makeRewards(Position,Position, float strength);//за нахожение на прямоугольнике, заданный двумя позициями, существо каждый ход получает энергию=strength
+        void giveRewards();
+        void CancelRewardsChange() { std::swap(rewards_, rewards_backup_); }
         void resetRewards();
+
+        void rewardsEditor(ImVec2 window_pos, ImVec2 window_size, float strength, ImTextureID texture);
         void updateRewardsTexture();
 
+        void newCycle();
+
         int getInitialPopulation(){return initial_population_;}
-        
+        int cycle_len_;
     private:
         Position convertInput(ImVec2 begin, ImVec2 input, int square_size);
 
-        bool is_cycle_;
         int initial_population_;
-        int cycle_len_;
+        
         long long iteraion_;
         std::vector<float> rewards_;
         std::vector<float> rewards_backup_;
+        std::vector<Creature*> survivors_;
+        std::vector<int> positions_;
         
     };
     

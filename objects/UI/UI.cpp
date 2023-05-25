@@ -59,11 +59,13 @@ namespace cellworld{
         static int size_y =50;
         static std::random_device rd;
         static int initial_population=0;
+        static int cycle_len=0;
         static float strenght=0;
         if (scene_is_changed_) {
             size_x=scenario_.sizeX();
             size_y = scenario_.sizeY();
             initial_population = scenario_.getInitialPopulation();
+            cycle_len=scenario_.cycle_len_;
             scenario_.makeNew();
             scenario_.createTexture();
             scenario_.updateRewardsTexture();
@@ -125,6 +127,9 @@ namespace cellworld{
         ImGui::InputFloat("Braking force", &Creature::coeff_[braking_force]);
         HelpMarker("every simulation step creature's module speed decreases by coeff", width_);
 
+        ImGui::InputInt("Cycle length", &(cycle_len));
+        HelpMarker("if 0 no cycle, else after every n steps of simulation happens new iteration of simulation,\nwhere initial creatures' genome based on survivors of previous iteration", width_);
+
         ImGui::NewLine();
         ImGui::InputFloat("Strength", &strenght);
         if (ImGui::Button("Cancel", { width_ * 0.3f,height_ * 0.1f })) {
@@ -160,6 +165,7 @@ namespace cellworld{
             }
             generator_ = std::mt19937(seed_);
             scenario_.spawnCreatures(initial_population);
+            scenario_.cycle_len_=cycle_len;
             scenario_.deleteTexture();
             sceneUpdate(simulation_of_the_world);
         }

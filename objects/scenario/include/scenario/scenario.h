@@ -34,13 +34,14 @@ namespace cellworld {
         void newCycle();
 
         int getInitialPopulation(){return initial_population_;}
+        long long getIteration(){return iteration_;}
         int cycle_len_;
     private:
         Position convertInput(ImVec2 begin, ImVec2 input, int square_size);
 
         int initial_population_;
         
-        long long iteraion_;
+        long long iteration_;
         std::vector<float> rewards_;
         std::vector<float> rewards_backup_;
         std::vector<Creature*> survivors_;

@@ -1,7 +1,7 @@
 ﻿#include "scenario/scenario.h"
 namespace cellworld{
-    Scenario::Scenario(): Field(), initial_population_(0), cycle_len_(0), iteraion_(0) {}
-    Scenario::Scenario(int size_x, int size_y) : Field(size_x, size_y), initial_population_(0), cycle_len_(0), iteraion_(0), 
+    Scenario::Scenario(): Field(), initial_population_(0), cycle_len_(0), iteration_(0) {}
+    Scenario::Scenario(int size_x, int size_y) : Field(size_x, size_y), initial_population_(0), cycle_len_(0), iteration_(0), 
               rewards_(size_x*size_y,0), rewards_backup_(size_x* size_y, 0),positions_(size_x* size_y, 0){
     survivors_.reserve(size());
 }
@@ -10,15 +10,15 @@ namespace cellworld{
         updatePositions();
         updateStates();
         giveRewards();
-        ++iteraion_;
-        if (iteraion_ == cycle_len_) {
-            iteraion_=0;
+        ++iteration_;
+        if (iteration_ == cycle_len_) {
+            iteration_=0;
             newCycle();
         }
     }
 
     void Scenario::makeNew() {
-        iteraion_=0;
+        iteration_=0;
         clear();
     }
 
@@ -209,7 +209,7 @@ namespace cellworld{
         safe_file.write(converted, 4 * current_field->size());
 
         delete[] converted;
-        safe_file << ' ' << current_field->cycle_len_ << ' ' << current_field->iteraion_ << ' ' << current_field->initial_population_ << ' ';
+        safe_file << ' ' << current_field->cycle_len_ << ' ' << current_field->iteration_ << ' ' << current_field->initial_population_ << ' ';
         safe_file << generator_;
         safe_file.close();
     }
@@ -254,7 +254,7 @@ namespace cellworld{
         
         delete[] converted;
 
-        safe_file >> current_field->cycle_len_ >> current_field->iteraion_ >> current_field->initial_population_;
+        safe_file >> current_field->cycle_len_ >> current_field->iteration_ >> current_field->initial_population_;
 
         safe_file >> generator_;
         safe_file.close();

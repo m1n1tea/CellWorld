@@ -336,7 +336,7 @@ void Creature::prepare() {
 
 
 Field::Field(int size_x, int size_y) : size_x_(size_x), size_y_(size_y), size_(size_x* size_y), zoo_ptr_(size_x* size_y),
- empty_zoo_ptr_(size_x* size_y), storage_(2*size_x* size_y), colors_(size_x* size_y, Creature::base_color_),texture_(nullptr) {
+ empty_zoo_ptr_(size_x* size_y), storage_(2*size_x* size_y), colors_(size_x* size_y, Creature::base_color_) {
     for (int i=0;i<size_;++i) {
         zoo_ptr_[i]=&storage_[i];
     }
@@ -617,7 +617,7 @@ void Field::createTexture() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     
-    texture_= (void*)texture;
+    texture_=texture;
 }
 
 
@@ -629,7 +629,8 @@ void Field::updateTexture() {
     }
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size_x_, size_y_, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, &(colors_[0]));
 }
-void Field::deleteTexture() {
+
+void Field::unbindTexture() {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 

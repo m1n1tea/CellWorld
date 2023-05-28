@@ -206,9 +206,10 @@ public:
     Creature& findCreature(Creature*, int direction);
     void clear();
     void createTexture();
-    void* getTexture() { return texture_; }
+    void* getTexture() { return (void*)(texture_); }
+    const GLuint& getGLTexture() {return texture_;}
     void updateTexture();
-    void deleteTexture();
+    void unbindTexture();
     inline static Creature bad_creature=Creature();
     
     int countCreatures(int type);
@@ -223,7 +224,7 @@ protected:
     std::vector<Creature*> empty_zoo_ptr_;
     std::vector<Creature> storage_;
     std::vector<unsigned int> colors_;
-    void* texture_;
+    GLuint texture_;
     
 };
 

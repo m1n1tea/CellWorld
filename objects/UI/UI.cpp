@@ -71,7 +71,8 @@ namespace cellworld{
             scenario_.updateRewardsTexture();
         }
         if (scenario_.sizeX() != size_x || scenario_.sizeY() != size_y) {
-            scenario_.deleteTexture();
+            glDeleteTextures(1, &scenario_.getGLTexture());
+            scenario_.unbindTexture();
             scenario_=Scenario(size_x,size_y);
             scenario_.createTexture();
             scenario_.updateRewardsTexture();
@@ -155,7 +156,8 @@ namespace cellworld{
 
         ImGui::Indent(width_ * 0.15f);
         if (ImGui::Button("Return", { width_ * 0.3f, height_ * 0.1f })) {
-            scenario_.deleteTexture();
+            glDeleteTextures(1, &scenario_.getGLTexture());
+            scenario_.unbindTexture();
             sceneUpdate(start_screen);
         }
         ImGui::SameLine();
@@ -166,7 +168,7 @@ namespace cellworld{
             generator_ = std::mt19937(seed_);
             scenario_.spawnCreatures(initial_population);
             scenario_.cycle_len_=cycle_len;
-            scenario_.deleteTexture();
+            scenario_.unbindTexture();
             sceneUpdate(simulation_of_the_world);
         }
         ImGui::Unindent(width_ * 0.15f);
@@ -213,17 +215,21 @@ namespace cellworld{
         static bool pause;
         static bool visualise;
         static bool show_rewards;
+        static bool options_window;
+        static bool info_window;
         static std::string file_name;
-        static ImTextureID rewards_texture_;
+        static GLuint rewards_texture_;
         if (scene_is_changed_) {
             pause=1;
             visualise=1;
             show_rewards=0;
+            options_window=1;
+            info_window=0;
 
             scenario_.createTexture();
             scenario_.updateRewardsTexture();
-            rewards_texture_ =scenario_.getTexture();
-            scenario_.deleteTexture();
+            rewards_texture_ =scenario_.getGLTexture();
+            scenario_.unbindTexture();
 
             scenario_.createTexture();
             file_name="New world";
@@ -233,44 +239,46 @@ namespace cellworld{
         ImGui::SetNextWindowSize({ width_ * 1.f,height_ * 0.1f });
         ImGui::Begin("Interface", NULL, WindowTemplates::invisibleWindow);
         ImGui::SetWindowFontScale(width_ / 3584.0f);
-        ImGui::SameLine();
-
 
         if (ImGui::Button("Save as")) {
             if (file_names_.findFileName(file_name.c_str())) {
-                std::string new_name= file_names_.getValidFileName(file_name);
+                std::string new_name = file_names_.getValidFileName(file_name);
                 saveWorld(new_name.c_str(), &scenario_, seed_);
                 file_names_.addFileName(new_name.c_str());
                 file_names_.saveFileNames();
             }
-            else{
+            else {
                 saveWorld(file_name.c_str(), &scenario_, seed_);
                 file_names_.addFileName(file_name.c_str());
                 file_names_.saveFileNames();
             }
         }
         ImGui::SameLine();
-        ImGui::InputText("##foo",&file_name);
+        ImGui::InputText("##foo", &file_name);
+
         ImGui::SameLine();
         if (ImGui::Button("Make one step")) {
             scenario_.makeOneStep();
         }
 
+
+        ImGui::SameLine();
+        if (ImGui::Button("Options")) {
+            options_window=1;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Info")) {
+            info_window = 1;
+        }
         ImGui::SameLine();
         if (ImGui::Button("Return")) {
             sceneUpdate(start_screen);
-            scenario_.deleteTexture();
+            glDeleteTextures(1, &scenario_.getGLTexture());
+            glDeleteTextures(1, &rewards_texture_);
+            scenario_.unbindTexture();
         }
-        ImGui::SameLine();
-        ImGui::Checkbox("Paused", &pause);
-        ImGui::SameLine();
-        ImGui::Checkbox("Visualise", &visualise);
-        ImGui::SameLine();
-        ImGui::Checkbox("Show Rewards", &show_rewards);
-        //ImGui::SameLine();
-        //ImGui::Text("\tFPS: %f",fps);s
         ImGui::End();
-        
+
 
         if (!pause) {
             scenario_.makeOneStep();
@@ -279,7 +287,7 @@ namespace cellworld{
         if (visualise) {
             ImGui::SetNextWindowPos({ width_ * 0.01f,height_ * 0.1f });
             ImGui::SetNextWindowSize({ width_ * 0.99f,height_ * 0.9f });
-            ImGui::Begin("Field", NULL, WindowTemplates::invisibleWindow);
+            ImGui::Begin("Field", NULL, WindowTemplates::invisibleWindow | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus);
             scenario_.updateTexture();
             int square_size= width_ * 0.98f/ scenario_.sizeX();
             if (square_size>height_*0.85f/ scenario_.sizeY())
@@ -287,8 +295,23 @@ namespace cellworld{
             ImGui::Image(scenario_.getTexture(), {scenario_.sizeX() * square_size * 1.f,  scenario_.sizeY() * square_size * 1.f});
             if (show_rewards) {
                 ImGui::SameLine(8.f);//не понимаю почему 8
-                ImGui::Image(rewards_texture_, { scenario_.sizeX() * square_size * 1.f,  scenario_.sizeY() * square_size * 1.f });
+                ImGui::Image((void*)(rewards_texture_), ImGui::GetWindowSize());
             }
+            ImGui::End();
+        }
+        if (options_window){
+            ImGui::Begin("Options", &options_window);
+            ImGui::SetWindowFontScale(width_ / 3584.0f);
+            ImGui::Checkbox("Paused", &pause);
+            ImGui::Checkbox("Visualise", &visualise);
+            ImGui::Checkbox("Show Rewards", &show_rewards);
+            ImGui::End();
+        }
+        if (info_window) {
+            ImGui::Begin("Info", &info_window);
+            ImGui::SetWindowFontScale(width_ / 3584.0f);
+            ImGui::Text("FPS: %f",fps);
+            ImGui::Text("Iteration: %i",scenario_.getIteration());
             ImGui::End();
         }
     }

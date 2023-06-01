@@ -55,8 +55,8 @@ namespace cellworld{
 
     void UI::CreationOfTheWorld()
     {
-        static int size_x=100;
-        static int size_y =50;
+        static unsigned int size_x=100;
+        static unsigned int size_y =50;
         static std::random_device rd;
         static int initial_population=0;
         static int cycle_len=0;
@@ -70,14 +70,6 @@ namespace cellworld{
             scenario_.createTexture();
             scenario_.updateRewardsTexture();
         }
-        if (scenario_.sizeX() != size_x || scenario_.sizeY() != size_y) {
-            glDeleteTextures(1, &scenario_.getGLTexture());
-            scenario_.unbindTexture();
-            scenario_=Scenario(size_x,size_y);
-            scenario_.createTexture();
-            scenario_.updateRewardsTexture();
-        }
-
 
         ImGui::SetNextWindowPos({ 0,height_ * 0.05f });
         ImGui::SetNextWindowSize({ width_ * 1.f,height_ * 0.9f });
@@ -96,13 +88,41 @@ namespace cellworld{
             scenario_.resetRewards();
             scenario_.updateRewardsTexture();
         }
+
+
+
+
         ImGui::Unindent(width_ * 0.35f);
         ImGui::NewLine();
         ImGui::Indent(width_ * 0.15f);
         ImGui::Checkbox("breed", &Creature::is_breedable);
         ImGui::InputScalar("seed", ImGuiDataType_U32, &seed_);  HelpMarker("if seed_=0, program generates random seed_", width_);
         ImGui::InputScalar("width", ImGuiDataType_U32, &size_x);
+
+
+        if (ImGui::IsItemDeactivatedAfterEdit() || (size_x > width_ * 0.85f && !ImGui::IsItemActive())) {
+            if (size_x > width_ * 0.85f)
+                size_x = width_ * 0.85f;
+            scenario_.unbindTexture();
+            glDeleteTextures(1, &scenario_.getGLTexture());
+            scenario_ = Scenario(size_x, size_y);
+            scenario_.createTexture();
+            scenario_.updateRewardsTexture();
+        }
+
         ImGui::InputScalar("height", ImGuiDataType_U32, &size_y);
+
+
+        if (ImGui::IsItemDeactivatedAfterEdit() || (size_y > height_ * 0.75f && !ImGui::IsItemActive())) {
+            if (size_y > height_ * 0.75f)
+                size_y = height_ * 0.75f;
+            scenario_.unbindTexture();
+            glDeleteTextures(1, &scenario_.getGLTexture());
+            scenario_ = Scenario(size_x, size_y);
+            scenario_.createTexture();
+            scenario_.updateRewardsTexture();
+        }
+
         ImGui::InputScalar("initial polulation", ImGuiDataType_U32, &initial_population);
         ImGui::NewLine();
         ImGui::Text("Coefficients");
@@ -295,7 +315,7 @@ namespace cellworld{
             ImGui::Image(scenario_.getTexture(), {scenario_.sizeX() * square_size * 1.f,  scenario_.sizeY() * square_size * 1.f});
             if (show_rewards) {
                 ImGui::SameLine(8.f);//не понимаю почему 8
-                ImGui::Image((void*)(rewards_texture_), ImGui::GetWindowSize());
+                ImGui::Image((void*)(rewards_texture_), { scenario_.sizeX() * square_size * 1.f,  scenario_.sizeY() * square_size * 1.f });
             }
             ImGui::End();
         }

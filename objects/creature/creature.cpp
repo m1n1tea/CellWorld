@@ -7,14 +7,6 @@ namespace cellworld{
 
 
 
-void  reverse(float& x)//TODO сделать через memcpy на всём массиве, а не на отдельном элементе
-{
-    if (x<=1)
-        return;
-    unsigned int* i = (unsigned int*)&x;
-    *i = 0x7EEEEEEE - *i;
-}
-
 
 Genome Creature::generateGenome() {
     
@@ -192,15 +184,21 @@ void Creature::buildIO(){
 
 
 void Creature::reverseInput() {
+    std::vector<unsigned int> byte_copy(input_neurons_.size());
+    std::memcpy(&byte_copy[0], &input_neurons_.coeffRef(0), input_neurons_.size()*4);
+
     for (int i = 0; i < input_neurons_.size(); i++) {
-        reverse( input_neurons_.coeffRef(i) );
+        if (input_neurons_.coeffRef(i)<1)
+            continue;
+        byte_copy[i] = 0x7EEEEEEE - byte_copy[i];
     }
+
+    std::memcpy(&input_neurons_.coeffRef(0), &byte_copy[0], input_neurons_.size()*4);
 }
 
 
 
 void Creature::getInfo() {
-        input_neurons_.setZero();
         input_neurons_.coeffRef(pos_x) = pos_x_;
         input_neurons_.coeffRef(pos_y) = pos_y_;
         input_neurons_.coeffRef(speed_module)=speed_module_;
@@ -326,9 +324,6 @@ float Creature::Leftover() {
     return std::get<2>(tmp_);
 }
 
-void Creature::prepare() {
-
-}
 
 
 
@@ -358,35 +353,14 @@ Field::Field(int size_x, int size_y) : size_x_(size_x), size_y_(size_y), size_(s
 
 
 
-
-Position Field::generatePosition() {
-    if (size_x_ == 0 || size_y_ == 0) {
-        return bad_position;
-    }
-    std::uniform_int_distribution<int> dis_x(0, size_x_ - 1);
-    std::uniform_int_distribution<int> dis_y(0, size_y_ - 1);
-    Position res = { dis_x(generator_),dis_y(generator_) };
-    int tries=0;
-    while (zoo_ptr_[res.first * size_y_ + res.second]->getState() != not_exist) {
-        if (tries == 100) {
-            return bad_position;
-        }
-        res.first= dis_x(generator_);
-        res.second = dis_y(generator_);
-        ++tries;
-    }
-    
-    return res;
-}
-
 Creature& Field::getCreature(const Position& pos) { 
-    if (pos!=bad_position)
+    if (pos!=bad_position && validX(pos.first) && validY(pos.second))
         return *(zoo_ptr_[pos.first*size_y_+pos.second]); 
     return bad_creature;
 }
 
 const Creature& Field::getCreature(const Position& pos) const {
-    if (pos != bad_position)
+    if (pos != bad_position && validX(pos.first) && validY(pos.second))
         return *(zoo_ptr_[pos.first * size_y_ + pos.second]);
     return bad_creature;
 }
@@ -453,18 +427,7 @@ bool Field::validY(const int& y) const  {
     return (y >= 0 && y < size_y_);
 }
 
-void Field::spawnCreature(const Position& pos){
-    if (pos != bad_position)
-        *zoo_ptr_[pos.first * size_y_ + pos.second]=Creature(Creature::generateGenome(), pos);
-}
 
-void Field::spawnCreature(Creature child) {
-    
-    conjoin(*zoo_ptr_[child.getX() * size_y_ + child.getY()], child);
-}
-void Field::spawnFood(float energy, const Position& pos) {
-    spawnCreature(Creature(energy,pos));
-}
 
 
 
@@ -634,13 +597,6 @@ void Field::unbindTexture() {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-int Field::countCreatures(int type) {
-    int ans=0;
-    for (Creature* current: zoo_ptr_)
-        if (current->getState()==type)
-            ++ans;
-    return ans;
-}
 
 
 

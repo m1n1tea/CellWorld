@@ -1,6 +1,5 @@
 ﻿#include "scenario/scenario.h"
 namespace cellworld{
-    Scenario::Scenario(): Field(), initial_population_(0), cycle_len_(0), iteration_(0) {}
     Scenario::Scenario(int size_x, int size_y) : Field(size_x, size_y), initial_population_(0), cycle_len_(0), iteration_(0), 
               rewards_(size_x*size_y,0), rewards_backup_(size_x* size_y, 0),positions_(size_x* size_y, 0){
     survivors_.reserve(size());
@@ -11,8 +10,7 @@ namespace cellworld{
         updateStates();
         giveRewards();
         ++iteration_;
-        if (iteration_ == cycle_len_) {
-            iteration_=0;
+        if (cycle_len_>0 && iteration_ % cycle_len_==0) {
             newCycle();
         }
     }
@@ -177,7 +175,7 @@ namespace cellworld{
     }
 
 
-    void saveWorld(const char* path, Scenario* current_field, unsigned int seed) {
+    void saveWorld(const char* path, Scenario* current_field, const unsigned int& seed) {
         std::ofstream safe_file(path, std::ios::binary);
         if (!safe_file) {
             safe_file.close();

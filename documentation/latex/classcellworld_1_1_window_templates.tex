@@ -1,0 +1,55 @@
+\doxysection{Класс cellworld\+::Window\+Templates}
+\hypertarget{classcellworld_1_1_window_templates}{}\label{classcellworld_1_1_window_templates}\index{cellworld::WindowTemplates@{cellworld::WindowTemplates}}
+\doxysubsubsection*{Статические открытые данные}
+\begin{DoxyCompactItemize}
+\item 
+static const Im\+Gui\+Window\+Flags \mbox{\hyperlink{classcellworld_1_1_window_templates_a205ce65081f015a2f40525972265fbd7}{invisible\+Window}}
+\item 
+static const Im\+Gui\+Window\+Flags \mbox{\hyperlink{classcellworld_1_1_window_templates_a01b28bf12a9e44861962cea470133596}{scroll\+Bar\+Only}}
+\item 
+static const Im\+Gui\+Window\+Flags \mbox{\hyperlink{classcellworld_1_1_window_templates_a62d30802a25eac535d71a8a1f4b247f3}{menu\+Bar}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Данные класса}
+\Hypertarget{classcellworld_1_1_window_templates_a205ce65081f015a2f40525972265fbd7}\label{classcellworld_1_1_window_templates_a205ce65081f015a2f40525972265fbd7} 
+\index{cellworld::WindowTemplates@{cellworld::WindowTemplates}!invisibleWindow@{invisibleWindow}}
+\index{invisibleWindow@{invisibleWindow}!cellworld::WindowTemplates@{cellworld::WindowTemplates}}
+\doxysubsubsection{\texorpdfstring{invisibleWindow}{invisibleWindow}}
+{\footnotesize\ttfamily const Im\+Gui\+Window\+Flags cellworld\+::\+Window\+Templates\+::invisible\+Window\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Инициализатор}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ ImGuiWindowFlags\_NoTitleBar\ |\ ImGuiWindowFlags\_NoScrollbar\ |\ ImGuiWindowFlags\_NoMove}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ |\ ImGuiWindowFlags\_NoResize\ |\ ImGuiWindowFlags\_NoBackground\ |\ ImGuiWindowFlags\_NoCollapse\ |\ ImGuiWindowFlags\_AlwaysAutoResize}
+
+\end{DoxyCode}
+\Hypertarget{classcellworld_1_1_window_templates_a62d30802a25eac535d71a8a1f4b247f3}\label{classcellworld_1_1_window_templates_a62d30802a25eac535d71a8a1f4b247f3} 
+\index{cellworld::WindowTemplates@{cellworld::WindowTemplates}!menuBar@{menuBar}}
+\index{menuBar@{menuBar}!cellworld::WindowTemplates@{cellworld::WindowTemplates}}
+\doxysubsubsection{\texorpdfstring{menuBar}{menuBar}}
+{\footnotesize\ttfamily const Im\+Gui\+Window\+Flags cellworld\+::\+Window\+Templates\+::menu\+Bar\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Инициализатор}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ ImGuiWindowFlags\_NoTitleBar\ |\ ImGuiWindowFlags\_NoScrollbar\ |\ ImGuiWindowFlags\_NoMove}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ |\ ImGuiWindowFlags\_NoResize\ |\ ImGuiWindowFlags\_NoBackground\ |\ ImGuiWindowFlags\_NoCollapse\ |\ ImGuiWindowFlags\_AlwaysAutoResize\ |\ ImGuiWindowFlags\_MenuBar}
+
+\end{DoxyCode}
+\Hypertarget{classcellworld_1_1_window_templates_a01b28bf12a9e44861962cea470133596}\label{classcellworld_1_1_window_templates_a01b28bf12a9e44861962cea470133596} 
+\index{cellworld::WindowTemplates@{cellworld::WindowTemplates}!scrollBarOnly@{scrollBarOnly}}
+\index{scrollBarOnly@{scrollBarOnly}!cellworld::WindowTemplates@{cellworld::WindowTemplates}}
+\doxysubsubsection{\texorpdfstring{scrollBarOnly}{scrollBarOnly}}
+{\footnotesize\ttfamily const Im\+Gui\+Window\+Flags cellworld\+::\+Window\+Templates\+::scroll\+Bar\+Only\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Инициализатор}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ ImGuiWindowFlags\_NoTitleBar\ |\ ImGuiWindowFlags\_NoMove\ |\ ImGuiWindowFlags\_NoResize}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ |\ ImGuiWindowFlags\_NoBackground\ |\ ImGuiWindowFlags\_NoCollapse\ |\ ImGuiWindowFlags\_AlwaysAutoResize}
+
+\end{DoxyCode}
+
+
+Объявления и описания членов класса находятся в файле\+:\begin{DoxyCompactItemize}
+\item 
+objects/\+UI/UI.\+cpp\end{DoxyCompactItemize}

@@ -48,7 +48,7 @@ int main()
     io.Fonts->AddFontDefault(&font_cfg);
     
     int width,height;
-    UI user_inteface;
+    UI& user_inteface= UI::GetInstance();
 
 
 

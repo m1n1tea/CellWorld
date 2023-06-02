@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.7"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>CellWorld: Исходный файл objects/UI/include/UI/UI.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">CellWorld
+   </div>
+   <div id="projectbrief">Симуляция естественного отбора</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.9.7 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Поиск');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('_u_i_8h_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">UI.h</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#ifndef EVOLVING_WORLD_2023_Q2_UI</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#define EVOLVING_WORLD_2023_Q2_UI</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;imgui.h&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include&lt;creature/creature.h&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include&lt;save_system/save_system.h&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include&lt;scenario/scenario.h&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;imgui_stdlib.h&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span>cellworld {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="group___u_i.html#ga4e6989e047f686c170b76c7dd2358e36">   23</a></span>    <span class="keyword">enum</span> <a class="code hl_enumeration" href="group___u_i.html#ga4e6989e047f686c170b76c7dd2358e36">Scene</a> {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="group___u_i.html#gga4e6989e047f686c170b76c7dd2358e36a31e8ca573f42482edd39b0d2325cec77">   25</a></span>        <a class="code hl_enumvalue" href="group___u_i.html#gga4e6989e047f686c170b76c7dd2358e36a31e8ca573f42482edd39b0d2325cec77">start_screen</a>,</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="group___u_i.html#gga4e6989e047f686c170b76c7dd2358e36ac3eb2ae4a16d96053726e183a6fefc4a">   28</a></span>        <a class="code hl_enumvalue" href="group___u_i.html#gga4e6989e047f686c170b76c7dd2358e36ac3eb2ae4a16d96053726e183a6fefc4a">creation_of_the_world</a>,</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="group___u_i.html#gga4e6989e047f686c170b76c7dd2358e36ab7f4ea9903b4591831aaa37237d1e006">   31</a></span>        <a class="code hl_enumvalue" href="group___u_i.html#gga4e6989e047f686c170b76c7dd2358e36ab7f4ea9903b4591831aaa37237d1e006">load_world_screen</a>,</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="group___u_i.html#gga4e6989e047f686c170b76c7dd2358e36a6a7f867cb87e48927e606cee1a35f0fd">   34</a></span>        <a class="code hl_enumvalue" href="group___u_i.html#gga4e6989e047f686c170b76c7dd2358e36a6a7f867cb87e48927e606cee1a35f0fd">simulation_of_the_world</a>,</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    };</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="group___u_i.html#gafff7566ab5536bba07cd216af3e2e0d4">   42</a></span>    <span class="keyword">enum</span> <a class="code hl_enumeration" href="group___u_i.html#gafff7566ab5536bba07cd216af3e2e0d4">WindowTemplates</a> {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <a class="code hl_enumvalue" href="group___u_i.html#ggafff7566ab5536bba07cd216af3e2e0d4ad0ac09193aac18b1609db1b9e833b2b2">invisible_window</a> = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoMove</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="group___u_i.html#ggafff7566ab5536bba07cd216af3e2e0d4ad0ac09193aac18b1609db1b9e833b2b2">   45</a></span>            | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <a class="code hl_enumvalue" href="group___u_i.html#ggafff7566ab5536bba07cd216af3e2e0d4a8bc41797fa1aca022828288686d72f7f">scroll_bar_only</a> = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="group___u_i.html#ggafff7566ab5536bba07cd216af3e2e0d4a8bc41797fa1aca022828288686d72f7f">   49</a></span>    };</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classcellworld_1_1_u_i.html">   59</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classcellworld_1_1_u_i.html">UI</a> {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="keywordtype">void</span> operator=(<span class="keyword">const</span> <a class="code hl_class" href="classcellworld_1_1_u_i.html">UI</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <a class="code hl_class" href="classcellworld_1_1_u_i.html">UI</a>(<a class="code hl_class" href="classcellworld_1_1_u_i.html">UI</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="classcellworld_1_1_u_i.html#a29ad838e32de1b81f52ac0abdd502cbd">   65</a></span>        <span class="keyword">static</span> <a class="code hl_class" href="classcellworld_1_1_u_i.html">UI</a>&amp; <a class="code hl_function" href="classcellworld_1_1_u_i.html#a29ad838e32de1b81f52ac0abdd502cbd">GetInstance</a>() {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            <span class="keyword">static</span> <a class="code hl_class" href="classcellworld_1_1_u_i.html">UI</a>* singleUI = <span class="keyword">new</span> <a class="code hl_class" href="classcellworld_1_1_u_i.html">UI</a>();</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            <span class="keywordflow">return</span> *singleUI;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        }</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classcellworld_1_1_u_i.html#a4e9f36887365060d62793930fa9f584d">   71</a></span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classcellworld_1_1_u_i.html#a4e9f36887365060d62793930fa9f584d">updateWindowSize</a>(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height){ <a class="code hl_variable" href="classcellworld_1_1_u_i.html#a3ee3084c134c00c62d1b80ad1042e2d9">width_</a> =width; <a class="code hl_variable" href="classcellworld_1_1_u_i.html#a1ef06cac99bf67eb55496d20b38cffd1">height_</a>= height;}</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classcellworld_1_1_u_i.html#a8586253ed5e39fb3a7efcce3b5ca0d2b">loadScene</a>();</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classcellworld_1_1_u_i.html#a71ea70ef92205d852f1aae337e535bc2">sceneUpdate</a>(<span class="keywordtype">int</span> scene);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classcellworld_1_1_u_i.html#a2f173296dd6bf6cbc159f1735dc1104f">startScreen</a>();</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classcellworld_1_1_u_i.html#a90c2f113282f6bc54eb48781ade0b16f">CreationOfTheWorld</a>();</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classcellworld_1_1_u_i.html#a0652be8364cb21fe982f32053fd50f89">loadWorldScreen</a>();</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classcellworld_1_1_u_i.html#ad6e04b0c3fff13b4a1a4791ec595c62b">SimulationOfTheWorld</a>();</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="classcellworld_1_1_u_i.html#ab0149c584e7c4dc383979a619399647a">  136</a></span>        <span class="keywordtype">int</span> <a class="code hl_variable" href="classcellworld_1_1_u_i.html#ab0149c584e7c4dc383979a619399647a">scene_</a>;</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="classcellworld_1_1_u_i.html#a6899b9498b72ee6e5d36b312b3a7faa4">  138</a></span>        <span class="keywordtype">int</span> <a class="code hl_variable" href="classcellworld_1_1_u_i.html#a6899b9498b72ee6e5d36b312b3a7faa4">previous_scene_</a>;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="classcellworld_1_1_u_i.html#a146366e65e52a234ebc990f3470e2a0f">  140</a></span>        <span class="keywordtype">bool</span> <a class="code hl_variable" href="classcellworld_1_1_u_i.html#a146366e65e52a234ebc990f3470e2a0f">scene_is_changed_</a>;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="classcellworld_1_1_u_i.html#a3ee3084c134c00c62d1b80ad1042e2d9">  143</a></span>        <span class="keywordtype">int</span> <a class="code hl_variable" href="classcellworld_1_1_u_i.html#a3ee3084c134c00c62d1b80ad1042e2d9">width_</a>;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="classcellworld_1_1_u_i.html#a1ef06cac99bf67eb55496d20b38cffd1">  145</a></span>        <span class="keywordtype">int</span> <a class="code hl_variable" href="classcellworld_1_1_u_i.html#a1ef06cac99bf67eb55496d20b38cffd1">height_</a>;</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    </div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        <a class="code hl_class" href="classcellworld_1_1_file_system.html">FileSystem</a> file_names_;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        <a class="code hl_class" href="classcellworld_1_1_scenario.html">Scenario</a> scenario_;</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="classcellworld_1_1_u_i.html#a99ec6772ace77664a4a410cae61050f6">  154</a></span>        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="classcellworld_1_1_u_i.html#a99ec6772ace77664a4a410cae61050f6">seed_</a>;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        </div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        <a class="code hl_class" href="classcellworld_1_1_u_i.html">UI</a>() : <a class="code hl_variable" href="classcellworld_1_1_u_i.html#ab0149c584e7c4dc383979a619399647a">scene_</a>(<a class="code hl_enumvalue" href="group___u_i.html#gga4e6989e047f686c170b76c7dd2358e36a31e8ca573f42482edd39b0d2325cec77">start_screen</a>), <a class="code hl_variable" href="classcellworld_1_1_u_i.html#a6899b9498b72ee6e5d36b312b3a7faa4">previous_scene_</a>(<a class="code hl_enumvalue" href="group___u_i.html#gga4e6989e047f686c170b76c7dd2358e36a31e8ca573f42482edd39b0d2325cec77">start_screen</a>), <a class="code hl_variable" href="classcellworld_1_1_u_i.html#a146366e65e52a234ebc990f3470e2a0f">scene_is_changed_</a>(0), <a class="code hl_variable" href="classcellworld_1_1_u_i.html#a3ee3084c134c00c62d1b80ad1042e2d9">width_</a>(1), <a class="code hl_variable" href="classcellworld_1_1_u_i.html#a1ef06cac99bf67eb55496d20b38cffd1">height_</a>(1), <a class="code hl_variable" href="classcellworld_1_1_u_i.html#a99ec6772ace77664a4a410cae61050f6">seed_</a>(0), scenario_(100, 50) {}</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    };  </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>}</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclasscellworld_1_1_file_system_html"><div class="ttname"><a href="classcellworld_1_1_file_system.html">cellworld::FileSystem</a></div><div class="ttdoc">Класс хранения файлов.</div><div class="ttdef"><b>Definition</b> save_system.h:25</div></div>
+<div class="ttc" id="aclasscellworld_1_1_scenario_html"><div class="ttname"><a href="classcellworld_1_1_scenario.html">cellworld::Scenario</a></div><div class="ttdoc">Класс сценария - расширенный класс поля В расширенных функционал входят:</div><div class="ttdef"><b>Definition</b> scenario.h:24</div></div>
+<div class="ttc" id="aclasscellworld_1_1_u_i_html"><div class="ttname"><a href="classcellworld_1_1_u_i.html">cellworld::UI</a></div><div class="ttdoc">Класс графического интерфейса.</div><div class="ttdef"><b>Definition</b> UI.h:59</div></div>
+<div class="ttc" id="aclasscellworld_1_1_u_i_html_a0652be8364cb21fe982f32053fd50f89"><div class="ttname"><a href="classcellworld_1_1_u_i.html#a0652be8364cb21fe982f32053fd50f89">cellworld::UI::loadWorldScreen</a></div><div class="ttdeci">void loadWorldScreen()</div><div class="ttdoc">Функция для сцены выбора мира для загрузки</div><div class="ttdef"><b>Definition</b> UI.cpp:216</div></div>
+<div class="ttc" id="aclasscellworld_1_1_u_i_html_a146366e65e52a234ebc990f3470e2a0f"><div class="ttname"><a href="classcellworld_1_1_u_i.html#a146366e65e52a234ebc990f3470e2a0f">cellworld::UI::scene_is_changed_</a></div><div class="ttdeci">bool scene_is_changed_</div><div class="ttdoc">1 если текущая сцена не равна предыдущей, иначе 0.</div><div class="ttdef"><b>Definition</b> UI.h:140</div></div>
+<div class="ttc" id="aclasscellworld_1_1_u_i_html_a1ef06cac99bf67eb55496d20b38cffd1"><div class="ttname"><a href="classcellworld_1_1_u_i.html#a1ef06cac99bf67eb55496d20b38cffd1">cellworld::UI::height_</a></div><div class="ttdeci">int height_</div><div class="ttdoc">Высота окна</div><div class="ttdef"><b>Definition</b> UI.h:145</div></div>
+<div class="ttc" id="aclasscellworld_1_1_u_i_html_a29ad838e32de1b81f52ac0abdd502cbd"><div class="ttname"><a href="classcellworld_1_1_u_i.html#a29ad838e32de1b81f52ac0abdd502cbd">cellworld::UI::GetInstance</a></div><div class="ttdeci">static UI &amp; GetInstance()</div><div class="ttdoc">Доступ к единственному экземпляру</div><div class="ttdef"><b>Definition</b> UI.h:65</div></div>
+<div class="ttc" id="aclasscellworld_1_1_u_i_html_a2f173296dd6bf6cbc159f1735dc1104f"><div class="ttname"><a href="classcellworld_1_1_u_i.html#a2f173296dd6bf6cbc159f1735dc1104f">cellworld::UI::startScreen</a></div><div class="ttdeci">void startScreen()</div><div class="ttdoc">Функция для сцены стартого экрана</div><div class="ttdef"><b>Definition</b> UI.cpp:52</div></div>
+<div class="ttc" id="aclasscellworld_1_1_u_i_html_a3ee3084c134c00c62d1b80ad1042e2d9"><div class="ttname"><a href="classcellworld_1_1_u_i.html#a3ee3084c134c00c62d1b80ad1042e2d9">cellworld::UI::width_</a></div><div class="ttdeci">int width_</div><div class="ttdoc">Ширина окна</div><div class="ttdef"><b>Definition</b> UI.h:143</div></div>
+<div class="ttc" id="aclasscellworld_1_1_u_i_html_a4e9f36887365060d62793930fa9f584d"><div class="ttname"><a href="classcellworld_1_1_u_i.html#a4e9f36887365060d62793930fa9f584d">cellworld::UI::updateWindowSize</a></div><div class="ttdeci">void updateWindowSize(int width, int height)</div><div class="ttdoc">Синхронизировать с размером окна</div><div class="ttdef"><b>Definition</b> UI.h:71</div></div>
+<div class="ttc" id="aclasscellworld_1_1_u_i_html_a6899b9498b72ee6e5d36b312b3a7faa4"><div class="ttname"><a href="classcellworld_1_1_u_i.html#a6899b9498b72ee6e5d36b312b3a7faa4">cellworld::UI::previous_scene_</a></div><div class="ttdeci">int previous_scene_</div><div class="ttdoc">Предыдущая сцена</div><div class="ttdef"><b>Definition</b> UI.h:138</div></div>
+<div class="ttc" id="aclasscellworld_1_1_u_i_html_a71ea70ef92205d852f1aae337e535bc2"><div class="ttname"><a href="classcellworld_1_1_u_i.html#a71ea70ef92205d852f1aae337e535bc2">cellworld::UI::sceneUpdate</a></div><div class="ttdeci">void sceneUpdate(int scene)</div><div class="ttdoc">Сменить сцену на данную</div><div class="ttdef"><b>Definition</b> UI.cpp:47</div></div>
+<div class="ttc" id="aclasscellworld_1_1_u_i_html_a8586253ed5e39fb3a7efcce3b5ca0d2b"><div class="ttname"><a href="classcellworld_1_1_u_i.html#a8586253ed5e39fb3a7efcce3b5ca0d2b">cellworld::UI::loadScene</a></div><div class="ttdeci">void loadScene()</div><div class="ttdoc">Загрузить текущую сцену</div><div class="ttdef"><b>Definition</b> UI.cpp:22</div></div>
+<div class="ttc" id="aclasscellworld_1_1_u_i_html_a90c2f113282f6bc54eb48781ade0b16f"><div class="ttname"><a href="classcellworld_1_1_u_i.html#a90c2f113282f6bc54eb48781ade0b16f">cellworld::UI::CreationOfTheWorld</a></div><div class="ttdeci">void CreationOfTheWorld()</div><div class="ttdoc">Функция для сцены настройки/создания мира</div><div class="ttdef"><b>Definition</b> UI.cpp:74</div></div>
+<div class="ttc" id="aclasscellworld_1_1_u_i_html_a99ec6772ace77664a4a410cae61050f6"><div class="ttname"><a href="classcellworld_1_1_u_i.html#a99ec6772ace77664a4a410cae61050f6">cellworld::UI::seed_</a></div><div class="ttdeci">unsigned int seed_</div><div class="ttdoc">Сид для генератора рандомных чисел.</div><div class="ttdef"><b>Definition</b> UI.h:154</div></div>
+<div class="ttc" id="aclasscellworld_1_1_u_i_html_ab0149c584e7c4dc383979a619399647a"><div class="ttname"><a href="classcellworld_1_1_u_i.html#ab0149c584e7c4dc383979a619399647a">cellworld::UI::scene_</a></div><div class="ttdeci">int scene_</div><div class="ttdoc">Текущая сцена</div><div class="ttdef"><b>Definition</b> UI.h:136</div></div>
+<div class="ttc" id="aclasscellworld_1_1_u_i_html_ad6e04b0c3fff13b4a1a4791ec595c62b"><div class="ttname"><a href="classcellworld_1_1_u_i.html#ad6e04b0c3fff13b4a1a4791ec595c62b">cellworld::UI::SimulationOfTheWorld</a></div><div class="ttdeci">void SimulationOfTheWorld()</div><div class="ttdoc">Функция для сцены симуляция мира</div><div class="ttdef"><b>Definition</b> UI.cpp:250</div></div>
+<div class="ttc" id="agroup___u_i_html_ga4e6989e047f686c170b76c7dd2358e36"><div class="ttname"><a href="group___u_i.html#ga4e6989e047f686c170b76c7dd2358e36">cellworld::Scene</a></div><div class="ttdeci">Scene</div><div class="ttdoc">Набор существующих сцен. Все используемы сцены должны храниться здесь.</div><div class="ttdef"><b>Definition</b> UI.h:23</div></div>
+<div class="ttc" id="agroup___u_i_html_gafff7566ab5536bba07cd216af3e2e0d4"><div class="ttname"><a href="group___u_i.html#gafff7566ab5536bba07cd216af3e2e0d4">cellworld::WindowTemplates</a></div><div class="ttdeci">WindowTemplates</div><div class="ttdoc">Часто используемые флаги для окон ImGui.</div><div class="ttdef"><b>Definition</b> UI.h:42</div></div>
+<div class="ttc" id="agroup___u_i_html_gga4e6989e047f686c170b76c7dd2358e36a31e8ca573f42482edd39b0d2325cec77"><div class="ttname"><a href="group___u_i.html#gga4e6989e047f686c170b76c7dd2358e36a31e8ca573f42482edd39b0d2325cec77">cellworld::start_screen</a></div><div class="ttdeci">@ start_screen</div><div class="ttdoc">Стартовый экран</div><div class="ttdef"><b>Definition</b> UI.h:25</div></div>
+<div class="ttc" id="agroup___u_i_html_gga4e6989e047f686c170b76c7dd2358e36a6a7f867cb87e48927e606cee1a35f0fd"><div class="ttname"><a href="group___u_i.html#gga4e6989e047f686c170b76c7dd2358e36a6a7f867cb87e48927e606cee1a35f0fd">cellworld::simulation_of_the_world</a></div><div class="ttdeci">@ simulation_of_the_world</div><div class="ttdoc">Экран симуляции мира</div><div class="ttdef"><b>Definition</b> UI.h:34</div></div>
+<div class="ttc" id="agroup___u_i_html_gga4e6989e047f686c170b76c7dd2358e36ab7f4ea9903b4591831aaa37237d1e006"><div class="ttname"><a href="group___u_i.html#gga4e6989e047f686c170b76c7dd2358e36ab7f4ea9903b4591831aaa37237d1e006">cellworld::load_world_screen</a></div><div class="ttdeci">@ load_world_screen</div><div class="ttdoc">Экран выбора мира для загрузки</div><div class="ttdef"><b>Definition</b> UI.h:31</div></div>
+<div class="ttc" id="agroup___u_i_html_gga4e6989e047f686c170b76c7dd2358e36ac3eb2ae4a16d96053726e183a6fefc4a"><div class="ttname"><a href="group___u_i.html#gga4e6989e047f686c170b76c7dd2358e36ac3eb2ae4a16d96053726e183a6fefc4a">cellworld::creation_of_the_world</a></div><div class="ttdeci">@ creation_of_the_world</div><div class="ttdoc">Экран настройки/создания мира</div><div class="ttdef"><b>Definition</b> UI.h:28</div></div>
+<div class="ttc" id="agroup___u_i_html_ggafff7566ab5536bba07cd216af3e2e0d4a8bc41797fa1aca022828288686d72f7f"><div class="ttname"><a href="group___u_i.html#ggafff7566ab5536bba07cd216af3e2e0d4a8bc41797fa1aca022828288686d72f7f">cellworld::scroll_bar_only</a></div><div class="ttdeci">@ scroll_bar_only</div><div class="ttdoc">Невидимое окно с полосой прокрутки</div><div class="ttdef"><b>Definition</b> UI.h:47</div></div>
+<div class="ttc" id="agroup___u_i_html_ggafff7566ab5536bba07cd216af3e2e0d4ad0ac09193aac18b1609db1b9e833b2b2"><div class="ttname"><a href="group___u_i.html#ggafff7566ab5536bba07cd216af3e2e0d4ad0ac09193aac18b1609db1b9e833b2b2">cellworld::invisible_window</a></div><div class="ttdeci">@ invisible_window</div><div class="ttdoc">Невидимое окно</div><div class="ttdef"><b>Definition</b> UI.h:44</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_645ec83fa4e243a732144956da80a200.html">objects</a></li><li class="navelem"><a class="el" href="dir_3a9904c3fa14aedaeca54cb8923ff736.html">UI</a></li><li class="navelem"><a class="el" href="dir_a9514ae7068bd8693bbf0e7b0aa55260.html">include</a></li><li class="navelem"><a class="el" href="dir_bcd8253916df487b995e68de0c62f16e.html">UI</a></li><li class="navelem"><b>UI.h</b></li>
+    <li class="footer">Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+  </ul>
+</div>
+</body>
+</html>

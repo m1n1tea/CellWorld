@@ -1,0 +1,77 @@
+\doxysection{scenario.\+h}
+\hypertarget{scenario_8h_source}{}\label{scenario_8h_source}\index{objects/scenario/include/scenario/scenario.h@{objects/scenario/include/scenario/scenario.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#ifndef\ EVOLVING\_WORLD\_2023\_Q2\_SCENARIO}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#define\ EVOLVING\_WORLD\_2023\_Q2\_SCENARIO}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include<creature/creature.h>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include"{}imgui.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include<array>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include<vector>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include<random>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include<omp.h>}}
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }cellworld\ \{}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcellworld_1_1_scenario}{Scenario}}:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classcellworld_1_1_field}{Field}}\ \{}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_scenario_af70e8941de1d6a4f4170663d5d715982}{saveWorld}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ path,\ \mbox{\hyperlink{classcellworld_1_1_scenario}{Scenario}}*\ current\_field,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\&\ seed);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_scenario_a2500e88fabeb3899afc8278ba212432b}{loadWorld}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ path,\ \mbox{\hyperlink{classcellworld_1_1_scenario}{Scenario}}*\ current\_field,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\&\ seed);}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcellworld_1_1_scenario}{Scenario}}(\textcolor{keywordtype}{int}\ size\_x=0,\ \textcolor{keywordtype}{int}\ size\_y=0);}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_scenario_ae58ed32e10fcdf1379f847fd09df0612}{makeNew}}();}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_scenario_a3526cfdb1588c6faa0d1df0acec94f83}{makeOneStep}}();}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_scenario_a26260bc4739b03fb3702f1af6748f694}{spawnCreatures}}(\textcolor{keywordtype}{int}\ amount);}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_scenario_a7b5cd8538b3623893334850e564a513b}{newCycle}}();}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ getInitialPopulation()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classcellworld_1_1_scenario_a8737cfdc98a0ac173a9e8d31013d0179}{initial\_population\_}};\ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ getIteration()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classcellworld_1_1_scenario_af9c1df1a677ee470e8b585c29de32457}{iteration\_}};\ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group___xD0_x9D_xD0_xB0_xD0_xB3_xD1_x80_xD0_xB0_xD0_xB4_xD1_x8B_gaf0f5cd42a836e0093c6a4509bc5657d2}{makeRewards}}(Position,Position,\ \textcolor{keywordtype}{float}\ strength);}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group___xD0_x9D_xD0_xB0_xD0_xB3_xD1_x80_xD0_xB0_xD0_xB4_xD1_x8B_ga2fa11abd4e476bd8d9c956cfa45a30e5}{giveRewards}}();}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group___xD0_x9D_xD0_xB0_xD0_xB3_xD1_x80_xD0_xB0_xD0_xB4_xD1_x8B_ga69caa6d9398b83d58b150af502d59cdf}{CancelRewardsChange}}()\ \{\ std::swap(\mbox{\hyperlink{classcellworld_1_1_scenario_a787811d6e24995aadc886167698f320c}{rewards\_}},\ \mbox{\hyperlink{classcellworld_1_1_scenario_a0e2458985de2a320ba0822f3a8c0fa58}{rewards\_backup\_}});\ \}}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group___xD0_x9D_xD0_xB0_xD0_xB3_xD1_x80_xD0_xB0_xD0_xB4_xD1_x8B_ga5d6c07949c1db0364410e56bc5d92c99}{resetRewards}}();}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group___xD0_x9D_xD0_xB0_xD0_xB3_xD1_x80_xD0_xB0_xD0_xB4_xD1_x8B_ga618f3007effbcf3008af72376fac3767}{rewardsEditor}}(ImVec2\ window\_pos,\ ImVec2\ window\_size,\ \textcolor{keywordtype}{float}\ strength,\ ImTextureID\ texture);}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group___xD0_x9D_xD0_xB0_xD0_xB3_xD1_x80_xD0_xB0_xD0_xB4_xD1_x8B_ga6bd809be7a5a7d9c6566f8d625daa9bb}{updateRewardsTexture}}();}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcellworld_1_1_scenario_a10d1bbfa5903996d60f1ce34f2ba8dd7}{cycle\_len\_}};}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ Position\ \mbox{\hyperlink{classcellworld_1_1_scenario_a97f8d0b2e9e71a831a3e53cc8b483e87}{convertInput}}(ImVec2\ begin,\ ImVec2\ input,\ \textcolor{keywordtype}{int}\ square\_size);}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcellworld_1_1_scenario_a8737cfdc98a0ac173a9e8d31013d0179}{initial\_population\_}};}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ \mbox{\hyperlink{classcellworld_1_1_scenario_af9c1df1a677ee470e8b585c29de32457}{iteration\_}};}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ std::vector<float>\ \mbox{\hyperlink{classcellworld_1_1_scenario_a787811d6e24995aadc886167698f320c}{rewards\_}};}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ std::vector<float>\ \mbox{\hyperlink{classcellworld_1_1_scenario_a0e2458985de2a320ba0822f3a8c0fa58}{rewards\_backup\_}};}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ std::vector<Creature*>\ \mbox{\hyperlink{classcellworld_1_1_scenario_a74c7ae9527cd91f02c394fa66e5c5ecd}{survivors\_}};}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ std::vector<int>\ \mbox{\hyperlink{classcellworld_1_1_scenario_a334a23d8ca069ca2d35e72d1f09483ec}{positions\_}};}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00132\ \ \ \ \ \};}
+\DoxyCodeLine{00133\ \ \ \ \ }
+\DoxyCodeLine{00134\ \ \ \ \ }
+\DoxyCodeLine{00135\ \}}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

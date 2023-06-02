@@ -1,0 +1,86 @@
+\@ifundefined {etoctocstyle}{\let \etoc@startlocaltoc \@gobble \let \etoc@settocdepth \@gobble \let \etoc@depthtag \@gobble \let \etoc@setlocaltop \@gobble }{}
+\babel@toc {russian}{}\relax 
+\contentsline {chapter}{\numberline {1}Cell\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}World}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}How to build project with vcpkg}{1}{section.1.1}%
+\contentsline {chapter}{\numberline {2}Алфавитный указатель групп}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Группы}{3}{section.2.1}%
+\contentsline {chapter}{\numberline {3}Иерархический список классов}{5}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Иерархия классов}{5}{section.3.1}%
+\contentsline {chapter}{\numberline {4}Алфавитный указатель классов}{7}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Классы}{7}{section.4.1}%
+\contentsline {chapter}{\numberline {5}Список файлов}{9}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Файлы}{9}{section.5.1}%
+\contentsline {chapter}{\numberline {6}Группы}{11}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Коэффициенты}{11}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Подробное описание}{11}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}Перечисления}{11}{subsection.6.1.2}%
+\contentsline {subsubsection}{\numberline {6.1.2.1}Coefficients}{11}{subsubsection.6.1.2.1}%
+\contentsline {section}{\numberline {6.2}Нейросеть}{12}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Подробное описание}{12}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Перечисления}{13}{subsection.6.2.2}%
+\contentsline {subsubsection}{\numberline {6.2.2.1}InputNeurons}{13}{subsubsection.6.2.2.1}%
+\contentsline {subsubsection}{\numberline {6.2.2.2}LookInput}{13}{subsubsection.6.2.2.2}%
+\contentsline {subsubsection}{\numberline {6.2.2.3}OutputNeurons}{13}{subsubsection.6.2.2.3}%
+\contentsline {section}{\numberline {6.3}Существо}{13}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Подробное описание}{14}{subsection.6.3.1}%
+\contentsline {section}{\numberline {6.4}Поле}{14}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}Подробное описание}{14}{subsection.6.4.1}%
+\contentsline {subsection}{\numberline {6.4.2}Функции}{14}{subsection.6.4.2}%
+\contentsline {subsubsection}{\numberline {6.4.2.1}conjoin()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{14}{subsubsection.6.4.2.1}%
+\contentsline {subsubsection}{\numberline {6.4.2.2}conjoin()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{14}{subsubsection.6.4.2.2}%
+\contentsline {section}{\numberline {6.5}сохранений}{14}{section.6.5}%
+\contentsline {subsection}{\numberline {6.5.1}Подробное описание}{15}{subsection.6.5.1}%
+\contentsline {chapter}{\numberline {7}Классы}{17}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Класс cellworld\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Creature}{17}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}Подробное описание}{19}{subsection.7.1.1}%
+\contentsline {subsection}{\numberline {7.1.2}Конструктор(ы)}{19}{subsection.7.1.2}%
+\contentsline {subsubsection}{\numberline {7.1.2.1}Creature()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{19}{subsubsection.7.1.2.1}%
+\contentsline {subsubsection}{\numberline {7.1.2.2}Creature()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{19}{subsubsection.7.1.2.2}%
+\contentsline {subsection}{\numberline {7.1.3}Методы}{19}{subsection.7.1.3}%
+\contentsline {subsubsection}{\numberline {7.1.3.1}act()}{19}{subsubsection.7.1.3.1}%
+\contentsline {subsubsection}{\numberline {7.1.3.2}createGenome()}{19}{subsubsection.7.1.3.2}%
+\contentsline {subsubsection}{\numberline {7.1.3.3}die()}{19}{subsubsection.7.1.3.3}%
+\contentsline {subsubsection}{\numberline {7.1.3.4}energyColor()}{19}{subsubsection.7.1.3.4}%
+\contentsline {subsubsection}{\numberline {7.1.3.5}getInfo()}{20}{subsubsection.7.1.3.5}%
+\contentsline {subsubsection}{\numberline {7.1.3.6}getX()}{20}{subsubsection.7.1.3.6}%
+\contentsline {subsubsection}{\numberline {7.1.3.7}getY()}{20}{subsubsection.7.1.3.7}%
+\contentsline {subsubsection}{\numberline {7.1.3.8}look()}{20}{subsubsection.7.1.3.8}%
+\contentsline {subsubsection}{\numberline {7.1.3.9}makeAlive()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{20}{subsubsection.7.1.3.9}%
+\contentsline {subsubsection}{\numberline {7.1.3.10}makeAlive()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{20}{subsubsection.7.1.3.10}%
+\contentsline {subsubsection}{\numberline {7.1.3.11}mixGen()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{21}{subsubsection.7.1.3.11}%
+\contentsline {subsubsection}{\numberline {7.1.3.12}mixGen()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{21}{subsubsection.7.1.3.12}%
+\contentsline {subsubsection}{\numberline {7.1.3.13}reverseInput()}{21}{subsubsection.7.1.3.13}%
+\contentsline {subsubsection}{\numberline {7.1.3.14}stopExisting()}{21}{subsubsection.7.1.3.14}%
+\contentsline {subsubsection}{\numberline {7.1.3.15}think()}{21}{subsubsection.7.1.3.15}%
+\contentsline {section}{\numberline {7.2}Класс cellworld\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Field}{21}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}Подробное описание}{23}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}Конструктор(ы)}{23}{subsection.7.2.2}%
+\contentsline {subsubsection}{\numberline {7.2.2.1}Field()}{23}{subsubsection.7.2.2.1}%
+\contentsline {subsection}{\numberline {7.2.3}Методы}{23}{subsection.7.2.3}%
+\contentsline {subsubsection}{\numberline {7.2.3.1}createTexture()}{23}{subsubsection.7.2.3.1}%
+\contentsline {subsubsection}{\numberline {7.2.3.2}findCreature()}{23}{subsubsection.7.2.3.2}%
+\contentsline {subsubsection}{\numberline {7.2.3.3}updatePositions()}{24}{subsubsection.7.2.3.3}%
+\contentsline {subsubsection}{\numberline {7.2.3.4}updateStates()}{24}{subsubsection.7.2.3.4}%
+\contentsline {section}{\numberline {7.3}Класс cellworld\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::File\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}System}{24}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}Подробное описание}{25}{subsection.7.3.1}%
+\contentsline {section}{\numberline {7.4}Структура cellworld\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Genome}{25}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}Подробное описание}{25}{subsection.7.4.1}%
+\contentsline {section}{\numberline {7.5}Класс cellworld\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Scenario}{25}{section.7.5}%
+\contentsline {section}{\numberline {7.6}Класс cellworld\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::UI}{27}{section.7.6}%
+\contentsline {section}{\numberline {7.7}Класс cellworld\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Window\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Templates}{27}{section.7.7}%
+\contentsline {subsection}{\numberline {7.7.1}Данные класса}{27}{subsection.7.7.1}%
+\contentsline {subsubsection}{\numberline {7.7.1.1}invisibleWindow}{27}{subsubsection.7.7.1.1}%
+\contentsline {subsubsection}{\numberline {7.7.1.2}menuBar}{28}{subsubsection.7.7.1.2}%
+\contentsline {subsubsection}{\numberline {7.7.1.3}scrollBarOnly}{28}{subsubsection.7.7.1.3}%
+\contentsline {chapter}{\numberline {8}Файлы}{29}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Файл objects/creature/include/creature/creature.h}{29}{section.8.1}%
+\contentsline {subsection}{\numberline {8.1.1}Подробное описание}{30}{subsection.8.1.1}%
+\contentsline {subsection}{\numberline {8.1.2}Перечисления}{30}{subsection.8.1.2}%
+\contentsline {subsubsection}{\numberline {8.1.2.1}State}{30}{subsubsection.8.1.2.1}%
+\contentsline {section}{\numberline {8.2}creature.\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}h}{30}{section.8.2}%
+\contentsline {section}{\numberline {8.3}Файл objects/save\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}system/include/save\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}system/save\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}system.h}{34}{section.8.3}%
+\contentsline {subsection}{\numberline {8.3.1}Подробное описание}{35}{subsection.8.3.1}%
+\contentsline {section}{\numberline {8.4}save\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}system.\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}h}{35}{section.8.4}%
+\contentsline {section}{\numberline {8.5}scenario.\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}h}{35}{section.8.5}%
+\contentsline {section}{\numberline {8.6}UI.\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}h}{36}{section.8.6}%
+\contentsline {chapter}{{\cyrillictext \CYRP \cyrr \cyre \cyrd \cyrm \cyre \cyrt \cyrn \cyrery \cyrishrt \ \cyru \cyrk \cyra \cyrz \cyra \cyrt \cyre \cyrl \cyrsftsn }}{39}{section*.36}%

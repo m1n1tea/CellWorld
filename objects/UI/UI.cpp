@@ -1,5 +1,23 @@
 ﻿#include "UI/UI.h"
 namespace cellworld{
+
+    static void HelpMarker(const char* desc, int width)
+    {
+        ImGui::SameLine();
+        ImGui::TextDisabled("(?)");
+        if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
+        {
+            ImGui::BeginTooltip();
+            ImGui::SetWindowFontScale(width / 4096.0f);
+            ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35);
+            ImGui::TextUnformatted(desc);
+            ImGui::PopTextWrapPos();
+            ImGui::EndTooltip();
+        }
+    }
+
+
+
     
     void UI::loadScene()
     {
@@ -35,7 +53,7 @@ namespace cellworld{
     {
         ImGui::SetNextWindowPos({ width_ * 0.25f,height_ * 0.2f });
         ImGui::SetNextWindowSize({ width_ * 0.5f,height_ * 0.2f });
-        ImGui::Begin("Start screen 1", NULL, WindowTemplates::invisibleWindow);
+        ImGui::Begin("Start screen 1", NULL, WindowTemplates::invisible_window);
         ImGui::SetWindowFontScale(width_ / 2048.0f);
         if (ImGui::Button("Create new world", { width_ * 0.5f, height_ * 0.2f })) {
             sceneUpdate(creation_of_the_world);
@@ -44,7 +62,7 @@ namespace cellworld{
 
         ImGui::SetNextWindowPos({ width_ * 0.25f,height_ * 0.6f });
         ImGui::SetNextWindowSize({ width_ * 0.5f,height_ * 0.3f });
-        ImGui::Begin("Start screen 2", NULL, WindowTemplates::invisibleWindow);
+        ImGui::Begin("Start screen 2", NULL, WindowTemplates::invisible_window);
         ImGui::SetWindowFontScale(width_ / 2048.0f);
         if (ImGui::Button("Load world", { width_ * 0.5f, height_ * 0.2f })) {
             sceneUpdate(load_world_screen);
@@ -73,7 +91,7 @@ namespace cellworld{
 
         ImGui::SetNextWindowPos({ 0,height_ * 0.05f });
         ImGui::SetNextWindowSize({ width_ * 1.f,height_ * 0.9f });
-        ImGui::Begin("Creation of a world", NULL, WindowTemplates::scrollBarOnly);
+        ImGui::Begin("Creation of a world", NULL, WindowTemplates::scroll_bar_only);
         ImGui::SetWindowFontScale(width_ / 3072.0f);
 
         ImGui::Indent(width_ * 0.35f);
@@ -114,7 +132,7 @@ namespace cellworld{
 
 
         if (ImGui::IsItemDeactivatedAfterEdit() || (size_y > height_ * 0.75f && !ImGui::IsItemActive())) {
-            if (size_y > height_ * 0.75f)
+            if (size_y > height_ * 0.75f)//
                 size_y = height_ * 0.75f;
             scenario_.unbindTexture();
             glDeleteTextures(1, &scenario_.getGLTexture());
@@ -167,7 +185,7 @@ namespace cellworld{
 
 
         ImGui::Indent(width_ * 0.1f);
-        ImGui::BeginChild("Rewards editor", { width_ * 0.85f,height_ * 0.75f },0,WindowTemplates::invisibleWindow);
+        ImGui::BeginChild("Rewards editor", { width_ * 0.85f,height_ * 0.75f },0,WindowTemplates::invisible_window);
         scenario_.rewardsEditor(ImGui::GetWindowPos(), ImGui::GetWindowSize(),strenght,scenario_.getTexture());
         ImGui::EndChild();
         ImGui::Unindent(width_ * 0.1f);
@@ -198,7 +216,7 @@ namespace cellworld{
     void UI::loadWorldScreen()
     {   
         const std::vector<std::string>& file_names= file_names_.getFileNames();
-        ImGui::Begin("Choose world", NULL, WindowTemplates::scrollBarOnly);
+        ImGui::Begin("Choose world", NULL, WindowTemplates::scroll_bar_only);
         if (scene_is_changed_) {
             file_names_.checkFileNames();
             file_names_.saveFileNames();
@@ -257,7 +275,7 @@ namespace cellworld{
         float fps = ImGui::GetIO().Framerate;
         ImGui::SetNextWindowPos({ 0,0 });
         ImGui::SetNextWindowSize({ width_ * 1.f,height_ * 0.1f });
-        ImGui::Begin("Interface", NULL, WindowTemplates::invisibleWindow);
+        ImGui::Begin("Interface", NULL, WindowTemplates::invisible_window);
         ImGui::SetWindowFontScale(width_ / 3584.0f);
 
         if (ImGui::Button("Save as")) {
@@ -307,7 +325,7 @@ namespace cellworld{
         if (visualise) {
             ImGui::SetNextWindowPos({ width_ * 0.01f,height_ * 0.1f });
             ImGui::SetNextWindowSize({ width_ * 0.99f,height_ * 0.9f });
-            ImGui::Begin("Field", NULL, WindowTemplates::invisibleWindow | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus);
+            ImGui::Begin("Field", NULL, WindowTemplates::invisible_window | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus);
             scenario_.updateTexture();
             int square_size= width_ * 0.98f/ scenario_.sizeX();
             if (square_size>height_*0.85f/ scenario_.sizeY())

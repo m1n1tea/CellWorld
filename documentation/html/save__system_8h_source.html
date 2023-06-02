@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.7"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>CellWorld: Исходный файл objects/save_system/include/save_system/save_system.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">CellWorld
+   </div>
+   <div id="projectbrief">Симуляция естественного отбора</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.9.7 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Поиск');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('save__system_8h_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">save_system.h</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#ifndef EVOLVING_WORLD_2023_Q2_FILESYSYTEM</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#define EVOLVING_WORLD_2023_Q2_FILESYSYTEM</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include&lt;fstream&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include&lt;vector&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include&lt;string&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include&lt;cstdio&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include&lt;utility&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">namespace </span>cellworld {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classcellworld_1_1_file_system.html">   25</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classcellworld_1_1_file_system.html">FileSystem</a> {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        <a class="code hl_function" href="classcellworld_1_1_file_system.html#a4cecf57acab2818d3b06b87bd9d539b7">FileSystem</a>(std::string name);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <a class="code hl_function" href="classcellworld_1_1_file_system.html#a4cecf57acab2818d3b06b87bd9d539b7">FileSystem</a>();</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classcellworld_1_1_file_system.html#ab6ca5228af44e96f2488d462de80c0fa">addFileName</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* file_name);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classcellworld_1_1_file_system.html#a2342dccc5b0d3596fa51d2b48f85b79e">removeFileName</a>(<span class="keywordtype">int</span> index);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classcellworld_1_1_file_system.html#a74a96531c259492ce0a1541a4c46458f">saveFileNames</a>();</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classcellworld_1_1_file_system.html#aef829710192b650f0c88c085166cd364">loadFileNames</a>();</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classcellworld_1_1_file_system.html#a412fdc807b63fd0bd62dc85c3d36baa6">checkFileNames</a>();</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <span class="keywordtype">bool</span> <a class="code hl_function" href="classcellworld_1_1_file_system.html#a3631efbae441a5f4dc50acd00fa98e09">findFileName</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* file_name);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        std::string <a class="code hl_function" href="classcellworld_1_1_file_system.html#ab3ad20d94dfd8039dc0e5b2facb81b28">getValidFileName</a>(std::string file_name);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classcellworld_1_1_file_system.html#a98356208bf4045139b10f0df4c76ff79">   54</a></span>        <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; <a class="code hl_function" href="classcellworld_1_1_file_system.html#a98356208bf4045139b10f0df4c76ff79">getFileNames</a>() { <span class="keywordflow">return</span> <a class="code hl_variable" href="classcellworld_1_1_file_system.html#a795d6484e30ae2fd74084aa17a738803">files_</a>; }</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classcellworld_1_1_file_system.html#a9a3cb72c1c4416af46f3e786555f4fc5">checkFileName</a>(<span class="keywordtype">int</span> index);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classcellworld_1_1_file_system.html#a899a58ca1785522206a50e5b0aec373f">   60</a></span>        std::string <a class="code hl_variable" href="classcellworld_1_1_file_system.html#a899a58ca1785522206a50e5b0aec373f">store_names_file_</a>;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classcellworld_1_1_file_system.html#a795d6484e30ae2fd74084aa17a738803">   63</a></span>        std::vector&lt;std::string&gt; <a class="code hl_variable" href="classcellworld_1_1_file_system.html#a795d6484e30ae2fd74084aa17a738803">files_</a>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    };</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclasscellworld_1_1_file_system_html"><div class="ttname"><a href="classcellworld_1_1_file_system.html">cellworld::FileSystem</a></div><div class="ttdoc">Класс хранения файлов.</div><div class="ttdef"><b>Definition</b> save_system.h:25</div></div>
+<div class="ttc" id="aclasscellworld_1_1_file_system_html_a2342dccc5b0d3596fa51d2b48f85b79e"><div class="ttname"><a href="classcellworld_1_1_file_system.html#a2342dccc5b0d3596fa51d2b48f85b79e">cellworld::FileSystem::removeFileName</a></div><div class="ttdeci">void removeFileName(int index)</div><div class="ttdoc">Удалить имя файла из массива имён с данным индексом, и удалить сам файл из операционной системы.</div><div class="ttdef"><b>Definition</b> save_system.cpp:30</div></div>
+<div class="ttc" id="aclasscellworld_1_1_file_system_html_a3631efbae441a5f4dc50acd00fa98e09"><div class="ttname"><a href="classcellworld_1_1_file_system.html#a3631efbae441a5f4dc50acd00fa98e09">cellworld::FileSystem::findFileName</a></div><div class="ttdeci">bool findFileName(const char *file_name)</div><div class="ttdoc">Проверить наличие данного имени в массиве.</div><div class="ttdef"><b>Definition</b> save_system.cpp:68</div></div>
+<div class="ttc" id="aclasscellworld_1_1_file_system_html_a412fdc807b63fd0bd62dc85c3d36baa6"><div class="ttname"><a href="classcellworld_1_1_file_system.html#a412fdc807b63fd0bd62dc85c3d36baa6">cellworld::FileSystem::checkFileNames</a></div><div class="ttdeci">void checkFileNames()</div><div class="ttdoc">Проверить валидность каждого из имён файлов.</div><div class="ttdef"><b>Definition</b> save_system.cpp:91</div></div>
+<div class="ttc" id="aclasscellworld_1_1_file_system_html_a4cecf57acab2818d3b06b87bd9d539b7"><div class="ttname"><a href="classcellworld_1_1_file_system.html#a4cecf57acab2818d3b06b87bd9d539b7">cellworld::FileSystem::FileSystem</a></div><div class="ttdeci">FileSystem()</div><div class="ttdoc">Создаёт экземпляр, с файлом, хранящим имена, с именем &quot;file_names.txt&quot;.</div><div class="ttdef"><b>Definition</b> save_system.cpp:22</div></div>
+<div class="ttc" id="aclasscellworld_1_1_file_system_html_a74a96531c259492ce0a1541a4c46458f"><div class="ttname"><a href="classcellworld_1_1_file_system.html#a74a96531c259492ce0a1541a4c46458f">cellworld::FileSystem::saveFileNames</a></div><div class="ttdeci">void saveFileNames()</div><div class="ttdoc">Сохранить массив имён в текстовый файл.</div><div class="ttdef"><b>Definition</b> save_system.cpp:37</div></div>
+<div class="ttc" id="aclasscellworld_1_1_file_system_html_a795d6484e30ae2fd74084aa17a738803"><div class="ttname"><a href="classcellworld_1_1_file_system.html#a795d6484e30ae2fd74084aa17a738803">cellworld::FileSystem::files_</a></div><div class="ttdeci">std::vector&lt; std::string &gt; files_</div><div class="ttdoc">Массив имён.</div><div class="ttdef"><b>Definition</b> save_system.h:63</div></div>
+<div class="ttc" id="aclasscellworld_1_1_file_system_html_a899a58ca1785522206a50e5b0aec373f"><div class="ttname"><a href="classcellworld_1_1_file_system.html#a899a58ca1785522206a50e5b0aec373f">cellworld::FileSystem::store_names_file_</a></div><div class="ttdeci">std::string store_names_file_</div><div class="ttdoc">Имя текстового файла, хранящий имена файлов с информацией.</div><div class="ttdef"><b>Definition</b> save_system.h:60</div></div>
+<div class="ttc" id="aclasscellworld_1_1_file_system_html_a98356208bf4045139b10f0df4c76ff79"><div class="ttname"><a href="classcellworld_1_1_file_system.html#a98356208bf4045139b10f0df4c76ff79">cellworld::FileSystem::getFileNames</a></div><div class="ttdeci">const std::vector&lt; std::string &gt; &amp; getFileNames()</div><div class="ttdoc">Доступ к массиву имён.</div><div class="ttdef"><b>Definition</b> save_system.h:54</div></div>
+<div class="ttc" id="aclasscellworld_1_1_file_system_html_a9a3cb72c1c4416af46f3e786555f4fc5"><div class="ttname"><a href="classcellworld_1_1_file_system.html#a9a3cb72c1c4416af46f3e786555f4fc5">cellworld::FileSystem::checkFileName</a></div><div class="ttdeci">void checkFileName(int index)</div><div class="ttdoc">Проверить валидность имени с данным индексом.</div><div class="ttdef"><b>Definition</b> save_system.cpp:62</div></div>
+<div class="ttc" id="aclasscellworld_1_1_file_system_html_ab3ad20d94dfd8039dc0e5b2facb81b28"><div class="ttname"><a href="classcellworld_1_1_file_system.html#ab3ad20d94dfd8039dc0e5b2facb81b28">cellworld::FileSystem::getValidFileName</a></div><div class="ttdeci">std::string getValidFileName(std::string file_name)</div><div class="ttdoc">Получить неиспользуемое имя, схожее с данным.</div><div class="ttdef"><b>Definition</b> save_system.cpp:76</div></div>
+<div class="ttc" id="aclasscellworld_1_1_file_system_html_ab6ca5228af44e96f2488d462de80c0fa"><div class="ttname"><a href="classcellworld_1_1_file_system.html#ab6ca5228af44e96f2488d462de80c0fa">cellworld::FileSystem::addFileName</a></div><div class="ttdeci">void addFileName(const char *file_name)</div><div class="ttdoc">Добавить в экземпляр, файл с информацией с именем file_name.</div><div class="ttdef"><b>Definition</b> save_system.cpp:26</div></div>
+<div class="ttc" id="aclasscellworld_1_1_file_system_html_aef829710192b650f0c88c085166cd364"><div class="ttname"><a href="classcellworld_1_1_file_system.html#aef829710192b650f0c88c085166cd364">cellworld::FileSystem::loadFileNames</a></div><div class="ttdeci">void loadFileNames()</div><div class="ttdoc">Загрузить массив имён из текстового файла.</div><div class="ttdef"><b>Definition</b> save_system.cpp:45</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_645ec83fa4e243a732144956da80a200.html">objects</a></li><li class="navelem"><a class="el" href="dir_2587b1649bfc274c9edc1e5253bfcaea.html">save_system</a></li><li class="navelem"><a class="el" href="dir_f6eebc1934445b5ae7551b04c4058420.html">include</a></li><li class="navelem"><a class="el" href="dir_70bc3609005768e04812e74a229a5099.html">save_system</a></li><li class="navelem"><b>save_system.h</b></li>
+    <li class="footer">Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+  </ul>
+</div>
+</body>
+</html>

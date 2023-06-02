@@ -1,22 +1,24 @@
 
-/*!
-*\file
-*\brief Ядро программы, описано поведение мира.
-*
-*Содержит классы существа и поля, логику взаимодействия между ними.
-*/
 
 #ifndef EVOLVING_WORLD_2023_Q2
 #define EVOLVING_WORLD_2023_Q2
 #define EIGEN_NO_DEBUG
-#include <array>
-#include <vector>
-#include <random>
-#define GL_SILENCE_DEPRECATION
-#include<glad/glad.h>
-#include <fstream>
-#include<omp.h>
+
 #include <Eigen/Core>
+#include<glad/glad.h>
+
+#include<omp.h>
+
+#include <array>
+#include <fstream>
+#include <random>
+#include <vector>
+
+#define GL_SILENCE_DEPRECATION
+
+
+
+
 
 
 
@@ -31,16 +33,21 @@ namespace cellworld
     inline std::mt19937 generator_;
     
     /*!
-    *
+    *\ingroup Нейросеть
     *\brief Генератор случайных float в диапозоне [-4,4].
     *Определяет разброс значений у весов нейросети.
     */
 
     inline std::uniform_real_distribution<float> dis(-4.0f, 4.0f);
 
+/*!
+\defgroup Существо
+\brief Все объекты связанные с существами
+*/
+
 
 /*!
-* 
+* \ingroup Существо
 *\brief Все возможные состояния существа.
 * 
 */
@@ -74,8 +81,8 @@ namespace cellworld
 Коэффициент преобразования массы в энергию.\n
 Сколько энергии требуется для создания единица массы.
 Используется при:
-    - смерти сущности,    \tэнергия трупа+= масса*mass_into_energy.
-    - рождении сущности,  \tэнергия родителя-=масса ребёнка*mass_into_energy.
+    + смерти сущности,\n    энергия трупа+= масса*mass_into_energy.
+    + рождении сущности,\n  энергия родителя-=масса ребёнка*mass_into_energy.
 */
         mass_into_energy,
 
@@ -239,11 +246,55 @@ struct Genome {
 };
 
 
+
 /*!
+\ingroup Существо
 *\brief Класс существа.
 */
 class Creature {
 public:
+    
+    /// Создать случайным геном
+    static Genome generateGenome();
+
+    /// Сделать данный геном случайным
+    static void generateGenome(Genome&);
+
+    /*!
+    /brief Смешивание генов
+    \param gen1 - главный ген
+    \param gen2 - случайный ген
+    */
+    static void mixGen(float& gen1, const float& gen2);
+
+
+    /*!
+    /brief Смешивание генов
+    \param gen1 - главный ген
+    \param gen2 - случайный ген
+    */
+    static unsigned int mixGen(const unsigned int& gen1, const unsigned int& gen2);
+
+    /*!
+    /brief Создать геном, основанный на геноме предка.
+    */
+    static Genome createGenome(const Genome& ancestor);
+
+    /*!
+    /brief Цвет энергии.
+    Цвет мёртового существа зависит от его текущей энергии.
+    */
+    static unsigned int energyColor(int energy);
+
+
+    /// Массив, который хранит значения всех коэффициентов.
+    inline static std::array<float, coefficients_count> coeff_{ 0 };
+
+    ///Определяет включена ли возможность размножения, если 0 - выключена, иначе - включена.
+    inline static bool is_breedable = 1;
+
+    ///Цвет несуществующего существа.
+    inline static unsigned int base_color_ = 0xAfAfAfff;
 
 
 /*! @name Специальные конструкторы существа
@@ -251,14 +302,19 @@ public:
 */
 
 ///@{
+
     /*!
     \brief Конструируется живое существо
     \param gen, pos - геном и позиция существа соответсвенно.
-    начальная энергия зависит веса(см. \ref Коэффициенты "Коэффициенты")
+    начальная энергия зависит веса(см. \ref Коэффициенты)
     */
     Creature(const Genome& gen, const Position& pos);
+
+
     ///Конструируется несущетвующее существо
     Creature();
+
+
     /*!
     \brief Конструируется неживое существо
     \param energy, pos - энергия и позиция существа соответсвенно.
@@ -266,95 +322,276 @@ public:
     Creature(float energy, const Position& pos);
 ///@}
 
+
+
     Creature(const Creature&)=default;
     Creature(Creature&&) = default;
     Creature& operator=(const Creature&) = default;
     Creature& operator=(Creature&&) = default;
 
 
+    /*! @name Изменение состояния существа
+    Используются для избежания лишней инициализации
+    */
+///@{
+
+
+    /*!
+    \brief Существо становится живым
+    \param ancestor - предок существа.
+    \param pos - позиция существа.
+    Геном основывается на предке.
+    */
     void makeAlive(Creature& ancestor, const Position& pos);
+
+
+    /*!
+    \brief Существо становится живым
+    \param pos - позиция существа.
+    Геном рандомный.
+    */
     void makeAlive(const Position& pos);
+
+
+    /*!
+    \brief Существо становится мёртвым.
+
+    Вес преобразовывается в энергию(см. \ref Коэффициенты).
+    */
+    void die();
+
+
+    /*!
+    \brief Существо перестаёт существовать.
+
+    Вес преобразовывается в энергию(см. \ref Коэффициенты).
+    */
+    void stopExisting() { state_ = not_exist; creatures_genome_.color = base_color_; energy_ = 0; speed_module_ = 0; }
+///@}
     
-    
-    void buildIO();
+
+    /*! @name Геттеры
+    */
+    ///@{
     const int& getState() const { return state_; }
     const int& getDirection() const {return speed_direction_;}
     const int& getSpeed() const {return speed_module_;}
+
+
+    /*!
+    \brief Возвращат ссылку на изменяемое значение, равное, но не являющееся координатой X.
+
+    \n То есть, при изменении значения данной ссылки координаты не меняются.
+    Сделано так криво, чтобы спокойно работать в многопотоке.
+    */
     int& getX();
+
+
+    /*!
+    \brief Возвращат ссылку на изменяемое значение, равное, но не являющееся координатой Y.
+    
+    \n При изменении данной значение данной ссылки координаты не меняются.
+    Сделано так криво, чтобы спокойно работать в многопотоке.
+    */
     int& getY();
-    float Leftover();
-    const float& getEnergy() const  { return energy_; }
-    const float& getEnergyLimit() const {return energy_limit_;}
-    const int& getMass() const {return (creatures_genome_.mass);}
-    bool wantToReproduce()const {return (output_neurons_.size()!=0) && is_breedable && (output_neurons_.coeff(reproduce)>0); }
+
+
+    const float& getEnergy() const { return energy_; }
+    const float& getEnergyLimit() const { return energy_limit_; }
+    const int& getMass() const { return (creatures_genome_.mass); }
     const unsigned int& getColor() const { return (creatures_genome_.color); }
     unsigned int getBlue() const { return((getColor() >> 8) & 0xff); }
     unsigned int getGreen() const { return((getColor() >> 16) & 0xff); }
     unsigned int getRed() const { return((getColor() >> 24) & 0xff); }
-    const Genome& getGenome(){ return creatures_genome_; }
+    const Genome& getGenome() { return creatures_genome_; }
+    ///@}
+
+
+    ///Возвращает избыток энергии существа. Энергия уменьшается до лимита энергии.
+    float Leftover();
+
     
-    void look(Creature&, int direction);
+    ///проверка на желание размножиться
+    bool wantToReproduce()const {return (output_neurons_.size()!=0) && is_breedable && (output_neurons_.coeff(reproduce)>0); }
+    
+
+    /*!
+    \brief Получение информации о соседнем существе.
+    \param found - обнаруженное существо.
+    \param direction - направление, в котором обнаружено данное существа.
+    Для большей информации см. \ref LookInput "LookInput"
+    */
+    void look(Creature& found, int direction);
+
+
+    /*!
+    \brief Получение информации о себе.
+
+    Для большей информации см. \ref InputNeurons "InputNeuron"
+    */
     void getInfo();
+
+
+    /*!
+    \brief Нормализация входных данных.
+    
+    Переводит в диапозон [0;1] путём быстрого, но неточного деления.
+    */
     void reverseInput();
-    void prepare();
+
+
+    /*!
+    \brief Работа нейросети.
+
+    Обрабатывает входные нейроны с помощью весов, расположенных в геноме существа, и выводит результат в выходные нейроны.
+    */
     void think();
+
+    /*!
+    \brief Работа с выходными нейронами.
+
+    В зависимости от выходных нейронов меняет модуль скорости и направление.(если существо живое)
+    После чего обновляется положение существа.
+    В конце функции модуль скорости уменьшается на коэффициент торможения.
+    */
     void act();
+
+    /*!
+    \brief Существо забирает всю энергию другого сущетсва.
+    */
     void eat(Creature&);
+    /*!
+    \brief Существо получает энергию в размере energy.
+    */
     void addEnergy(const float& energy);
-    void die();
-    void stopExisting(){state_=not_exist;creatures_genome_.color=base_color_; energy_=0; speed_module_=0;}
-
-    static Genome generateGenome();
-    static void generateGenome(Genome&);
-    static void mixGen(float& gen1, const float& gen2);
-    static unsigned int mixGen(const unsigned int& gen1, const unsigned int& gen2);
-    static Genome createGenome(const Genome& ancestor);
-    static unsigned int energyColor(int energy);
     
-    inline static std::array<float, coefficients_count> coeff_{0};
-    inline static bool is_breedable=1;
 
-    inline static unsigned int base_color_= 0xAfAfAfff;
+    ///Инициализирует недостающие элементы существа при чтении из файла.
+    void buildIO();
     
 
 
-    
+    /*! @name Позиция существа
+     \brief Находится в public, чтобы синхронизировать позицию, как внутреннее состояние сущности, и позицию, как индекс массива.
+    */
+
+    ///@{
     int pos_x_;
     int pos_y_;
+    ///@}
+
 
     
 private:
 
-    int state_;
-    float energy_;
-    float energy_limit_;
-    int speed_module_;
-    int speed_direction_;
 
+    ///Состояние существа
+    int state_;
+
+    /// Энергия существа
+    float energy_;
+
+    /// Максимальная энергию существа
+    float energy_limit_;
+
+    ///Модуль скорости
+    int speed_module_;
+
+    ///Направление скорости
+    int speed_direction_;
+    
+    ///Геном существа
     Genome creatures_genome_;
     
+    ///Входные нейроны существа
     Eigen::MatrixXf input_neurons_;
+
+    ///Выходные нейроны существа
     Eigen::MatrixXf output_neurons_;
+
+    ///Запасные переменные
     std::tuple<int,int,float> tmp_;
     
 };
 
 
+/*!
+*\defgroup Поле
+*\brief Все объекты связанные с полем.
+*@{
+*/
 
 
-void conjoin(Creature*&, Creature*&);
-void conjoin(Creature&, Creature&); //решает, что будет, если два существа встретились
+/*! @name Обработка коллизий (ситуаций, когда 2 сущетсва претендуют на 1 позицию)
+*/
 
+///@{
+/*!
+    \param master - cущество, занявшее эту позицию первым
+    \param candidate - cущество, занявшее эту позицию вторым
+*/
+void conjoin(Creature*& master, Creature*& candidate);
+/*!
+    \param master - cущество, занявшее эту позицию первым
+    \param candidate - cущество, занявшее эту позицию вторым
+*/
+void conjoin(Creature& master, Creature& candidate);
+///@}
+
+
+
+
+
+/*!
+*\brief Класс Поля, хранит существ.
+
+Задачи поля:
+    - Хранить конкретное состояние
+    - Обновлять состояние
+    - Контролировать поведение, состояние, взаимодействие существ
+    - Визуализировать симуляцию
+
+* 
+*/
 class Field{
 
 public:
+    /*!
+    \brief Конструктор класса с заданным размером.
+    \param size_x - ширина
+    \param size_y - высота
+    */
     Field(int size_x=0, int size_y=0);
-    void spawnCreature(const Position& pos);
-    void spawnCreature(Creature child);
-    void spawnFood(float energy, const Position&);
+
+
+    /*!
+    \brief Обновляет позиции существ.
+
+    Ввод данных в нейросеть.
+    Происходит вся работа нейросетей.
+    Забирает энергии у существ за передвижение.
+    Оставляет на предыдущей позиции остатки энергии.
+    Обрабатывет коллизию существ.
+    Работает в многопоточном режиме, без инициализаций.
+    
+    */
     void updatePositions();
+
+
+    /*!
+    \brief Обновляет состояние существ.
+    Если у живого существа <0 энергии - оно умирает.
+    Если существо хочет размножится, то одно из сосодних существ становится живым, с геном, наследуемым от предка.
+    Работает в многопоточном режиме, без инициализаций.
+    
+    */
     void updateStates();
 
+
+    /*! @name Доступ к существу по 1 или 2 индексам(позиции) поля
+    \details При доступе по 2 индексам происходит проверка на валидность позиции, если позиция не валидна возвращается bad_creature.
+    */
+    ///@{
     const Creature& getCreature(const Position& pos) const;
     Creature& getCreature(const Position& pos);
 
@@ -363,43 +600,87 @@ public:
 
     const Creature& operator[](const int& index) const {return *zoo_ptr_[index];}
     Creature& operator[](const int& index) { return *zoo_ptr_[index]; }
+    ///@}
 
+
+
+    /*! @name Геттеры
+    */
+    ///@{
     unsigned int getColor(const Position& pos)const {return getCreature(pos).getColor();}
-    unsigned int getColor(const int& index) const { return zoo_ptr_[index]->getColor(); }
+    unsigned int getColor(const int& index) const { return getCreature(index).getColor(); }
     int sizeX() const { return size_x_; }
     int sizeY() const { return size_y_; }
     int size() const { return size_; }
+    ///@}
+
+    /*! @name Проверка координаты на валидность
+    */
+    ///@{
     bool validX(const int& x) const;
     bool validY(const int& y) const;
-    Position generatePosition();
+    ///@}
+
+    /*! \brief Соседняя позиция относительно существа, желающего размножиться, которая становится живой.
+        Если позиция не найдена, возвращает bad_position.
+    */
     Position findClosePosition(Creature* ancestor);
-    Creature& findCreature(Creature*, int direction);
+
+    /*! \brief Поиск существа из определённого сущетсва в определённом направлении.
+        \param finder - существо, из которого ведётся поиск
+        \param direction - направление, в котором ведётся поиск.
+    */
+    Creature& findCreature(Creature* finder, int direction);
+
+
+    /// Очистка поля
     void clear();
+
+
+    /*! @name Интерфейс визуализации
+    */
+    
+    ///@{
+    ///Создать текстуру
     void createTexture();
+    /// Получить текстуру для работы с ImGui
     void* getTexture() { return (void*)(texture_); }
+    /// Получить текстуру для работы с OpenGL
     const GLuint& getGLTexture() {return texture_;}
+    ///Синхронизировать текстуру с текущим состоянием поля.
     void updateTexture();
+    ///Закончить синхронизацию с полем.
     void unbindTexture();
+    ///@}
+
+
     inline static Creature bad_creature=Creature();
     
-    int countCreatures(int type);
 
 private:
+    ///Ширина
     int size_x_;
+    ///Высота
     int size_y_;
+    ///Площадь
     int size_;
 
 protected:
+    ///Указатели на текущее состояние  поля
     std::vector<Creature*> zoo_ptr_;
+    ///Указатели на запасное состояние поля
     std::vector<Creature*> empty_zoo_ptr_;
+    ///Хранилище существ
     std::vector<Creature> storage_;
+    ///Хранит цвета каждого существа, используется при создании текстуры.
     std::vector<unsigned int> colors_;
+    ///Указатель на текстуру
     GLuint texture_;
     
 };
 
 
-
+/**@}*/
 
 
 

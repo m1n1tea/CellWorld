@@ -1,0 +1,345 @@
+\doxysection{creature.\+h}
+\hypertarget{creature_8h_source}{}\label{creature_8h_source}\index{objects/creature/include/creature/creature.h@{objects/creature/include/creature/creature.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#ifndef\ EVOLVING\_WORLD\_2023\_Q2}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#define\ EVOLVING\_WORLD\_2023\_Q2}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#define\ EIGEN\_NO\_DEBUG}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <Eigen/Core>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include<glad/glad.h>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include<omp.h>}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <array>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <fstream>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <random>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#define\ GL\_SILENCE\_DEPRECATION}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{namespace\ }cellworld}
+\DoxyCodeLine{00027\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{inline}\ std::mt19937\ generator\_;}
+\DoxyCodeLine{00034\ \ \ \ \ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{inline}\ std::uniform\_real\_distribution<float>\ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gad26255db39662642bec61ea04447bfd6}{dis}}(-\/4.0f,\ 4.0f);}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{group___xD0_xA1_xD1_x83_xD1_x89_xD0_xB5_xD1_x81_xD1_x82_xD0_xB2_xD0_xBE_ga7978914263715c83d0892fb5ab17bcdd}{State}}\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_xA1_xD1_x83_xD1_x89_xD0_xB5_xD1_x81_xD1_x82_xD0_xB2_xD0_xBE_gga7978914263715c83d0892fb5ab17bcdda2cb90d34a1c922a0507a8bc6e67bc6be}{not\_exist}},}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_xA1_xD1_x83_xD1_x89_xD0_xB5_xD1_x81_xD1_x82_xD0_xB2_xD0_xBE_gga7978914263715c83d0892fb5ab17bcdda94f708e522bcb736f45ee9dbadae4738}{dead}},}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_xA1_xD1_x83_xD1_x89_xD0_xB5_xD1_x81_xD1_x82_xD0_xB2_xD0_xBE_gga7978914263715c83d0892fb5ab17bcdda069c71b6a9cab2b2021a095eaf8100dd}{alive}},}
+\DoxyCodeLine{00058\ \ \ \ \ \};}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{enum}\ Directions\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ up,}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ down,}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ left,}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ right,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00067\ \ \ \ \ \};}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{group___xD0_x9A_xD0_xBE_xD1_x8D_xD1_x84_xD1_x84_xD0_xB8_xD1_x86_xD0_xB8_xD0_xB5_xD0_xBD_xD1_x82_xD1_x8B_gaaf0f26e9222db45b8c3f492b2f407a07}{Coefficients}}\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9A_xD0_xBE_xD1_x8D_xD1_x84_xD1_x84_xD0_xB8_xD1_x86_xD0_xB8_xD0_xB5_xD0_xBD_xD1_x82_xD1_x8B_ggaaf0f26e9222db45b8c3f492b2f407a07a6d73198e34ff0134874f39881681bf74}{mass\_into\_energy}},}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9A_xD0_xBE_xD1_x8D_xD1_x84_xD1_x84_xD0_xB8_xD1_x86_xD0_xB8_xD0_xB5_xD0_xBD_xD1_x82_xD1_x8B_ggaaf0f26e9222db45b8c3f492b2f407a07a6fda33204de21a062b88029ea3c05c3d}{mass\_capacity}},}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9A_xD0_xBE_xD1_x8D_xD1_x84_xD1_x84_xD0_xB8_xD1_x86_xD0_xB8_xD0_xB5_xD0_xBD_xD1_x82_xD1_x8B_ggaaf0f26e9222db45b8c3f492b2f407a07afe2c735f16b900d2d3d64c507e4ac33c}{starting\_energy}},}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9A_xD0_xBE_xD1_x8D_xD1_x84_xD1_x84_xD0_xB8_xD1_x86_xD0_xB8_xD0_xB5_xD0_xBD_xD1_x82_xD1_x8B_ggaaf0f26e9222db45b8c3f492b2f407a07ab9213f50fea1c255676a7f0955565032}{mass\_cost}},}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9A_xD0_xBE_xD1_x8D_xD1_x84_xD1_x84_xD0_xB8_xD1_x86_xD0_xB8_xD0_xB5_xD0_xBD_xD1_x82_xD1_x8B_ggaaf0f26e9222db45b8c3f492b2f407a07a5b1a8da4103f0d16d4f1b339a8c62422}{change\_speed\_module\_cost}},}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9A_xD0_xBE_xD1_x8D_xD1_x84_xD1_x84_xD0_xB8_xD1_x86_xD0_xB8_xD0_xB5_xD0_xBD_xD1_x82_xD1_x8B_ggaaf0f26e9222db45b8c3f492b2f407a07a514fbff654cab6f438869613f5dc6de6}{braking\_force}},}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9A_xD0_xBE_xD1_x8D_xD1_x84_xD1_x84_xD0_xB8_xD1_x86_xD0_xB8_xD0_xB5_xD0_xBD_xD1_x82_xD1_x8B_ggaaf0f26e9222db45b8c3f492b2f407a07ae5070297878a675ae95effadadcd678f}{mutation\_strength}},}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9A_xD0_xBE_xD1_x8D_xD1_x84_xD1_x84_xD0_xB8_xD1_x86_xD0_xB8_xD0_xB5_xD0_xBD_xD1_x82_xD1_x8B_ggaaf0f26e9222db45b8c3f492b2f407a07a4b8e318e8ace3897c22eb0a77ba1c1df}{coefficients\_count}}}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \ \ \ \};}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gaf2b54f4c53a3d61400536d46a28b6312}{InputNeurons}}\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312a4c95b27af0c43bbe5cbb7f712cf29d0d}{pos\_x}},}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312a484df8e931b3bdf3ad064bfa04abf38f}{pos\_y}},}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312aadcf67abb42c438863ea02a5ea8cee60}{speed\_module}},}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312a87e3622c56483dca469047719067e380}{energy}},}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312acc692012e9253227ad314b28f88fb2f9}{bias}},}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312ad96aee3073da7c75cc73c18cfcb2dd10}{input\_neurons\_count}}}
+\DoxyCodeLine{00174\ \ \ \ \ \};}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ga715af0e1c1d7143dc33f8ba05e0cce04}{OutputNeurons}}\ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04a5fa63864e1193a40714df6bcc83d626c}{change\_speed\_module}},}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04a05698019ac7b746fa67a3a2ff29d4b3b}{vertical\_or\_horizontal}},}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04ac45ec04b3610a6aa6f6490d23bb7f5b5}{decrease\_or\_increase}},}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04a1c3a1998f58f12877acef7b5c784d1a7}{reproduce}},}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04ac9b59a9d67d78778f19869cfe3a7ec1a}{output\_neurons\_count}}}
+\DoxyCodeLine{00197\ \ \ \ \ \};}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ga6b3bb3c10db174f2d5416fb0dcecdaab}{LookInput}}\ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaaba7d06a8c7fe73cdd4dac123c89c383e3d}{distance}},}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaabac8d3bf137f358373a2f25a8bd0215df4}{color\_red}},}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaaba3f497ef9462b4305c9647097a4d85abb}{color\_green}},}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaabadc38afa7352d80ab9d229020fba13dc8}{color\_blue}},}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaaba81b30040f7161dcd35e3d961290bed1a}{look\_input\_count}}}
+\DoxyCodeLine{00220\ \ \ \ \ \};}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00224\ \textcolor{keyword}{using\ }\mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gaba22404842ee55524a6834be7b9ca41d}{NeuronNetwork}}\ =\ Eigen::Matrix<float,\mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04ac9b59a9d67d78778f19869cfe3a7ec1a}{output\_neurons\_count}}\ ,\ (4\ *\ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaaba81b30040f7161dcd35e3d961290bed1a}{look\_input\_count}}\ +\ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312ad96aee3073da7c75cc73c18cfcb2dd10}{input\_neurons\_count}})>;}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00227\ \textcolor{keyword}{using\ }Position\ =\ std::pair<int,int>;}
+\DoxyCodeLine{00228\ \textcolor{keyword}{constexpr}\ Position\ bad\_position=\{-\/1,-\/1\};}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00240\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcellworld_1_1_genome}{Genome}}\ \{}
+\DoxyCodeLine{00241\ \ \ \ \ \mbox{\hyperlink{structcellworld_1_1_genome}{Genome}}()\ :color(),mass(),neuron\_network()\ \{\}}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{structcellworld_1_1_genome}{Genome}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ in\_color):color(in\_color),mass(),neuron\_network()\ \{\}}
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ color;}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ mass;}
+\DoxyCodeLine{00245\ \ \ \ \ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gaba22404842ee55524a6834be7b9ca41d}{NeuronNetwork}}\ neuron\_network;}
+\DoxyCodeLine{00246\ \};}
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00249\ }
+\DoxyCodeLine{00254\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\ \{}
+\DoxyCodeLine{00255\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00256\ \ \ \ \ }
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structcellworld_1_1_genome}{Genome}}\ \mbox{\hyperlink{classcellworld_1_1_creature_abb6df51fd83819213373523c93cf1a3b}{generateGenome}}();}
+\DoxyCodeLine{00259\ }
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_creature_abb6df51fd83819213373523c93cf1a3b}{generateGenome}}(\mbox{\hyperlink{structcellworld_1_1_genome}{Genome}}\&);}
+\DoxyCodeLine{00262\ }
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_creature_a72dc133de526cc47631ef86b9d1bb81f}{mixGen}}(\textcolor{keywordtype}{float}\&\ gen1,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\&\ gen2);}
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00270\ }
+\DoxyCodeLine{00276\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcellworld_1_1_creature_a72dc133de526cc47631ef86b9d1bb81f}{mixGen}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\&\ gen1,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\&\ gen2);}
+\DoxyCodeLine{00277\ }
+\DoxyCodeLine{00281\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structcellworld_1_1_genome}{Genome}}\ \mbox{\hyperlink{classcellworld_1_1_creature_ae7b6cc5e7fcb4a43d2b388658ee82652}{createGenome}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcellworld_1_1_genome}{Genome}}\&\ ancestor);}
+\DoxyCodeLine{00282\ }
+\DoxyCodeLine{00287\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcellworld_1_1_creature_addf32bd93f198f99af9cdbfdb39ad475}{energyColor}}(\textcolor{keywordtype}{int}\ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312a87e3622c56483dca469047719067e380}{energy}});}
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00289\ }
+\DoxyCodeLine{00291\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ std::array<float,\ coefficients\_count>\ \mbox{\hyperlink{classcellworld_1_1_creature_a7e01a51fc00323e837f14918e7ab76a1}{coeff\_}}\{\ 0\ \};}
+\DoxyCodeLine{00292\ }
+\DoxyCodeLine{00294\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classcellworld_1_1_creature_a08866b50eb76230733be03cd65523a9e}{is\_breedable}}\ =\ 1;}
+\DoxyCodeLine{00295\ }
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcellworld_1_1_creature_a5978ebebd5c24c752e0e770e3b451c87}{base\_color\_}}\ =\ 0xAfAfAfff;}
+\DoxyCodeLine{00298\ }
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00305\ }
+\DoxyCodeLine{00311\ \ \ \ \ \mbox{\hyperlink{classcellworld_1_1_creature_a347bf7ba749468cf1a009c41a9460507}{Creature}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcellworld_1_1_genome}{Genome}}\&\ gen,\ \textcolor{keyword}{const}\ Position\&\ pos);}
+\DoxyCodeLine{00312\ }
+\DoxyCodeLine{00313\ }
+\DoxyCodeLine{00315\ \ \ \ \ \mbox{\hyperlink{classcellworld_1_1_creature_a347bf7ba749468cf1a009c41a9460507}{Creature}}();}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ }
+\DoxyCodeLine{00322\ \ \ \ \ \mbox{\hyperlink{classcellworld_1_1_creature_a347bf7ba749468cf1a009c41a9460507}{Creature}}(\textcolor{keywordtype}{float}\ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312a87e3622c56483dca469047719067e380}{energy}},\ \textcolor{keyword}{const}\ Position\&\ pos);}
+\DoxyCodeLine{00324\ }
+\DoxyCodeLine{00325\ }
+\DoxyCodeLine{00326\ }
+\DoxyCodeLine{00327\ \ \ \ \ \mbox{\hyperlink{classcellworld_1_1_creature_a347bf7ba749468cf1a009c41a9460507}{Creature}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\&)=\textcolor{keywordflow}{default};}
+\DoxyCodeLine{00328\ \ \ \ \ \mbox{\hyperlink{classcellworld_1_1_creature_a347bf7ba749468cf1a009c41a9460507}{Creature}}(\mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\&\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00329\ \ \ \ \ \mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\&\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00330\ \ \ \ \ \mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\&\ operator=(\mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\&\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ }
+\DoxyCodeLine{00337\ }
+\DoxyCodeLine{00338\ }
+\DoxyCodeLine{00345\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_creature_a92e12dccacb0aefc3d562983e1f4db28}{makeAlive}}(\mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\&\ ancestor,\ \textcolor{keyword}{const}\ Position\&\ pos);}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00347\ }
+\DoxyCodeLine{00353\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_creature_a92e12dccacb0aefc3d562983e1f4db28}{makeAlive}}(\textcolor{keyword}{const}\ Position\&\ pos);}
+\DoxyCodeLine{00354\ }
+\DoxyCodeLine{00355\ }
+\DoxyCodeLine{00361\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_creature_abbc44f6ac417040f1cfece35f604adb9}{die}}();}
+\DoxyCodeLine{00362\ }
+\DoxyCodeLine{00363\ }
+\DoxyCodeLine{00369\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_creature_a76726dfa3270d3d7ce7b7f18a8d2715a}{stopExisting}}()\ \{\ \mbox{\hyperlink{classcellworld_1_1_creature_a308e04a9bb81f6e4cabfd809b47bd07e}{state\_}}\ =\ \mbox{\hyperlink{group___xD0_xA1_xD1_x83_xD1_x89_xD0_xB5_xD1_x81_xD1_x82_xD0_xB2_xD0_xBE_gga7978914263715c83d0892fb5ab17bcdda2cb90d34a1c922a0507a8bc6e67bc6be}{not\_exist}};\ \mbox{\hyperlink{classcellworld_1_1_creature_a41429d2238fb51f6f5410e068f2a233b}{creatures\_genome\_}}.color\ =\ \mbox{\hyperlink{classcellworld_1_1_creature_a5978ebebd5c24c752e0e770e3b451c87}{base\_color\_}};\ \mbox{\hyperlink{classcellworld_1_1_creature_a471c6f90f35de7a9d8bfa4f33952af4d}{energy\_}}\ =\ 0;\ \mbox{\hyperlink{classcellworld_1_1_creature_ae80f549d8f90f3b676e62e8872e71d90}{speed\_module\_}}\ =\ 0;\ \}}
+\DoxyCodeLine{00371\ \ \ \ \ }
+\DoxyCodeLine{00372\ }
+\DoxyCodeLine{00376\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ getState()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classcellworld_1_1_creature_a308e04a9bb81f6e4cabfd809b47bd07e}{state\_}};\ \}}
+\DoxyCodeLine{00377\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ getDirection()\textcolor{keyword}{\ const\ }\{\textcolor{keywordflow}{return}\ \mbox{\hyperlink{classcellworld_1_1_creature_a3b4afe040504f3a3c8af0b0b638744b3}{speed\_direction\_}};\}}
+\DoxyCodeLine{00378\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ getSpeed()\textcolor{keyword}{\ const\ }\{\textcolor{keywordflow}{return}\ \mbox{\hyperlink{classcellworld_1_1_creature_ae80f549d8f90f3b676e62e8872e71d90}{speed\_module\_}};\}}
+\DoxyCodeLine{00379\ }
+\DoxyCodeLine{00380\ }
+\DoxyCodeLine{00387\ \ \ \ \ \textcolor{keywordtype}{int}\&\ \mbox{\hyperlink{classcellworld_1_1_creature_a6bb20e22ffa20b7b9704c062036a28cc}{getX}}();}
+\DoxyCodeLine{00388\ }
+\DoxyCodeLine{00389\ }
+\DoxyCodeLine{00396\ \ \ \ \ \textcolor{keywordtype}{int}\&\ \mbox{\hyperlink{classcellworld_1_1_creature_ab268fee52b4ff17407e8aabaf2d107e3}{getY}}();}
+\DoxyCodeLine{00397\ }
+\DoxyCodeLine{00398\ }
+\DoxyCodeLine{00399\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\&\ getEnergy()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classcellworld_1_1_creature_a471c6f90f35de7a9d8bfa4f33952af4d}{energy\_}};\ \}}
+\DoxyCodeLine{00400\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\&\ getEnergyLimit()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classcellworld_1_1_creature_a9e3108c278016f5d02eb87c7c9ffa881}{energy\_limit\_}};\ \}}
+\DoxyCodeLine{00401\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ getMass()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (\mbox{\hyperlink{classcellworld_1_1_creature_a41429d2238fb51f6f5410e068f2a233b}{creatures\_genome\_}}.mass);\ \}}
+\DoxyCodeLine{00402\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\&\ getColor()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (\mbox{\hyperlink{classcellworld_1_1_creature_a41429d2238fb51f6f5410e068f2a233b}{creatures\_genome\_}}.color);\ \}}
+\DoxyCodeLine{00403\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ getBlue()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}((getColor()\ >>\ 8)\ \&\ 0xff);\ \}}
+\DoxyCodeLine{00404\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ getGreen()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}((getColor()\ >>\ 16)\ \&\ 0xff);\ \}}
+\DoxyCodeLine{00405\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ getRed()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}((getColor()\ >>\ 24)\ \&\ 0xff);\ \}}
+\DoxyCodeLine{00406\ \ \ \ \ \textcolor{keyword}{const}\ Genome\&\ getGenome()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classcellworld_1_1_creature_a41429d2238fb51f6f5410e068f2a233b}{creatures\_genome\_}};\ \}}
+\DoxyCodeLine{00408\ }
+\DoxyCodeLine{00409\ }
+\DoxyCodeLine{00411\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{classcellworld_1_1_creature_a59a5e36915b19fa647e9dcee3df06946}{Leftover}}();}
+\DoxyCodeLine{00412\ }
+\DoxyCodeLine{00413\ \ \ \ \ }
+\DoxyCodeLine{00415\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classcellworld_1_1_creature_a44ab6b733c7e5a2d5d0a75d36452e056}{wantToReproduce}}()\textcolor{keyword}{const\ }\{\textcolor{keywordflow}{return}\ (\mbox{\hyperlink{classcellworld_1_1_creature_a7a7ad153cc210c355058c341347c27fd}{output\_neurons\_}}.size()!=0)\ \&\&\ \mbox{\hyperlink{classcellworld_1_1_creature_a08866b50eb76230733be03cd65523a9e}{is\_breedable}}\ \&\&\ (\mbox{\hyperlink{classcellworld_1_1_creature_a7a7ad153cc210c355058c341347c27fd}{output\_neurons\_}}.coeff(\mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04a1c3a1998f58f12877acef7b5c784d1a7}{reproduce}})>0);\ \}}
+\DoxyCodeLine{00416\ \ \ \ \ }
+\DoxyCodeLine{00417\ }
+\DoxyCodeLine{00424\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_creature_a30e0e5dccb6ace8bffe325f658baf483}{look}}(\mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\&\ found,\ \textcolor{keywordtype}{int}\ direction);}
+\DoxyCodeLine{00425\ }
+\DoxyCodeLine{00426\ }
+\DoxyCodeLine{00432\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_creature_ac58aedf6d766e7a674d7f8bf21ee7bed}{getInfo}}();}
+\DoxyCodeLine{00433\ }
+\DoxyCodeLine{00434\ }
+\DoxyCodeLine{00440\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_creature_afed4b8719d7ad65805747c56fbd3a286}{reverseInput}}();}
+\DoxyCodeLine{00441\ }
+\DoxyCodeLine{00442\ }
+\DoxyCodeLine{00448\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_creature_ae4321f7f6d37f0ba3bb653cf6a760cbd}{think}}();}
+\DoxyCodeLine{00449\ }
+\DoxyCodeLine{00457\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_creature_ab6810b5c2acf5d9a12018ae3646717a0}{act}}();}
+\DoxyCodeLine{00458\ }
+\DoxyCodeLine{00462\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_creature_a3b8342037967ea7908eeb305aa3d809d}{eat}}(\mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\&);}
+\DoxyCodeLine{00466\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_creature_a872dd3b48bd00a9cdf0ccdf2ec1928c5}{addEnergy}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\&\ \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312a87e3622c56483dca469047719067e380}{energy}});}
+\DoxyCodeLine{00467\ \ \ \ \ }
+\DoxyCodeLine{00468\ }
+\DoxyCodeLine{00470\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_creature_abd17dfd01a6b0b42d074b95c3d4bafb1}{buildIO}}();}
+\DoxyCodeLine{00471\ \ \ \ \ }
+\DoxyCodeLine{00472\ }
+\DoxyCodeLine{00473\ }
+\DoxyCodeLine{00479\ \ \ \ \ \textcolor{keywordtype}{int}\ pos\_x\_;}
+\DoxyCodeLine{00480\ \ \ \ \ \textcolor{keywordtype}{int}\ pos\_y\_;}
+\DoxyCodeLine{00482\ }
+\DoxyCodeLine{00483\ }
+\DoxyCodeLine{00484\ \ \ \ \ }
+\DoxyCodeLine{00485\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00486\ }
+\DoxyCodeLine{00487\ }
+\DoxyCodeLine{00489\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcellworld_1_1_creature_a308e04a9bb81f6e4cabfd809b47bd07e}{state\_}};}
+\DoxyCodeLine{00490\ }
+\DoxyCodeLine{00492\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{classcellworld_1_1_creature_a471c6f90f35de7a9d8bfa4f33952af4d}{energy\_}};}
+\DoxyCodeLine{00493\ }
+\DoxyCodeLine{00495\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{classcellworld_1_1_creature_a9e3108c278016f5d02eb87c7c9ffa881}{energy\_limit\_}};}
+\DoxyCodeLine{00496\ }
+\DoxyCodeLine{00498\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcellworld_1_1_creature_ae80f549d8f90f3b676e62e8872e71d90}{speed\_module\_}};}
+\DoxyCodeLine{00499\ }
+\DoxyCodeLine{00501\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcellworld_1_1_creature_a3b4afe040504f3a3c8af0b0b638744b3}{speed\_direction\_}};}
+\DoxyCodeLine{00502\ \ \ \ \ }
+\DoxyCodeLine{00504\ \ \ \ \ \mbox{\hyperlink{structcellworld_1_1_genome}{Genome}}\ \mbox{\hyperlink{classcellworld_1_1_creature_a41429d2238fb51f6f5410e068f2a233b}{creatures\_genome\_}};}
+\DoxyCodeLine{00505\ \ \ \ \ }
+\DoxyCodeLine{00507\ \ \ \ \ Eigen::MatrixXf\ \mbox{\hyperlink{classcellworld_1_1_creature_a55392ecb958ecfd503b8aa7a2edbb5bc}{input\_neurons\_}};}
+\DoxyCodeLine{00508\ }
+\DoxyCodeLine{00510\ \ \ \ \ Eigen::MatrixXf\ \mbox{\hyperlink{classcellworld_1_1_creature_a7a7ad153cc210c355058c341347c27fd}{output\_neurons\_}};}
+\DoxyCodeLine{00511\ }
+\DoxyCodeLine{00513\ \ \ \ \ std::tuple<int,int,float>\ \mbox{\hyperlink{classcellworld_1_1_creature_a27866fc554db8c7018f41fe836ea048a}{tmp\_}};}
+\DoxyCodeLine{00514\ \ \ \ \ }
+\DoxyCodeLine{00515\ \};}
+\DoxyCodeLine{00516\ }
+\DoxyCodeLine{00517\ }
+\DoxyCodeLine{00529\ }
+\DoxyCodeLine{00533\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group___xD0_x9F_xD0_xBE_xD0_xBB_xD0_xB5_ga9ce995efc97413da923139b9409b8a34}{conjoin}}(\mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}*\&\ master,\ \mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}*\&\ candidate);}
+\DoxyCodeLine{00538\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group___xD0_x9F_xD0_xBE_xD0_xBB_xD0_xB5_ga9ce995efc97413da923139b9409b8a34}{conjoin}}(\mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\&\ master,\ \mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\&\ candidate);}
+\DoxyCodeLine{00540\ }
+\DoxyCodeLine{00541\ }
+\DoxyCodeLine{00542\ }
+\DoxyCodeLine{00543\ }
+\DoxyCodeLine{00544\ }
+\DoxyCodeLine{00556\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcellworld_1_1_field}{Field}}\{}
+\DoxyCodeLine{00557\ }
+\DoxyCodeLine{00558\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00564\ \ \ \ \ \mbox{\hyperlink{classcellworld_1_1_field}{Field}}(\textcolor{keywordtype}{int}\ size\_x=0,\ \textcolor{keywordtype}{int}\ size\_y=0);}
+\DoxyCodeLine{00565\ }
+\DoxyCodeLine{00566\ }
+\DoxyCodeLine{00578\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_field_aefdc61cde8bf2ba6879b13a6d8fa8159}{updatePositions}}();}
+\DoxyCodeLine{00579\ }
+\DoxyCodeLine{00580\ }
+\DoxyCodeLine{00588\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_field_a8ad12674d9ee770f2a4db9c081738f60}{updateStates}}();}
+\DoxyCodeLine{00589\ }
+\DoxyCodeLine{00590\ }
+\DoxyCodeLine{00595\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\&\ getCreature(\textcolor{keyword}{const}\ Position\&\ pos)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00596\ \ \ \ \ \mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\&\ getCreature(\textcolor{keyword}{const}\ Position\&\ pos);}
+\DoxyCodeLine{00597\ }
+\DoxyCodeLine{00598\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\&\ getCreature(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ index)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *\mbox{\hyperlink{classcellworld_1_1_field_ae12f1f8e53df3086698cc3ae419e781a}{zoo\_ptr\_}}[index];\ \}}
+\DoxyCodeLine{00599\ \ \ \ \ \mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\&\ getCreature(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ index)\ \{\ \textcolor{keywordflow}{return}\ *\mbox{\hyperlink{classcellworld_1_1_field_ae12f1f8e53df3086698cc3ae419e781a}{zoo\_ptr\_}}[index];\ \}}
+\DoxyCodeLine{00600\ }
+\DoxyCodeLine{00601\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\&\ operator[](\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ index)\textcolor{keyword}{\ const\ }\{\textcolor{keywordflow}{return}\ *\mbox{\hyperlink{classcellworld_1_1_field_ae12f1f8e53df3086698cc3ae419e781a}{zoo\_ptr\_}}[index];\}}
+\DoxyCodeLine{00602\ \ \ \ \ \mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\&\ operator[](\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ index)\ \{\ \textcolor{keywordflow}{return}\ *\mbox{\hyperlink{classcellworld_1_1_field_ae12f1f8e53df3086698cc3ae419e781a}{zoo\_ptr\_}}[index];\ \}}
+\DoxyCodeLine{00604\ }
+\DoxyCodeLine{00605\ }
+\DoxyCodeLine{00606\ }
+\DoxyCodeLine{00610\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ getColor(\textcolor{keyword}{const}\ Position\&\ pos)\textcolor{keyword}{const\ }\{\textcolor{keywordflow}{return}\ getCreature(pos).getColor();\}}
+\DoxyCodeLine{00611\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ getColor(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ index)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ getCreature(index).getColor();\ \}}
+\DoxyCodeLine{00612\ \ \ \ \ \textcolor{keywordtype}{int}\ sizeX()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classcellworld_1_1_field_a1c9c170b6dc56b4dece6b4ec3ad4d5b2}{size\_x\_}};\ \}}
+\DoxyCodeLine{00613\ \ \ \ \ \textcolor{keywordtype}{int}\ sizeY()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classcellworld_1_1_field_af7129de1c1e6cd480c2d15a9283c48cf}{size\_y\_}};\ \}}
+\DoxyCodeLine{00614\ \ \ \ \ \textcolor{keywordtype}{int}\ size()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classcellworld_1_1_field_a77545030bcf5c1117eb831e6c660a6ac}{size\_}};\ \}}
+\DoxyCodeLine{00616\ }
+\DoxyCodeLine{00620\ \ \ \ \ \textcolor{keywordtype}{bool}\ validX(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ x)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00621\ \ \ \ \ \textcolor{keywordtype}{bool}\ validY(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ y)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00623\ }
+\DoxyCodeLine{00627\ \ \ \ \ Position\ \mbox{\hyperlink{classcellworld_1_1_field_a51ed859563a26ded68bec7f310bc71ba}{findClosePosition}}(\mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}*\ ancestor);}
+\DoxyCodeLine{00628\ }
+\DoxyCodeLine{00633\ \ \ \ \ \mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\&\ \mbox{\hyperlink{classcellworld_1_1_field_ac9c13f6727ad327c7c7e15a852a7d9ed}{findCreature}}(\mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}*\ finder,\ \textcolor{keywordtype}{int}\ direction);}
+\DoxyCodeLine{00634\ }
+\DoxyCodeLine{00635\ }
+\DoxyCodeLine{00637\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_field_a9feb8bce2362c66d95b8da0e28ef7a63}{clear}}();}
+\DoxyCodeLine{00638\ }
+\DoxyCodeLine{00639\ }
+\DoxyCodeLine{00645\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_field_a3be446e4fa6110c0f6ba99de95c6b85c}{createTexture}}();}
+\DoxyCodeLine{00647\ \ \ \ \ \textcolor{keywordtype}{void}*\ \mbox{\hyperlink{classcellworld_1_1_field_a39b074f23ac9d5872801ff4995bae504}{getTexture}}()\ \{\ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{void}*)(\mbox{\hyperlink{classcellworld_1_1_field_a82606b718ce98ed857f643be92ea3405}{texture\_}});\ \}}
+\DoxyCodeLine{00649\ \ \ \ \ \textcolor{keyword}{const}\ GLuint\&\ \mbox{\hyperlink{classcellworld_1_1_field_a9af0a489b700af34e55923f1dfb26ac7}{getGLTexture}}()\ \{\textcolor{keywordflow}{return}\ \mbox{\hyperlink{classcellworld_1_1_field_a82606b718ce98ed857f643be92ea3405}{texture\_}};\}}
+\DoxyCodeLine{00651\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_field_abade9bba2d33d3eac4ed6f6d7fe8b90f}{updateTexture}}();}
+\DoxyCodeLine{00653\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcellworld_1_1_field_aa1766fb6415bab1ded094f6db5023cac}{unbindTexture}}();}
+\DoxyCodeLine{00655\ }
+\DoxyCodeLine{00656\ }
+\DoxyCodeLine{00657\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}\ bad\_creature=\mbox{\hyperlink{classcellworld_1_1_creature}{Creature}}();}
+\DoxyCodeLine{00658\ \ \ \ \ }
+\DoxyCodeLine{00659\ }
+\DoxyCodeLine{00660\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00662\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcellworld_1_1_field_a1c9c170b6dc56b4dece6b4ec3ad4d5b2}{size\_x\_}};}
+\DoxyCodeLine{00664\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcellworld_1_1_field_af7129de1c1e6cd480c2d15a9283c48cf}{size\_y\_}};}
+\DoxyCodeLine{00666\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcellworld_1_1_field_a77545030bcf5c1117eb831e6c660a6ac}{size\_}};}
+\DoxyCodeLine{00667\ }
+\DoxyCodeLine{00668\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00670\ \ \ \ \ std::vector<Creature*>\ \mbox{\hyperlink{classcellworld_1_1_field_ae12f1f8e53df3086698cc3ae419e781a}{zoo\_ptr\_}};}
+\DoxyCodeLine{00672\ \ \ \ \ std::vector<Creature*>\ \mbox{\hyperlink{classcellworld_1_1_field_ab5afa3399a89452addb07f4052236471}{empty\_zoo\_ptr\_}};}
+\DoxyCodeLine{00674\ \ \ \ \ std::vector<Creature>\ \mbox{\hyperlink{classcellworld_1_1_field_ab3130253e1f43e3cd5d4439ce1eaf026}{storage\_}};}
+\DoxyCodeLine{00676\ \ \ \ \ std::vector<unsigned\ int>\ \mbox{\hyperlink{classcellworld_1_1_field_a3830c3922d5340b256edd9202eef54da}{colors\_}};}
+\DoxyCodeLine{00678\ \ \ \ \ GLuint\ \mbox{\hyperlink{classcellworld_1_1_field_a82606b718ce98ed857f643be92ea3405}{texture\_}};}
+\DoxyCodeLine{00679\ \ \ \ \ }
+\DoxyCodeLine{00680\ \};}
+\DoxyCodeLine{00681\ }
+\DoxyCodeLine{00682\ }
+\DoxyCodeLine{00691\ \};}
+\DoxyCodeLine{00692\ }
+\DoxyCodeLine{00693\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

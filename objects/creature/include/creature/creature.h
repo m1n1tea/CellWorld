@@ -404,6 +404,7 @@ public:
     unsigned int getGreen() const { return((getColor() >> 16) & 0xff); }
     unsigned int getRed() const { return((getColor() >> 24) & 0xff); }
     const Genome& getGenome() { return creatures_genome_; }
+
     ///@}
 
 
@@ -612,6 +613,8 @@ public:
     int sizeX() const { return size_x_; }
     int sizeY() const { return size_y_; }
     int size() const { return size_; }
+    const int& getAlive() { return alive_count_; };
+    const int& getDead() { return dead_count_; };
     ///@}
 
     /*! @name Проверка координаты на валидность
@@ -676,6 +679,13 @@ protected:
     std::vector<unsigned int> colors_;
     ///Указатель на текстуру
     GLuint texture_;
+
+    //Количествово живых существ в мире
+    int alive_count_;
+
+    //Количествово мёртвых существ в мире
+    int dead_count_;
+
     
 };
 

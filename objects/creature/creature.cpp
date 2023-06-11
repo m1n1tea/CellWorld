@@ -330,8 +330,8 @@ float Creature::Leftover() {
 
 
 
-Field::Field(int size_x, int size_y) : size_x_(size_x), size_y_(size_y), size_(size_x* size_y), zoo_ptr_(size_x* size_y),
- empty_zoo_ptr_(size_x* size_y), storage_(2*size_x* size_y), colors_(size_x* size_y, Creature::base_color_) {
+Field::Field(int size_x, int size_y) : size_x_(size_x), size_y_(size_y), size_(size_x* size_y), zoo_ptr_(size_x* size_y), empty_zoo_ptr_(size_x* size_y),
+storage_(2*size_x* size_y), colors_(size_x* size_y, Creature::base_color_), dead_count_(0),alive_count_(0) {
     for (int i=0;i<size_;++i) {
         zoo_ptr_[i]=&storage_[i];
     }
@@ -339,6 +339,7 @@ Field::Field(int size_x, int size_y) : size_x_(size_x), size_y_(size_y), size_(s
     for (int i = 0; i < size_; ++i) {
         empty_zoo_ptr_[i] = &storage_[i+size_];
     }
+
     for (int i = 0; i < size_x_; ++i) {
         for (int j = 0; j < size_y_; ++j) {
             zoo_ptr_[i * size_y + j]->pos_x_ = i;
@@ -550,23 +551,38 @@ void Field::updatePositions(){
 }
 
 void Field::updateStates(){
-
+    alive_count_ = 0;
+    dead_count_ = 0;
     #pragma omp parallel for ordered
     for (int i = 0; i < size_; ++i) {
 
-            if (zoo_ptr_[i]->getState() != alive)
-                continue;
-            if (zoo_ptr_[i]->getEnergy()<0) {
-                zoo_ptr_[i]->die();
-                continue;
-            }
-            if (zoo_ptr_[i]->wantToReproduce()) {
-                Position child_pos= findClosePosition(zoo_ptr_[i]);
-                if (child_pos != bad_position) {
-                    getCreature(child_pos).makeAlive(*zoo_ptr_[i],child_pos);
-                }
+        if (zoo_ptr_[i]->getState() == not_exist) {
+            continue;
+        }
                 
+        if (zoo_ptr_[i]->getState() == dead) {
+            #pragma omp atomic
+            ++dead_count_;
+            continue;
+        }
+
+        if (zoo_ptr_[i]->getEnergy()<0) {
+            zoo_ptr_[i]->die();
+            #pragma omp atomic
+            ++dead_count_;
+            continue;
+        }
+
+        #pragma omp atomic
+        ++alive_count_;
+
+        if (zoo_ptr_[i]->wantToReproduce()) {
+            Position child_pos= findClosePosition(zoo_ptr_[i]);
+            if (child_pos != bad_position) {
+                getCreature(child_pos).makeAlive(*zoo_ptr_[i],child_pos);
             }
+                
+        }
     }
 
 }

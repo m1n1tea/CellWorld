@@ -21,6 +21,7 @@ namespace cellworld{
     }
 
     void Scenario::newCycle() {
+        alive_count_ = initial_population_;
         int random_creatures=initial_population_/8;
         
         for (int i = 0; i < size(); ++i) {
@@ -72,6 +73,7 @@ namespace cellworld{
         if (amount>size())
             amount=size();
         initial_population_=amount;
+        alive_count_ = amount;
         for (int i = 0; i < size(); ++i) {
             positions_[i]=i;
         }

@@ -350,6 +350,8 @@ namespace cellworld{
             ImGui::SetWindowFontScale(width_ / 3584.0f);
             ImGui::Text("FPS: %f",fps);
             ImGui::Text("Iteration: %i",scenario_.getIteration());
+            ImGui::Text("Alive creatures: %i", scenario_.getAlive());
+            ImGui::Text("Dead creatures: %i", scenario_.getDead());
             ImGui::End();
         }
     }

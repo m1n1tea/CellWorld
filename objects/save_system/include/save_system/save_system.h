@@ -50,7 +50,7 @@ namespace cellworld {
         /// Получить неиспользуемое имя, схожее с данным.
         std::string getValidFileName(std::string file_name);
 
-        /// Доступ к массиву имён.
+        /// Доступ к чтению массива имён.
         const std::vector<std::string>& getFileNames() { return files_; }
     private:
         ///Проверить валидность имени с данным индексом.

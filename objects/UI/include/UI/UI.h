@@ -12,12 +12,6 @@ namespace cellworld {
 
 
     /*!
-    *\defgroup UI Графический интерфейс
-    *\brief Все объекты связанные с интерфейсом.
-    *@{
-    */
-
-    /*!
     *\brief Набор существующих сцен. Все используемы сцены должны храниться здесь.
     */
     enum Scene {
@@ -144,8 +138,7 @@ namespace cellworld {
         ///Высота окна
         int height_;
     
-        /*! @name Общие данные для всех сцен 
-        */
+        /// @name Общие данные для всех сцен 
 
         ///@{
         FileSystem file_names_;
@@ -156,7 +149,6 @@ namespace cellworld {
         
         UI() : scene_(start_screen), previous_scene_(start_screen), scene_is_changed_(0), width_(1), height_(1), seed_(0), scenario_(100, 50) {}
     };  
-    /**@}*/
 }
 
 #endif

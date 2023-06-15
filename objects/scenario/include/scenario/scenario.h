@@ -15,6 +15,7 @@ namespace cellworld {
 
     /*!
     \brief Класс сценария - расширенный класс поля
+
     В расширенных функционал входят:
         + создание живых существ со старта;
         + сохранение и загрузка миров;
@@ -25,29 +26,16 @@ namespace cellworld {
 
         /*!
         \brief Функция сохранение мира
-        \param [out] path - путь к файлу, в котором сохраняется мир
-        \param [in] current_field - указатель на сохраняемый мир
-        \param [in] current_field - текущий сид
         */
         friend void saveWorld(const char* path, Scenario* current_field, const unsigned int& seed);
 
         /*!
         \brief Функция загрузки мира
-        \param [in] path - путь к файлу, из которого загружается
-        \param [out] current_field - указатель на сценарий, куда надо загрузить информацию из файла
-        \param [out] current_field - переменная, куда надо загрузить сид
         */
         friend void loadWorld(const char* path, Scenario* current_field, unsigned int& seed);
     public:
         
-        /*!
-        \brief Конструктор сценария
 
-        Параметры используется для конструирования класса поля.
-        По умолчанию:
-            - Стартовая популяция равна 0;
-            - мир ацикличен;
-        */
         Scenario(int size_x=0, int size_y=0);
 
         ///Очистить поле
@@ -103,12 +91,7 @@ namespace cellworld {
         int cycle_len_;
     private:
 
-        /*! \brief Переводит координату пикселя экрана в логическую позицию
-            \param begin - начала окна
-            \param input - данная координата для перевода
-            \param square_size - размер стороны квадрата пикселей, выдающие одну и ту же логическую позицию
-           
-       */
+        ///brief Переводит координату пикселя экрана в логическую позицию
         Position convertInput(ImVec2 begin, ImVec2 input, int square_size);
 
         ///Начальная популяция

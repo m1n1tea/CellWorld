@@ -185,7 +185,7 @@ namespace cellworld{
         }
         int x = current_field->sizeX();
         int y = current_field->sizeY();
-        constexpr int creature_size = sizeof(Genome) + sizeof(float) * 2 + sizeof(int) * 5;
+
         int saved = 1;
         safe_file << saved << ' ';
         safe_file << x << ' ' << y << ' ' << seed << ' ';
@@ -193,13 +193,18 @@ namespace cellworld{
             safe_file << Creature::coeff_[i] << ' ';
         }
         safe_file << Creature::is_breedable << " ";
+
+        constexpr int creature_size = sizeof(Genome) + sizeof(float) * 2 + sizeof(int) * 5;
         char* converted = new char[creature_size];
         for (int i = 0; i < x * y; ++i) {
-            Creature& current = (*current_field)[i];
-            std::memcpy(converted, &current, creature_size);
+            Creature& current = current_field->getCreature(i);
+            std::memcpy(converted, &current, creature_size - sizeof(NeuronNetwork));
+            std::memcpy(converted + creature_size - sizeof(NeuronNetwork), current.networkPtr(), sizeof(NeuronNetwork));
             safe_file.write(converted, creature_size);
         }
         delete[] converted;
+
+
         converted = new char[4 * current_field->size()];
 
         std::memcpy(converted, &current_field->rewards_[0], 4 * current_field->size());
@@ -209,12 +214,13 @@ namespace cellworld{
         safe_file.write(converted, 4 * current_field->size());
 
         delete[] converted;
-        safe_file << ' ' << current_field->cycle_len_ << ' ' << current_field->iteration_ << ' ' << current_field->initial_population_ << ' ';
-        safe_file << generator_;
+        safe_file << ' ' << current_field->cycle_len_ << ' ' << current_field->iteration_ << ' ' << current_field->initial_population_ << ' ' << current_field->alive_count_ << ' ' << current_field->dead_count_ << '\n';
+        safe_file << generator_ << " " << dis;
         safe_file.close();
     }
 
     void loadWorld(const char* path, Scenario* current_field, unsigned int& seed) {
+        Scenario tmp = std::move(*current_field);
         std::ifstream safe_file(path, std::ios::binary);
         if (!safe_file) {
             safe_file.close();
@@ -233,30 +239,34 @@ namespace cellworld{
             safe_file >> Creature::coeff_[i];
         }
         safe_file >> Creature::is_breedable;
+
+
         *current_field = Scenario(x, y);
         constexpr int creature_size = sizeof(Genome) + sizeof(float) * 2 + sizeof(int) * 5;
         char* converted = new char[creature_size];
         safe_file.read(converted, 1);
         for (int i = 0; i < x * y; ++i) {
-            Creature& current = (*current_field)[i];
+            Creature& current = current_field->getCreature(i);
             safe_file.read(converted, creature_size);
-            std::memcpy(&current, converted, creature_size);
+            std::memcpy(&current, converted, creature_size - sizeof(NeuronNetwork));
+            std::memcpy(current.networkPtr(), converted + creature_size - sizeof(NeuronNetwork), sizeof(NeuronNetwork));
             current.buildIO();
         }
         delete[] converted;
         
+
+
         converted = new char[4 * current_field->size()];
 
         safe_file.read(converted, 4 * current_field->size());
-        std::memcpy( &current_field->rewards_[0], converted, 4 * current_field->size());
+        std::memcpy(&current_field->rewards_[0], converted, 4 * current_field->size());
         safe_file.read(converted, 4 * current_field->size());
         std::memcpy(&current_field->rewards_backup_[0], converted, 4 * current_field->size());
-        
+
         delete[] converted;
 
-        safe_file >> current_field->cycle_len_ >> current_field->iteration_ >> current_field->initial_population_;
-
-        safe_file >> generator_;
+        safe_file >> current_field->cycle_len_ >> current_field->iteration_ >> current_field->initial_population_ >> current_field->alive_count_ >> current_field->dead_count_;
+        safe_file >> generator_ >> dis;
         safe_file.close();
     }
     

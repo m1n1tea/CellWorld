@@ -62,9 +62,14 @@ namespace cellworld
     };
 
 
+/*!
+*\defgroup Коэффициенты
+*/
 
-
-
+/*!
+*\ingroup Коэффициенты
+*\brief Набор коэффициентов, которые определяют правила мира.
+*/
 ///Набор коэффициентов, которые определяют правила мира.
     enum Coefficients {
 /*!
@@ -240,7 +245,12 @@ struct Genome {
 /*!
 *\brief Класс существа.
 */
+
+
+
 class Creature {
+
+    friend bool operator==(const Creature&, const Creature&);
 public:
     
     /// Создать случайным геном
@@ -309,6 +319,7 @@ public:
     Creature(Creature&&) = default;
     Creature& operator=(const Creature&) = default;
     Creature& operator=(Creature&&) = default;
+    
 
 
     /*! @name Изменение состояния существа
@@ -338,7 +349,7 @@ public:
     /*!
     \brief Существо перестаёт существовать.
     */
-    void stopExisting() { state_ = not_exist; creatures_genome_.color = base_color_; energy_ = 0; speed_module_ = 0; }
+    void stopExisting() { state_ = not_exist; creatures_genome_.color = base_color_; energy_ = 0; speed_module_ = 0; output_neurons_.coeffRef(reproduce)=0; }
 ///@}
     
 
@@ -379,7 +390,7 @@ public:
 
     
     ///проверка на желание размножиться
-    bool wantToReproduce()const {return (output_neurons_.size()!=0) && is_breedable && (output_neurons_.coeff(reproduce)>0); }
+    bool wantToReproduce()const { return (output_neurons_.size() != 0) && is_breedable && (output_neurons_.coeff(reproduce) > 0); }
     
 
     /*!
@@ -427,6 +438,8 @@ public:
 
     ///Инициализирует недостающие элементы существа при чтении из файла.
     void buildIO();
+    ///Чтение/запись весов нейронной сети.
+    void* networkPtr() { return &(creatures_genome_.neuron_network(0)); }
     
 
 
@@ -608,8 +621,8 @@ public:
 
     inline static Creature bad_creature=Creature();
     
+protected:
 
-private:
     ///Ширина
     int size_x_;
     ///Высота
@@ -617,7 +630,6 @@ private:
     ///Площадь
     int size_;
 
-protected:
     ///Указатели на текущее состояние  поля
     std::vector<Creature*> zoo_ptr_;
     ///Указатели на запасное состояние поля

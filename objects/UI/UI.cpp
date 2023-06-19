@@ -103,7 +103,9 @@ namespace cellworld{
             strenght = 0;
             for (int i = 0; i < coefficients_count; ++i)
                 Creature::coeff_[i] = 0;
-            scenario_.resetRewards();
+
+            scenario_ = Scenario(size_x, size_y);
+            scenario_.createTexture();
             scenario_.updateRewardsTexture();
         }
 

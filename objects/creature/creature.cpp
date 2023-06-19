@@ -11,20 +11,19 @@ namespace cellworld{
 Genome Creature::generateGenome() {
     
     Genome res;
-    res.mass= generator_();
-    res.mass>>=24; // вес в диапозоне от 0 до 255
-    res.mass+=1;
-    res.color= generator_();
-    res.color|=0x0000ffff; // убираем прозрачность + у всех живых существ синий цвет на 100%
-    for (int i = 0; i < res.neuron_network.size(); ++i) {
-        res.neuron_network(i)=dis(generator_);
-    }
+        
+        res.mass = generator_();
+        res.mass >>= 24; // вес в диапозоне от 0 до 255
+        res.mass += 1;
+        res.color = generator_();
+        res.color |= 0x0000ffff; // убираем прозрачность + у всех живых существ синий цвет на 100%
+        for (int i = 0; i < res.neuron_network.size(); ++i) {
+            res.neuron_network(i) = dis(generator_);
+        }
     return res;
 }
 
 void Creature::generateGenome(Genome& res) {
-    #pragma omp critical
-    {
         res.mass = generator_();
         res.mass >>= 24;
         res.mass += 1;
@@ -33,7 +32,6 @@ void Creature::generateGenome(Genome& res) {
         for (int i = 0; i < res.neuron_network.size(); ++i) {
             res.neuron_network(i) = dis(generator_);
         }
-    }
 }
 
 
@@ -54,7 +52,13 @@ Creature::Creature():
   state_(not_exist), creatures_genome_(base_color_),
   pos_x_(0), pos_y_(0), speed_direction_(0),
   speed_module_(0), energy_limit_(0), energy_(0),
-  input_neurons_(), output_neurons_() {}
+    input_neurons_(), output_neurons_() {buildIO();}
+
+
+
+
+
+
 
 
 
@@ -143,7 +147,34 @@ unsigned int Creature::energyColor(int energy) {
 }
 
 
+bool operator==(const Creature& lhs, const Creature& rhs)
+{
+    if (lhs.pos_x_ != rhs.pos_x_)
+        return 0;
+    if (lhs.pos_y_ != rhs.pos_y_)
+        return 0;
+    if (lhs.state_ != rhs.state_)
+        return 0;
+    if (lhs.energy_ != rhs.energy_)
+        return 0;
+    if (lhs.energy_limit_ != rhs.energy_limit_)
+        return 0;
+    if (lhs.speed_module_ != rhs.speed_module_)
+        return 0;
+    if (lhs.speed_direction_ != rhs.speed_direction_)
+        return 0;
+    if (lhs.creatures_genome_.color != rhs.creatures_genome_.color)
+        return 0;
+    if (lhs.creatures_genome_.mass != rhs.creatures_genome_.mass)
+        return 0;
+    if (lhs.creatures_genome_.neuron_network != rhs.creatures_genome_.neuron_network)
+        return 0;
 
+
+    return 1;
+}
+
+//Плохо работает в многопотоке
 void conjoin( Creature*& champion, Creature*& candidate) {
         
     if (champion->getState() == not_exist) {
@@ -153,7 +184,6 @@ void conjoin( Creature*& champion, Creature*& candidate) {
     if (candidate->getState() == alive && (champion->getState() == dead || (champion->getMass() * champion->getSpeed() < candidate->getMass() * candidate->getSpeed()))) {
         std::swap(champion, candidate);
     }
-    candidate->die();
     champion->eat(*candidate);
 }
 
@@ -169,13 +199,10 @@ void conjoin(Creature& champion, Creature& candidate) {
         std::swap(champion, candidate);
         return;
     }
-    candidate.die();
     champion.eat(candidate);
 }
 
 void Creature::buildIO(){
-    if (state_!=alive)
-        return;
     input_neurons_ = Eigen::MatrixXf::Zero((4 * look_input_count + input_neurons_count), 1);
     output_neurons_= Eigen::MatrixXf::Zero(output_neurons_count, 1);
 }
@@ -269,7 +296,7 @@ void Creature::act(){
     
 
 }
-
+//Плохо работает в многопотоке
 void Creature::makeAlive(Creature& ancestor,const Position& pos) {
     state_=alive;
     pos_x_=pos.first;
@@ -304,7 +331,7 @@ void Creature::makeAlive(Creature& ancestor,const Position& pos) {
     ancestor.energy_ /= 2.0f;
     energy_+= ancestor.energy_;
     energy_limit_ = kids_genome.mass * coeff_[mass_capacity];
-    input_neurons_= Eigen::MatrixXf::Zero((4 * look_input_count + input_neurons_count), 1);
+    output_neurons_.coeffRef(reproduce) = 0;
 }
 
 void Creature::makeAlive(const Position& pos) {
@@ -479,10 +506,8 @@ void Field::updatePositions(){
 //auto end = std::chrono::steady_clock::now();
 //std::chrono::duration<double> time = end - start;
 //std::cout << "\n" << time.count();
-    
     #pragma omp parallel for
     for (int i = 0; i < size_; ++i){
-        
         Creature& current = *zoo_ptr_[i];
         if (current.getState() == alive){
             current.look(findCreature(zoo_ptr_[i],up), up);
@@ -502,7 +527,6 @@ void Field::updatePositions(){
             zoo_ptr_[i]->think();
         }
     }
-
     #pragma omp parallel for
     for (int i = 0; i < size_; ++i) {
 
@@ -523,6 +547,7 @@ void Field::updatePositions(){
         }
         
     }
+
     #pragma omp parallel for
     for (int i = 0; i < size_; ++i) {
         if (zoo_ptr_[i]->getState()==alive && (zoo_ptr_[i]->getEnergy() > zoo_ptr_[i]->getEnergyLimit())){
@@ -530,7 +555,6 @@ void Field::updatePositions(){
         }
     }
 
-    #pragma omp parallel for
     for (int i = 0; i < size_; ++i) {
         if (zoo_ptr_[i]->getState() != not_exist) {
             conjoin(empty_zoo_ptr_[zoo_ptr_[i]->pos_x_ * size_y_ + zoo_ptr_[i]->pos_y_], zoo_ptr_[i]);
@@ -553,7 +577,7 @@ void Field::updatePositions(){
 void Field::updateStates(){
     alive_count_ = 0;
     dead_count_ = 0;
-    #pragma omp parallel for ordered
+    //#pragma omp parallel for ordered
     for (int i = 0; i < size_; ++i) {
 
         if (zoo_ptr_[i]->getState() == not_exist) {
@@ -561,27 +585,35 @@ void Field::updateStates(){
         }
                 
         if (zoo_ptr_[i]->getState() == dead) {
-            #pragma omp atomic
-            ++dead_count_;
             continue;
         }
 
         if (zoo_ptr_[i]->getEnergy()<0) {
             zoo_ptr_[i]->die();
-            #pragma omp atomic
-            ++dead_count_;
             continue;
         }
 
-        #pragma omp atomic
-        ++alive_count_;
-
         if (zoo_ptr_[i]->wantToReproduce()) {
-            Position child_pos= findClosePosition(zoo_ptr_[i]);
-            if (child_pos != bad_position) {
-                getCreature(child_pos).makeAlive(*zoo_ptr_[i],child_pos);
-            }
-                
+            Position child_pos = findClosePosition(zoo_ptr_[i]);
+                if (child_pos != bad_position) {
+                    //#pragma omp critical
+                    {
+                        getCreature(child_pos).makeAlive(*zoo_ptr_[i], child_pos);
+                    }
+                }
+        }
+        
+    }
+    #pragma omp parallel for
+    for (int i = 0; i < size_; ++i) {
+        if (zoo_ptr_[i]->getState() == dead) {
+            #pragma omp atomic
+            ++dead_count_;
+        }
+
+        if (zoo_ptr_[i]->getState() == alive) {
+            #pragma omp atomic
+            ++alive_count_;
         }
     }
 

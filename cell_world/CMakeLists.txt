@@ -1,14 +1,20 @@
-# CMakeList.txt : CMake project for 2_month_project, include source and define
-# project specific logic here.
-#
 
-# Add source to this project's executable.
+
+
 add_executable (cell_world "cell_world.cpp")
 
-target_link_libraries(cell_world PRIVATE imgui::imgui glfw glad::glad OpenMP::OpenMP_CXX creature save_system UI scenario)
+target_link_libraries(cell_world PRIVATE UI arial_rus)
+if(OpenMP_CXX_FOUND)
+    target_link_libraries(cell_world PUBLIC OpenMP::OpenMP_CXX)
+endif()
+set_property(TARGET cell_world PROPERTY CXX_STANDARD 20)
 
-if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET cell_world PROPERTY CXX_STANDARD 20)
+if(NOT UNIX)
+    if(MSVC)
+        set(SUBSYSTEM_LINKER_OPTIONS "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+    else()
+        set(SUBSYSTEM_LINKER_OPTIONS "-mwindows")
+    endif()
 endif()
 
-install(TARGETS cell_world RUNTIME)
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${SUBSYSTEM_LINKER_OPTIONS}")

@@ -1,0 +1,19 @@
+{
+  "dependencies": [
+    "eigen3",
+    {
+      "name": "glad",
+      "features": [
+        "gl-api-33"
+      ]
+    },
+    "glfw3",
+    {
+      "name": "imgui",
+      "features": [
+        "glfw-binding",
+        "opengl3-binding"
+      ]
+    }
+  ]
+}

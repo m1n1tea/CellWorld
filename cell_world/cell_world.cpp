@@ -1,16 +1,7 @@
 ﻿
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
-#define GL_SILENCE_DEPRECATION
-#include<glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <creature/creature.h>
-#include<chrono>
+
 #include<UI/UI.h>
-using namespace cellworld;
-
-
+#include<arial_rus/arial_rus.h>
 
 
 
@@ -19,7 +10,11 @@ using namespace cellworld;
 
 int main()
 {   
-    Eigen::initParallel();
+
+    if (OPEN_MP_FOUND) {
+        Eigen::initParallel();
+    }
+    
 
 
 
@@ -44,11 +39,11 @@ int main()
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
     ImFontConfig font_cfg;
-    font_cfg.SizePixels = 64.0f;
-    io.Fonts->AddFontDefault(&font_cfg);
+    font_cfg.FontDataOwnedByAtlas = false;
+    io.Fonts->AddFontFromMemoryTTF(ArialRus,sizeof(ArialRus),64.f, &font_cfg, io.Fonts->GetGlyphRangesCyrillic());
     
     int width,height;
-    UI& user_inteface= UI::GetInstance();
+    cellworld::UI& user_inteface= cellworld::UI::GetInstance();
 
 
 
@@ -60,7 +55,9 @@ int main()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
         glfwGetWindowSize(window, &width, &height);
+        
 
+        
         user_inteface.updateWindowSize(width,height);
         user_inteface.loadScene();
 

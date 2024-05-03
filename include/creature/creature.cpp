@@ -1,4 +1,4 @@
-﻿#include "creature/creature.h"
+#include "creature/creature.h"
 namespace cellworld{
 
 

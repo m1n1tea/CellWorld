@@ -1,4 +1,4 @@
-﻿add_library( UI "UI.cpp" "include/UI/UI.h")
+add_library( UI "UI.cpp" "include/UI/UI.h")
 set_property(TARGET UI PROPERTY CXX_STANDARD 20)
 target_link_libraries(UI PUBLIC save_system scenario glfw imgui::imgui)
 target_include_directories(UI PUBLIC

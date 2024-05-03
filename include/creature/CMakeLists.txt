@@ -1,4 +1,4 @@
-﻿add_library(creature "creature.cpp" "include/creature/creature.h")
+add_library(creature "creature.cpp" "include/creature/creature.h")
 set_property(TARGET creature PROPERTY CXX_STANDARD 20)
 
 target_link_libraries(creature PUBLIC glad::glad Eigen3::Eigen)

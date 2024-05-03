@@ -1,4 +1,4 @@
-﻿add_library(arial_rus INTERFACE)
+add_library(arial_rus INTERFACE)
 
 set_property(TARGET arial_rus PROPERTY CXX_STANDARD 20)
 

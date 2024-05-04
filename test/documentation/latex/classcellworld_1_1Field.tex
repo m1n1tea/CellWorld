@@ -1,0 +1,219 @@
+\doxysubsection{Класс cellworld\+::Field}
+\hypertarget{classcellworld_1_1Field}{}\label{classcellworld_1_1Field}\index{cellworld::Field@{cellworld::Field}}
+
+
+Класс Поля, хранит существ.  
+
+
+
+
+{\ttfamily \#include $<$creature.\+h$>$}
+
+Граф наследования\+:cellworld\+::Field\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcellworld_1_1Field}
+\end{center}
+\end{figure}
+\doxysubsubsubsection*{Открытые члены}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcellworld_1_1Field_aeb6483a4cced44a880507f84e3a794f3}\label{classcellworld_1_1Field_aeb6483a4cced44a880507f84e3a794f3} 
+{\bfseries Field} (int size\+\_\+x=0, int size\+\_\+y=0)
+\begin{DoxyCompactList}\small\item\em Конструктор класса, задающий ширину и длину поля. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcellworld_1_1Field_aefdc61cde8bf2ba6879b13a6d8fa8159}{update\+Positions}} ()
+\begin{DoxyCompactList}\small\item\em Обновляет позиции существ. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Field_a8ad12674d9ee770f2a4db9c081738f60}\label{classcellworld_1_1Field_a8ad12674d9ee770f2a4db9c081738f60} 
+void {\bfseries update\+States} ()
+\begin{DoxyCompactList}\small\item\em Обновляет состояние существ. Если у живого существа \texorpdfstring{$<$}{<}0 энергии -\/ оно умирает. Если существо хочет размножаться, то одно из соседних существ становится живым, с геном, наследуемым от предка. Не инициализирует объекты. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Field_a51ed859563a26ded68bec7f310bc71ba}\label{classcellworld_1_1Field_a51ed859563a26ded68bec7f310bc71ba} 
+Position {\bfseries find\+Close\+Position} (\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \texorpdfstring{$\ast$}{*}ancestor)
+\begin{DoxyCompactList}\small\item\em Соседняя позиция относительно существа, желающего размножиться, которая становится живой. Если позиция не найдена, возвращает bad\+\_\+position. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Field_ac9c13f6727ad327c7c7e15a852a7d9ed}\label{classcellworld_1_1Field_ac9c13f6727ad327c7c7e15a852a7d9ed} 
+\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \& {\bfseries find\+Creature} (\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \texorpdfstring{$\ast$}{*}finder, int direction)
+\begin{DoxyCompactList}\small\item\em Поиск существа из определённого существа в определённом направлении. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Field_a9feb8bce2362c66d95b8da0e28ef7a63}\label{classcellworld_1_1Field_a9feb8bce2362c66d95b8da0e28ef7a63} 
+void {\bfseries clear} ()
+\begin{DoxyCompactList}\small\item\em Очистка поля \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{Indent}\textbf{ Доступ к существу по 1 или 2 индексам(позиции) поля}\par
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcellworld_1_1Field_adbbffd9e1d97570ff217b4d8f103909b}\label{classcellworld_1_1Field_adbbffd9e1d97570ff217b4d8f103909b} 
+const \mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \& {\bfseries get\+Creature} (const Position \&pos) const
+\item 
+\Hypertarget{classcellworld_1_1Field_a7eb7037483dccb00ec2ae16f81249960}\label{classcellworld_1_1Field_a7eb7037483dccb00ec2ae16f81249960} 
+\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \& {\bfseries get\+Creature} (const Position \&pos)
+\item 
+\Hypertarget{classcellworld_1_1Field_a6feb11d48def2e9fa1af120b12e4e1b1}\label{classcellworld_1_1Field_a6feb11d48def2e9fa1af120b12e4e1b1} 
+const \mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \& {\bfseries get\+Creature} (const int \&index) const
+\item 
+\Hypertarget{classcellworld_1_1Field_a57b3b1cdf61408fb155de2016a062a88}\label{classcellworld_1_1Field_a57b3b1cdf61408fb155de2016a062a88} 
+\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \& {\bfseries get\+Creature} (const int \&index)
+\item 
+\Hypertarget{classcellworld_1_1Field_a1b0245668b3e202b6fc81d374b7a9e80}\label{classcellworld_1_1Field_a1b0245668b3e202b6fc81d374b7a9e80} 
+const \mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (const int \&index) const
+\item 
+\Hypertarget{classcellworld_1_1Field_a622493f34734fce3b4a41bcf677e2eb6}\label{classcellworld_1_1Field_a622493f34734fce3b4a41bcf677e2eb6} 
+\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (const int \&index)
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Геттеры}\par
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcellworld_1_1Field_a7a217b5416f345fcf5db4838f0dafe9e}\label{classcellworld_1_1Field_a7a217b5416f345fcf5db4838f0dafe9e} 
+unsigned int {\bfseries get\+Color} (const Position \&pos) const
+\item 
+\Hypertarget{classcellworld_1_1Field_a13cecd70155034efc041c1c7d45c94cc}\label{classcellworld_1_1Field_a13cecd70155034efc041c1c7d45c94cc} 
+unsigned int {\bfseries get\+Color} (const int \&index) const
+\item 
+\Hypertarget{classcellworld_1_1Field_ad441aa633a622a5e13a8a2a1567f818f}\label{classcellworld_1_1Field_ad441aa633a622a5e13a8a2a1567f818f} 
+int {\bfseries sizeX} () const
+\item 
+\Hypertarget{classcellworld_1_1Field_a3461cf19c1ae98e1355e81d5b5d17e99}\label{classcellworld_1_1Field_a3461cf19c1ae98e1355e81d5b5d17e99} 
+int {\bfseries sizeY} () const
+\item 
+\Hypertarget{classcellworld_1_1Field_ade09930808f6f3f05a5bc2b4018d8c58}\label{classcellworld_1_1Field_ade09930808f6f3f05a5bc2b4018d8c58} 
+int {\bfseries size} () const
+\item 
+\Hypertarget{classcellworld_1_1Field_aecf6ab201ed58e5b3055118fcdf12219}\label{classcellworld_1_1Field_aecf6ab201ed58e5b3055118fcdf12219} 
+const int \& {\bfseries get\+Alive} ()
+\item 
+\Hypertarget{classcellworld_1_1Field_a5fc7599adbfd4ab7244dbe5a9f7f51f3}\label{classcellworld_1_1Field_a5fc7599adbfd4ab7244dbe5a9f7f51f3} 
+const int \& {\bfseries get\+Dead} ()
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Проверка координаты на валидность}\par
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcellworld_1_1Field_a31948aa5466001d8a7921b2ad69b3507}\label{classcellworld_1_1Field_a31948aa5466001d8a7921b2ad69b3507} 
+bool {\bfseries validX} (const int \&x) const
+\item 
+\Hypertarget{classcellworld_1_1Field_a244fdfed03861cf2b5e59dc4cb02e4af}\label{classcellworld_1_1Field_a244fdfed03861cf2b5e59dc4cb02e4af} 
+bool {\bfseries validY} (const int \&y) const
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Интерфейс визуализации}\par
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcellworld_1_1Field_a3be446e4fa6110c0f6ba99de95c6b85c}{create\+Texture}} ()
+\item 
+\Hypertarget{classcellworld_1_1Field_a39b074f23ac9d5872801ff4995bae504}\label{classcellworld_1_1Field_a39b074f23ac9d5872801ff4995bae504} 
+void \texorpdfstring{$\ast$}{*} {\bfseries get\+Texture} ()
+\begin{DoxyCompactList}\small\item\em Получить текстуру для работы с Im\+Gui. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Field_a9af0a489b700af34e55923f1dfb26ac7}\label{classcellworld_1_1Field_a9af0a489b700af34e55923f1dfb26ac7} 
+const GLuint \& {\bfseries get\+GLTexture} ()
+\begin{DoxyCompactList}\small\item\em Получить текстуру для работы с Open\+GL. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Field_abade9bba2d33d3eac4ed6f6d7fe8b90f}\label{classcellworld_1_1Field_abade9bba2d33d3eac4ed6f6d7fe8b90f} 
+void {\bfseries update\+Texture} ()
+\begin{DoxyCompactList}\small\item\em Синхронизировать текстуру с текущим состоянием поля. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Field_aa1766fb6415bab1ded094f6db5023cac}\label{classcellworld_1_1Field_aa1766fb6415bab1ded094f6db5023cac} 
+void {\bfseries unbind\+Texture} ()
+\begin{DoxyCompactList}\small\item\em Закончить синхронизацию с полем. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\doxysubsubsubsection*{Статические открытые данные}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcellworld_1_1Field_a88710dca16f0f908ce3b1f95841bcfab}\label{classcellworld_1_1Field_a88710dca16f0f908ce3b1f95841bcfab} 
+static \mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} {\bfseries bad\+\_\+creature} =\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}}()
+\end{DoxyCompactItemize}
+\doxysubsubsubsection*{Защищенные данные}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcellworld_1_1Field_a1c9c170b6dc56b4dece6b4ec3ad4d5b2}\label{classcellworld_1_1Field_a1c9c170b6dc56b4dece6b4ec3ad4d5b2} 
+int {\bfseries size\+\_\+x\+\_\+}
+\begin{DoxyCompactList}\small\item\em Ширина \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Field_af7129de1c1e6cd480c2d15a9283c48cf}\label{classcellworld_1_1Field_af7129de1c1e6cd480c2d15a9283c48cf} 
+int {\bfseries size\+\_\+y\+\_\+}
+\begin{DoxyCompactList}\small\item\em Высота \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Field_a77545030bcf5c1117eb831e6c660a6ac}\label{classcellworld_1_1Field_a77545030bcf5c1117eb831e6c660a6ac} 
+int {\bfseries size\+\_\+}
+\begin{DoxyCompactList}\small\item\em Площадь \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Field_ae12f1f8e53df3086698cc3ae419e781a}\label{classcellworld_1_1Field_ae12f1f8e53df3086698cc3ae419e781a} 
+std\+::vector$<$ \mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries zoo\+\_\+ptr\+\_\+}
+\begin{DoxyCompactList}\small\item\em Указатели на текущее состояние поля \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Field_ab5afa3399a89452addb07f4052236471}\label{classcellworld_1_1Field_ab5afa3399a89452addb07f4052236471} 
+std\+::vector$<$ \mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries empty\+\_\+zoo\+\_\+ptr\+\_\+}
+\begin{DoxyCompactList}\small\item\em Указатели на запасное состояние поля \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Field_ab3130253e1f43e3cd5d4439ce1eaf026}\label{classcellworld_1_1Field_ab3130253e1f43e3cd5d4439ce1eaf026} 
+std\+::vector$<$ \mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} $>$ {\bfseries storage\+\_\+}
+\begin{DoxyCompactList}\small\item\em Хранилище существ \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Field_a3830c3922d5340b256edd9202eef54da}\label{classcellworld_1_1Field_a3830c3922d5340b256edd9202eef54da} 
+std\+::vector$<$ unsigned int $>$ {\bfseries colors\+\_\+}
+\begin{DoxyCompactList}\small\item\em Хранит цвета каждого существа, используется при создании текстуры. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Field_a82606b718ce98ed857f643be92ea3405}\label{classcellworld_1_1Field_a82606b718ce98ed857f643be92ea3405} 
+GLuint {\bfseries texture\+\_\+}
+\begin{DoxyCompactList}\small\item\em Указатель на текстуру \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Field_acc4fd2f0a12826de9ba4b99cea177306}\label{classcellworld_1_1Field_acc4fd2f0a12826de9ba4b99cea177306} 
+int {\bfseries alive\+\_\+count\+\_\+}
+\begin{DoxyCompactList}\small\item\em Количество живых существ в мире \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Field_ab70ccf4c449d184518b993cde2a45fec}\label{classcellworld_1_1Field_ab70ccf4c449d184518b993cde2a45fec} 
+int {\bfseries dead\+\_\+count\+\_\+}
+\begin{DoxyCompactList}\small\item\em Количество мёртвых существ в мире \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsubsection*{Друзья}
+\begin{Indent}\textbf{ Обработка коллизий (ситуаций, когда 2 существа претендуют на 1 позицию)}\par
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcellworld_1_1Field_a73f54a83be4fbcf95be585bee81989cd}{conjoin}} (\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \texorpdfstring{$\ast$}{*}\&master, \mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \texorpdfstring{$\ast$}{*}\&candidate)
+\item 
+void \mbox{\hyperlink{classcellworld_1_1Field_ab67bbcce5ac8dc7901f03a98d9fc300f}{conjoin}} (\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \&master, \mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \&candidate)
+\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\doxysubsubsection{Подробное описание}
+Задачи поля\+:
+\begin{DoxyItemize}
+\item Хранить конкретное состояние
+\item Обновлять состояние
+\item Контролировать поведение, состояние, взаимодействие существ
+\item Визуализировать симуляцию 
+\end{DoxyItemize}
+
+\doxysubsubsection{Методы}
+\Hypertarget{classcellworld_1_1Field_a3be446e4fa6110c0f6ba99de95c6b85c}\label{classcellworld_1_1Field_a3be446e4fa6110c0f6ba99de95c6b85c} 
+\index{cellworld::Field@{cellworld::Field}!createTexture@{createTexture}}
+\index{createTexture@{createTexture}!cellworld::Field@{cellworld::Field}}
+\doxyparagraph{\texorpdfstring{createTexture()}{createTexture()}}
+{\footnotesize\ttfamily void cellworld\+::\+Field\+::create\+Texture (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Создать текстуру \Hypertarget{classcellworld_1_1Field_aefdc61cde8bf2ba6879b13a6d8fa8159}\label{classcellworld_1_1Field_aefdc61cde8bf2ba6879b13a6d8fa8159} 
+\index{cellworld::Field@{cellworld::Field}!updatePositions@{updatePositions}}
+\index{updatePositions@{updatePositions}!cellworld::Field@{cellworld::Field}}
+\doxyparagraph{\texorpdfstring{updatePositions()}{updatePositions()}}
+{\footnotesize\ttfamily void cellworld\+::\+Field\+::update\+Positions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Ввод данных в нейросеть. Происходит вся работа нейросетей. Забирает энергии у существ за передвижение. Оставляет на предыдущей позиции остатки энергии. Обрабатывет коллизию существ. Работает в многопоточном режиме, без инициализаций. 
+
+\doxysubsubsection{Документация по друзьям класса и функциям, относящимся к классу}
+\Hypertarget{classcellworld_1_1Field_ab67bbcce5ac8dc7901f03a98d9fc300f}\label{classcellworld_1_1Field_ab67bbcce5ac8dc7901f03a98d9fc300f} 
+\index{cellworld::Field@{cellworld::Field}!conjoin@{conjoin}}
+\index{conjoin@{conjoin}!cellworld::Field@{cellworld::Field}}
+\doxyparagraph{\texorpdfstring{conjoin}{conjoin}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void conjoin (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \&}]{master,  }\item[{\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \&}]{candidate }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+\begin{DoxyParams}{Аргументы}
+{\em master} & -\/ cущество, занявшее эту позицию первым \\
+\hline
+{\em candidate} & -\/ cущество, занявшее эту позицию вторым \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classcellworld_1_1Field_a73f54a83be4fbcf95be585bee81989cd}\label{classcellworld_1_1Field_a73f54a83be4fbcf95be585bee81989cd} 
+\index{cellworld::Field@{cellworld::Field}!conjoin@{conjoin}}
+\index{conjoin@{conjoin}!cellworld::Field@{cellworld::Field}}
+\doxyparagraph{\texorpdfstring{conjoin}{conjoin}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void conjoin (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \texorpdfstring{$\ast$}{*}\&}]{master,  }\item[{\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \texorpdfstring{$\ast$}{*}\&}]{candidate }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+\begin{DoxyParams}{Аргументы}
+{\em master} & -\/ cущество, занявшее эту позицию первым \\
+\hline
+{\em candidate} & -\/ cущество, занявшее эту позицию вторым \\
+\hline
+\end{DoxyParams}
+
+
+Объявления и описания членов классов находятся в файлах\+:\begin{DoxyCompactItemize}
+\item 
+creature/include/creature/creature.\+h\item 
+creature/creature.\+cpp\end{DoxyCompactItemize}

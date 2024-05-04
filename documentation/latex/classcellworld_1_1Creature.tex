@@ -1,0 +1,225 @@
+\doxysubsection{Класс cellworld\+::Creature}
+\hypertarget{classcellworld_1_1Creature}{}\label{classcellworld_1_1Creature}\index{cellworld::Creature@{cellworld::Creature}}
+
+
+Класс существа.  
+
+
+
+
+{\ttfamily \#include $<$creature.\+h$>$}
+
+\doxysubsubsubsection*{Открытые члены}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcellworld_1_1Creature_ab3d6d19010e8c38ec156851a44a592ef}\label{classcellworld_1_1Creature_ab3d6d19010e8c38ec156851a44a592ef} 
+{\bfseries Creature} (const \mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \&)=default
+\item 
+\Hypertarget{classcellworld_1_1Creature_a72d5f0a3a031a25b9d602dd99d69de1c}\label{classcellworld_1_1Creature_a72d5f0a3a031a25b9d602dd99d69de1c} 
+{\bfseries Creature} (\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \&\&)=default
+\item 
+\Hypertarget{classcellworld_1_1Creature_ad1088f5f2481e64cd50c120cae4bf13d}\label{classcellworld_1_1Creature_ad1088f5f2481e64cd50c120cae4bf13d} 
+\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \& {\bfseries operator=} (const \mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \&)=default
+\item 
+\Hypertarget{classcellworld_1_1Creature_ab1837b3ec8d8026de34d7d2c1f72866c}\label{classcellworld_1_1Creature_ab1837b3ec8d8026de34d7d2c1f72866c} 
+\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \& {\bfseries operator=} (\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \&\&)=default
+\item 
+\Hypertarget{classcellworld_1_1Creature_a59a5e36915b19fa647e9dcee3df06946}\label{classcellworld_1_1Creature_a59a5e36915b19fa647e9dcee3df06946} 
+float {\bfseries Leftover} ()
+\begin{DoxyCompactList}\small\item\em Возвращает избыток энергии существа. Энергия уменьшается до лимита энергии. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a44ab6b733c7e5a2d5d0a75d36452e056}\label{classcellworld_1_1Creature_a44ab6b733c7e5a2d5d0a75d36452e056} 
+bool {\bfseries want\+To\+Reproduce} () const
+\begin{DoxyCompactList}\small\item\em проверка на желание размножиться \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a30e0e5dccb6ace8bffe325f658baf483}\label{classcellworld_1_1Creature_a30e0e5dccb6ace8bffe325f658baf483} 
+void {\bfseries look} (\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \&found, int direction)
+\begin{DoxyCompactList}\small\item\em Получение информации о соседнем существе в одном из направлений. Для большей информации см. \doxylink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ga6b3bb3c10db174f2d5416fb0dcecdaab}{Look\+Input}. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_ac58aedf6d766e7a674d7f8bf21ee7bed}\label{classcellworld_1_1Creature_ac58aedf6d766e7a674d7f8bf21ee7bed} 
+void {\bfseries get\+Info} ()
+\begin{DoxyCompactList}\small\item\em Получение информации о себе. Для большей информации см. \doxylink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gaf2b54f4c53a3d61400536d46a28b6312}{Input\+Neuron}. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_afed4b8719d7ad65805747c56fbd3a286}\label{classcellworld_1_1Creature_afed4b8719d7ad65805747c56fbd3a286} 
+void {\bfseries reverse\+Input} ()
+\begin{DoxyCompactList}\small\item\em Нормализация входных данных. Переводит в диапазон \mbox{[}0;1\mbox{]} путём быстрого, но неточного деления на само себя. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_ae4321f7f6d37f0ba3bb653cf6a760cbd}\label{classcellworld_1_1Creature_ae4321f7f6d37f0ba3bb653cf6a760cbd} 
+void {\bfseries think} ()
+\begin{DoxyCompactList}\small\item\em Работа нейросети. Обрабатывает входные нейроны с помощью весов, расположенных в геноме существа, и выводит результат в выходные нейроны. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcellworld_1_1Creature_ab6810b5c2acf5d9a12018ae3646717a0}{act}} ()
+\begin{DoxyCompactList}\small\item\em Работа с выходными нейронами. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a3b8342037967ea7908eeb305aa3d809d}\label{classcellworld_1_1Creature_a3b8342037967ea7908eeb305aa3d809d} 
+void {\bfseries eat} (\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \&)
+\begin{DoxyCompactList}\small\item\em Существо забирает всю энергию другого существа. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a872dd3b48bd00a9cdf0ccdf2ec1928c5}\label{classcellworld_1_1Creature_a872dd3b48bd00a9cdf0ccdf2ec1928c5} 
+void {\bfseries add\+Energy} (const float \&\mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312a87e3622c56483dca469047719067e380}{energy}})
+\begin{DoxyCompactList}\small\item\em Существо получает энергию в размере energy. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_abd17dfd01a6b0b42d074b95c3d4bafb1}\label{classcellworld_1_1Creature_abd17dfd01a6b0b42d074b95c3d4bafb1} 
+void {\bfseries build\+IO} ()
+\begin{DoxyCompactList}\small\item\em Инициализирует недостающие элементы существа при чтении из файла. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a09961e1d2ffa10e4517bbe20f8674e75}\label{classcellworld_1_1Creature_a09961e1d2ffa10e4517bbe20f8674e75} 
+void \texorpdfstring{$\ast$}{*} {\bfseries network\+Ptr} ()
+\begin{DoxyCompactList}\small\item\em Чтение/запись весов нейронной сети. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{Indent}\textbf{ Специальные конструкторы существа}\par
+{\em По умолчанию модуль скорости равен 0, существо направлено вверх. }\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcellworld_1_1Creature_a37d29a169bdd9726b1aa6d2b7b311a5a}\label{classcellworld_1_1Creature_a37d29a169bdd9726b1aa6d2b7b311a5a} 
+{\bfseries Creature} (const \mbox{\hyperlink{structcellworld_1_1Genome}{Genome}} \&gen, const Position \&pos)
+\begin{DoxyCompactList}\small\item\em Конструируется живое существо. Начальная энергия зависит от веса(см. \doxylink{group___xD0_x9A_xD0_xBE_xD1_x8D_xD1_x84_xD1_x84_xD0_xB8_xD1_x86_xD0_xB8_xD0_xB5_xD0_xBD_xD1_x82_xD1_x8B}{Коэффициенты}) \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a347bf7ba749468cf1a009c41a9460507}\label{classcellworld_1_1Creature_a347bf7ba749468cf1a009c41a9460507} 
+{\bfseries Creature} ()
+\begin{DoxyCompactList}\small\item\em Конструируется несуществующее существо \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a8feb664b0cc0fa78650e4a2d63f793e9}\label{classcellworld_1_1Creature_a8feb664b0cc0fa78650e4a2d63f793e9} 
+{\bfseries Creature} (float \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312a87e3622c56483dca469047719067e380}{energy}}, const Position \&pos)
+\begin{DoxyCompactList}\small\item\em Конструируется неживое существо. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Изменение состояния существа}\par
+{\em Используются для избежания лишней инициализации }\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcellworld_1_1Creature_a92e12dccacb0aefc3d562983e1f4db28}\label{classcellworld_1_1Creature_a92e12dccacb0aefc3d562983e1f4db28} 
+void {\bfseries make\+Alive} (\mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \&ancestor, const Position \&pos)
+\begin{DoxyCompactList}\small\item\em Существо становится живым. Геном существа основывается на предке. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_add363f96f142f046e5221936f6fd5295}\label{classcellworld_1_1Creature_add363f96f142f046e5221936f6fd5295} 
+void {\bfseries make\+Alive} (const Position \&pos)
+\begin{DoxyCompactList}\small\item\em Существо становится живым. Геном рандомный. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_abbc44f6ac417040f1cfece35f604adb9}\label{classcellworld_1_1Creature_abbc44f6ac417040f1cfece35f604adb9} 
+void {\bfseries die} ()
+\begin{DoxyCompactList}\small\item\em Существо становится мёртвым. Вес преобразовывается в энергию(см. \doxylink{group___xD0_x9A_xD0_xBE_xD1_x8D_xD1_x84_xD1_x84_xD0_xB8_xD1_x86_xD0_xB8_xD0_xB5_xD0_xBD_xD1_x82_xD1_x8B}{Коэффициенты}). \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a76726dfa3270d3d7ce7b7f18a8d2715a}\label{classcellworld_1_1Creature_a76726dfa3270d3d7ce7b7f18a8d2715a} 
+void {\bfseries stop\+Existing} ()
+\begin{DoxyCompactList}\small\item\em Существо перестаёт существовать. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Геттеры}\par
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcellworld_1_1Creature_acf8a8581810de8a4cc2f65a58771a672}\label{classcellworld_1_1Creature_acf8a8581810de8a4cc2f65a58771a672} 
+const int \& {\bfseries get\+State} () const
+\item 
+\Hypertarget{classcellworld_1_1Creature_a16e59fb0b4483b2e412254a0871469bb}\label{classcellworld_1_1Creature_a16e59fb0b4483b2e412254a0871469bb} 
+const int \& {\bfseries get\+Direction} () const
+\item 
+\Hypertarget{classcellworld_1_1Creature_a3de8bb7512038c61fa4762249efbc52a}\label{classcellworld_1_1Creature_a3de8bb7512038c61fa4762249efbc52a} 
+const int \& {\bfseries get\+Speed} () const
+\item 
+\Hypertarget{classcellworld_1_1Creature_a6bb20e22ffa20b7b9704c062036a28cc}\label{classcellworld_1_1Creature_a6bb20e22ffa20b7b9704c062036a28cc} 
+int \& {\bfseries getX} ()
+\begin{DoxyCompactList}\small\item\em Возвращает ссылку на изменяемое значение, равное, но не являющееся координатой X. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_ab268fee52b4ff17407e8aabaf2d107e3}\label{classcellworld_1_1Creature_ab268fee52b4ff17407e8aabaf2d107e3} 
+int \& {\bfseries getY} ()
+\begin{DoxyCompactList}\small\item\em Возвращает ссылку на изменяемое значение, равное, но не являющееся координатой Y. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a211d57c293bbb4ebf1604761837504dc}\label{classcellworld_1_1Creature_a211d57c293bbb4ebf1604761837504dc} 
+const float \& {\bfseries get\+Energy} () const
+\item 
+\Hypertarget{classcellworld_1_1Creature_a2a07aa70bc883eed7108e996ac66ff60}\label{classcellworld_1_1Creature_a2a07aa70bc883eed7108e996ac66ff60} 
+const float \& {\bfseries get\+Energy\+Limit} () const
+\item 
+\Hypertarget{classcellworld_1_1Creature_a27501d5e3cda8caf485e1f26bc84551b}\label{classcellworld_1_1Creature_a27501d5e3cda8caf485e1f26bc84551b} 
+int {\bfseries get\+Mass} () const
+\item 
+\Hypertarget{classcellworld_1_1Creature_a97d5f2cd76aa33b7d96912dff93947f2}\label{classcellworld_1_1Creature_a97d5f2cd76aa33b7d96912dff93947f2} 
+const unsigned int \& {\bfseries get\+Color} () const
+\item 
+\Hypertarget{classcellworld_1_1Creature_ad1ffcbb529a92964b374b94208cec38c}\label{classcellworld_1_1Creature_ad1ffcbb529a92964b374b94208cec38c} 
+unsigned int {\bfseries get\+Blue} () const
+\item 
+\Hypertarget{classcellworld_1_1Creature_a90a733900f571c5a862872d75acfe866}\label{classcellworld_1_1Creature_a90a733900f571c5a862872d75acfe866} 
+unsigned int {\bfseries get\+Green} () const
+\item 
+\Hypertarget{classcellworld_1_1Creature_a54225e8991f87bc8fe9fc42d69c40500}\label{classcellworld_1_1Creature_a54225e8991f87bc8fe9fc42d69c40500} 
+unsigned int {\bfseries get\+Red} () const
+\item 
+\Hypertarget{classcellworld_1_1Creature_ad3bc95e0bd7ea06cdad414278216519e}\label{classcellworld_1_1Creature_ad3bc95e0bd7ea06cdad414278216519e} 
+const \mbox{\hyperlink{structcellworld_1_1Genome}{Genome}} \& {\bfseries get\+Genome} ()
+\end{DoxyCompactItemize}
+\end{Indent}
+\doxysubsubsubsection*{Открытые статические члены}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcellworld_1_1Creature_abb6df51fd83819213373523c93cf1a3b}\label{classcellworld_1_1Creature_abb6df51fd83819213373523c93cf1a3b} 
+static \mbox{\hyperlink{structcellworld_1_1Genome}{Genome}} {\bfseries generate\+Genome} ()
+\begin{DoxyCompactList}\small\item\em Создать случайным геном \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a076a1abdfe7451b8c4d08320b7e32e35}\label{classcellworld_1_1Creature_a076a1abdfe7451b8c4d08320b7e32e35} 
+static void {\bfseries generate\+Genome} (\mbox{\hyperlink{structcellworld_1_1Genome}{Genome}} \&)
+\begin{DoxyCompactList}\small\item\em Сделать данный геном случайным \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a72dc133de526cc47631ef86b9d1bb81f}\label{classcellworld_1_1Creature_a72dc133de526cc47631ef86b9d1bb81f} 
+static void {\bfseries mix\+Gen} (float \&gen1, const float \&gen2)
+\begin{DoxyCompactList}\small\item\em Смешивание генов \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_acceab4aacc005b04d7e3bfbcc600a87a}\label{classcellworld_1_1Creature_acceab4aacc005b04d7e3bfbcc600a87a} 
+static unsigned int {\bfseries mix\+Gen} (const unsigned int \&gen1, const unsigned int \&gen2)
+\begin{DoxyCompactList}\small\item\em Смешивание генов \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_ae7b6cc5e7fcb4a43d2b388658ee82652}\label{classcellworld_1_1Creature_ae7b6cc5e7fcb4a43d2b388658ee82652} 
+static \mbox{\hyperlink{structcellworld_1_1Genome}{Genome}} {\bfseries create\+Genome} (const \mbox{\hyperlink{structcellworld_1_1Genome}{Genome}} \&ancestor)
+\begin{DoxyCompactList}\small\item\em Создать геном, основанный на геноме предка. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_addf32bd93f198f99af9cdbfdb39ad475}\label{classcellworld_1_1Creature_addf32bd93f198f99af9cdbfdb39ad475} 
+static unsigned int {\bfseries energy\+Color} (int \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312a87e3622c56483dca469047719067e380}{energy}})
+\begin{DoxyCompactList}\small\item\em Цвет энергии. Цвет мёртвого существа зависит от его текущей энергии. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsubsection*{Открытые атрибуты}
+\begin{Indent}\textbf{ Позиция существа}\par
+{\em Находится в public, чтобы синхронизировать позицию, как внутреннее состояние сущности, и позицию, как индекс массива. }\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcellworld_1_1Creature_a47bf5108e8e97d142cd27810c330c615}\label{classcellworld_1_1Creature_a47bf5108e8e97d142cd27810c330c615} 
+int {\bfseries pos\+\_\+x\+\_\+}
+\item 
+\Hypertarget{classcellworld_1_1Creature_a09b68bc05e41426b4b38074235b153dd}\label{classcellworld_1_1Creature_a09b68bc05e41426b4b38074235b153dd} 
+int {\bfseries pos\+\_\+y\+\_\+}
+\end{DoxyCompactItemize}
+\end{Indent}
+\doxysubsubsubsection*{Статические открытые данные}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcellworld_1_1Creature_a7e01a51fc00323e837f14918e7ab76a1}\label{classcellworld_1_1Creature_a7e01a51fc00323e837f14918e7ab76a1} 
+static std\+::array$<$ float, \mbox{\hyperlink{group___xD0_x9A_xD0_xBE_xD1_x8D_xD1_x84_xD1_x84_xD0_xB8_xD1_x86_xD0_xB8_xD0_xB5_xD0_xBD_xD1_x82_xD1_x8B_ggaaf0f26e9222db45b8c3f492b2f407a07a4b8e318e8ace3897c22eb0a77ba1c1df}{coefficients\+\_\+count}} $>$ {\bfseries coeff\+\_\+} \{ 0 \}
+\begin{DoxyCompactList}\small\item\em Массив, который хранит значения всех коэффициентов. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a08866b50eb76230733be03cd65523a9e}\label{classcellworld_1_1Creature_a08866b50eb76230733be03cd65523a9e} 
+static bool {\bfseries is\+\_\+breedable} = 1
+\begin{DoxyCompactList}\small\item\em Определяет включена ли возможность размножения, если 0 -\/ выключена, иначе -\/ включена. \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a5978ebebd5c24c752e0e770e3b451c87}\label{classcellworld_1_1Creature_a5978ebebd5c24c752e0e770e3b451c87} 
+static unsigned int {\bfseries base\+\_\+color\+\_\+} = 0x\+Af\+Af\+Afff
+\begin{DoxyCompactList}\small\item\em Цвет несуществующего существа. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsubsection*{Закрытые данные}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcellworld_1_1Creature_a308e04a9bb81f6e4cabfd809b47bd07e}\label{classcellworld_1_1Creature_a308e04a9bb81f6e4cabfd809b47bd07e} 
+int {\bfseries state\+\_\+}
+\begin{DoxyCompactList}\small\item\em Состояние существа \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a471c6f90f35de7a9d8bfa4f33952af4d}\label{classcellworld_1_1Creature_a471c6f90f35de7a9d8bfa4f33952af4d} 
+float {\bfseries energy\+\_\+}
+\begin{DoxyCompactList}\small\item\em Энергия существа \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a9e3108c278016f5d02eb87c7c9ffa881}\label{classcellworld_1_1Creature_a9e3108c278016f5d02eb87c7c9ffa881} 
+float {\bfseries energy\+\_\+limit\+\_\+}
+\begin{DoxyCompactList}\small\item\em Максимальная энергию существа \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_ae80f549d8f90f3b676e62e8872e71d90}\label{classcellworld_1_1Creature_ae80f549d8f90f3b676e62e8872e71d90} 
+int {\bfseries speed\+\_\+module\+\_\+}
+\begin{DoxyCompactList}\small\item\em Модуль скорости \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a3b4afe040504f3a3c8af0b0b638744b3}\label{classcellworld_1_1Creature_a3b4afe040504f3a3c8af0b0b638744b3} 
+int {\bfseries speed\+\_\+direction\+\_\+}
+\begin{DoxyCompactList}\small\item\em Направление скорости \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a41429d2238fb51f6f5410e068f2a233b}\label{classcellworld_1_1Creature_a41429d2238fb51f6f5410e068f2a233b} 
+\mbox{\hyperlink{structcellworld_1_1Genome}{Genome}} {\bfseries creatures\+\_\+genome\+\_\+}
+\begin{DoxyCompactList}\small\item\em Геном существа \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a55392ecb958ecfd503b8aa7a2edbb5bc}\label{classcellworld_1_1Creature_a55392ecb958ecfd503b8aa7a2edbb5bc} 
+Eigen\+::\+Matrix\+Xf {\bfseries input\+\_\+neurons\+\_\+}
+\begin{DoxyCompactList}\small\item\em Входные нейроны существа \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a7a7ad153cc210c355058c341347c27fd}\label{classcellworld_1_1Creature_a7a7ad153cc210c355058c341347c27fd} 
+Eigen\+::\+Matrix\+Xf {\bfseries output\+\_\+neurons\+\_\+}
+\begin{DoxyCompactList}\small\item\em Выходные нейроны существа \end{DoxyCompactList}\item 
+\Hypertarget{classcellworld_1_1Creature_a27866fc554db8c7018f41fe836ea048a}\label{classcellworld_1_1Creature_a27866fc554db8c7018f41fe836ea048a} 
+std\+::tuple$<$ int, int, float $>$ {\bfseries tmp\+\_\+}
+\end{DoxyCompactItemize}
+\doxysubsubsubsection*{Друзья}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcellworld_1_1Creature_a4a306f8da0a598d27e69e5d75d0d8e3b}\label{classcellworld_1_1Creature_a4a306f8da0a598d27e69e5d75d0d8e3b} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \&, const \mbox{\hyperlink{classcellworld_1_1Creature}{Creature}} \&)
+\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Методы}
+\Hypertarget{classcellworld_1_1Creature_ab6810b5c2acf5d9a12018ae3646717a0}\label{classcellworld_1_1Creature_ab6810b5c2acf5d9a12018ae3646717a0} 
+\index{cellworld::Creature@{cellworld::Creature}!act@{act}}
+\index{act@{act}!cellworld::Creature@{cellworld::Creature}}
+\doxyparagraph{\texorpdfstring{act()}{act()}}
+{\footnotesize\ttfamily void cellworld\+::\+Creature\+::act (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Если существо живое, то в зависимости от выходных нейронов меняет модуль скорости и направление. После чего обновляется положение существа. В конце функции модуль скорости уменьшается на коэффициент торможения. 
+
+Объявления и описания членов классов находятся в файлах\+:\begin{DoxyCompactItemize}
+\item 
+creature/include/creature/creature.\+h\item 
+creature/creature.\+cpp\end{DoxyCompactItemize}

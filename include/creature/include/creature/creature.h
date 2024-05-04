@@ -374,7 +374,7 @@ public:
 
     const float& getEnergy() const { return energy_; }
     const float& getEnergyLimit() const { return energy_limit_; }
-    const int& getMass() const { return (creatures_genome_.mass); }
+    int getMass() const { return (creatures_genome_.mass); }
     const unsigned int& getColor() const { return (creatures_genome_.color); }
     unsigned int getBlue() const { return((getColor() >> 8) & 0xff); }
     unsigned int getGreen() const { return((getColor() >> 16) & 0xff); }

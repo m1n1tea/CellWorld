@@ -1,0 +1,399 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.10.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>CellWorld: Класс cellworld::Field</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">CellWorld
+   </div>
+   <div id="projectbrief">Симуляция естественного отбора</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.10.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Поиск');
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('classcellworld_1_1Field.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Открытые члены</a> &#124;
+<a href="#pub-static-attribs">Статические открытые данные</a> &#124;
+<a href="#pro-attribs">Защищенные данные</a> &#124;
+<a href="classcellworld_1_1Field-members.html">Полный список членов класса</a>  </div>
+  <div class="headertitle"><div class="title">Класс cellworld::Field</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Класс Поля, хранит существ.  
+ <a href="#details">Подробнее...</a></p>
+
+<p><code>#include &lt;creature.h&gt;</code></p>
+<div class="dynheader">
+Граф наследования:cellworld::Field:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classcellworld_1_1Field.png" usemap="#cellworld::Field_map" alt=""/>
+  <map id="cellworld::Field_map" name="cellworld::Field_map">
+<area href="classcellworld_1_1Scenario.html" title="Класс сценария - расширенный класс поля" alt="cellworld::Scenario" shape="rect" coords="0,56,120,80"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Открытые члены</h2></td></tr>
+<tr class="memitem:aeb6483a4cced44a880507f84e3a794f3" id="r_aeb6483a4cced44a880507f84e3a794f3"><td class="memItemLeft" align="right" valign="top"><a id="aeb6483a4cced44a880507f84e3a794f3" name="aeb6483a4cced44a880507f84e3a794f3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Field</b> (int size_x=0, int size_y=0)</td></tr>
+<tr class="memdesc:aeb6483a4cced44a880507f84e3a794f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Конструктор класса, задающий ширину и длину поля. <br /></td></tr>
+<tr class="separator:aeb6483a4cced44a880507f84e3a794f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefdc61cde8bf2ba6879b13a6d8fa8159" id="r_aefdc61cde8bf2ba6879b13a6d8fa8159"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aefdc61cde8bf2ba6879b13a6d8fa8159">updatePositions</a> ()</td></tr>
+<tr class="memdesc:aefdc61cde8bf2ba6879b13a6d8fa8159"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обновляет позиции существ.  <br /></td></tr>
+<tr class="separator:aefdc61cde8bf2ba6879b13a6d8fa8159"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ad12674d9ee770f2a4db9c081738f60" id="r_a8ad12674d9ee770f2a4db9c081738f60"><td class="memItemLeft" align="right" valign="top"><a id="a8ad12674d9ee770f2a4db9c081738f60" name="a8ad12674d9ee770f2a4db9c081738f60"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>updateStates</b> ()</td></tr>
+<tr class="memdesc:a8ad12674d9ee770f2a4db9c081738f60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обновляет состояние существ. Если у живого существа &lt;0 энергии - оно умирает. Если существо хочет размножаться, то одно из соседних существ становится живым, с геном, наследуемым от предка. Не инициализирует объекты. <br /></td></tr>
+<tr class="separator:a8ad12674d9ee770f2a4db9c081738f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51ed859563a26ded68bec7f310bc71ba" id="r_a51ed859563a26ded68bec7f310bc71ba"><td class="memItemLeft" align="right" valign="top"><a id="a51ed859563a26ded68bec7f310bc71ba" name="a51ed859563a26ded68bec7f310bc71ba"></a>
+Position&#160;</td><td class="memItemRight" valign="bottom"><b>findClosePosition</b> (<a class="el" href="classcellworld_1_1Creature.html">Creature</a> *ancestor)</td></tr>
+<tr class="memdesc:a51ed859563a26ded68bec7f310bc71ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Соседняя позиция относительно существа, желающего размножиться, которая становится живой. Если позиция не найдена, возвращает bad_position. <br /></td></tr>
+<tr class="separator:a51ed859563a26ded68bec7f310bc71ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9c13f6727ad327c7c7e15a852a7d9ed" id="r_ac9c13f6727ad327c7c7e15a852a7d9ed"><td class="memItemLeft" align="right" valign="top"><a id="ac9c13f6727ad327c7c7e15a852a7d9ed" name="ac9c13f6727ad327c7c7e15a852a7d9ed"></a>
+<a class="el" href="classcellworld_1_1Creature.html">Creature</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>findCreature</b> (<a class="el" href="classcellworld_1_1Creature.html">Creature</a> *finder, int direction)</td></tr>
+<tr class="memdesc:ac9c13f6727ad327c7c7e15a852a7d9ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Поиск существа из определённого существа в определённом направлении. <br /></td></tr>
+<tr class="separator:ac9c13f6727ad327c7c7e15a852a7d9ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9feb8bce2362c66d95b8da0e28ef7a63" id="r_a9feb8bce2362c66d95b8da0e28ef7a63"><td class="memItemLeft" align="right" valign="top"><a id="a9feb8bce2362c66d95b8da0e28ef7a63" name="a9feb8bce2362c66d95b8da0e28ef7a63"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr>
+<tr class="memdesc:a9feb8bce2362c66d95b8da0e28ef7a63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Очистка поля <br /></td></tr>
+<tr class="separator:a9feb8bce2362c66d95b8da0e28ef7a63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Доступ к существу по 1 или 2 индексам(позиции) поля</div></td></tr>
+<tr class="memitem:adbbffd9e1d97570ff217b4d8f103909b" id="r_adbbffd9e1d97570ff217b4d8f103909b"><td class="memItemLeft" align="right" valign="top"><a id="adbbffd9e1d97570ff217b4d8f103909b" name="adbbffd9e1d97570ff217b4d8f103909b"></a>
+const <a class="el" href="classcellworld_1_1Creature.html">Creature</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getCreature</b> (const Position &amp;pos) const</td></tr>
+<tr class="separator:adbbffd9e1d97570ff217b4d8f103909b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7eb7037483dccb00ec2ae16f81249960" id="r_a7eb7037483dccb00ec2ae16f81249960"><td class="memItemLeft" align="right" valign="top"><a id="a7eb7037483dccb00ec2ae16f81249960" name="a7eb7037483dccb00ec2ae16f81249960"></a>
+<a class="el" href="classcellworld_1_1Creature.html">Creature</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getCreature</b> (const Position &amp;pos)</td></tr>
+<tr class="separator:a7eb7037483dccb00ec2ae16f81249960"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6feb11d48def2e9fa1af120b12e4e1b1" id="r_a6feb11d48def2e9fa1af120b12e4e1b1"><td class="memItemLeft" align="right" valign="top"><a id="a6feb11d48def2e9fa1af120b12e4e1b1" name="a6feb11d48def2e9fa1af120b12e4e1b1"></a>
+const <a class="el" href="classcellworld_1_1Creature.html">Creature</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getCreature</b> (const int &amp;index) const</td></tr>
+<tr class="separator:a6feb11d48def2e9fa1af120b12e4e1b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57b3b1cdf61408fb155de2016a062a88" id="r_a57b3b1cdf61408fb155de2016a062a88"><td class="memItemLeft" align="right" valign="top"><a id="a57b3b1cdf61408fb155de2016a062a88" name="a57b3b1cdf61408fb155de2016a062a88"></a>
+<a class="el" href="classcellworld_1_1Creature.html">Creature</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getCreature</b> (const int &amp;index)</td></tr>
+<tr class="separator:a57b3b1cdf61408fb155de2016a062a88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b0245668b3e202b6fc81d374b7a9e80" id="r_a1b0245668b3e202b6fc81d374b7a9e80"><td class="memItemLeft" align="right" valign="top"><a id="a1b0245668b3e202b6fc81d374b7a9e80" name="a1b0245668b3e202b6fc81d374b7a9e80"></a>
+const <a class="el" href="classcellworld_1_1Creature.html">Creature</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (const int &amp;index) const</td></tr>
+<tr class="separator:a1b0245668b3e202b6fc81d374b7a9e80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a622493f34734fce3b4a41bcf677e2eb6" id="r_a622493f34734fce3b4a41bcf677e2eb6"><td class="memItemLeft" align="right" valign="top"><a id="a622493f34734fce3b4a41bcf677e2eb6" name="a622493f34734fce3b4a41bcf677e2eb6"></a>
+<a class="el" href="classcellworld_1_1Creature.html">Creature</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (const int &amp;index)</td></tr>
+<tr class="separator:a622493f34734fce3b4a41bcf677e2eb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Геттеры</div></td></tr>
+<tr class="memitem:a7a217b5416f345fcf5db4838f0dafe9e" id="r_a7a217b5416f345fcf5db4838f0dafe9e"><td class="memItemLeft" align="right" valign="top"><a id="a7a217b5416f345fcf5db4838f0dafe9e" name="a7a217b5416f345fcf5db4838f0dafe9e"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>getColor</b> (const Position &amp;pos) const</td></tr>
+<tr class="separator:a7a217b5416f345fcf5db4838f0dafe9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13cecd70155034efc041c1c7d45c94cc" id="r_a13cecd70155034efc041c1c7d45c94cc"><td class="memItemLeft" align="right" valign="top"><a id="a13cecd70155034efc041c1c7d45c94cc" name="a13cecd70155034efc041c1c7d45c94cc"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>getColor</b> (const int &amp;index) const</td></tr>
+<tr class="separator:a13cecd70155034efc041c1c7d45c94cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad441aa633a622a5e13a8a2a1567f818f" id="r_ad441aa633a622a5e13a8a2a1567f818f"><td class="memItemLeft" align="right" valign="top"><a id="ad441aa633a622a5e13a8a2a1567f818f" name="ad441aa633a622a5e13a8a2a1567f818f"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>sizeX</b> () const</td></tr>
+<tr class="separator:ad441aa633a622a5e13a8a2a1567f818f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3461cf19c1ae98e1355e81d5b5d17e99" id="r_a3461cf19c1ae98e1355e81d5b5d17e99"><td class="memItemLeft" align="right" valign="top"><a id="a3461cf19c1ae98e1355e81d5b5d17e99" name="a3461cf19c1ae98e1355e81d5b5d17e99"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>sizeY</b> () const</td></tr>
+<tr class="separator:a3461cf19c1ae98e1355e81d5b5d17e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade09930808f6f3f05a5bc2b4018d8c58" id="r_ade09930808f6f3f05a5bc2b4018d8c58"><td class="memItemLeft" align="right" valign="top"><a id="ade09930808f6f3f05a5bc2b4018d8c58" name="ade09930808f6f3f05a5bc2b4018d8c58"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const</td></tr>
+<tr class="separator:ade09930808f6f3f05a5bc2b4018d8c58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecf6ab201ed58e5b3055118fcdf12219" id="r_aecf6ab201ed58e5b3055118fcdf12219"><td class="memItemLeft" align="right" valign="top"><a id="aecf6ab201ed58e5b3055118fcdf12219" name="aecf6ab201ed58e5b3055118fcdf12219"></a>
+const int &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getAlive</b> ()</td></tr>
+<tr class="separator:aecf6ab201ed58e5b3055118fcdf12219"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fc7599adbfd4ab7244dbe5a9f7f51f3" id="r_a5fc7599adbfd4ab7244dbe5a9f7f51f3"><td class="memItemLeft" align="right" valign="top"><a id="a5fc7599adbfd4ab7244dbe5a9f7f51f3" name="a5fc7599adbfd4ab7244dbe5a9f7f51f3"></a>
+const int &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDead</b> ()</td></tr>
+<tr class="separator:a5fc7599adbfd4ab7244dbe5a9f7f51f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Проверка координаты на валидность</div></td></tr>
+<tr class="memitem:a31948aa5466001d8a7921b2ad69b3507" id="r_a31948aa5466001d8a7921b2ad69b3507"><td class="memItemLeft" align="right" valign="top"><a id="a31948aa5466001d8a7921b2ad69b3507" name="a31948aa5466001d8a7921b2ad69b3507"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>validX</b> (const int &amp;x) const</td></tr>
+<tr class="separator:a31948aa5466001d8a7921b2ad69b3507"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a244fdfed03861cf2b5e59dc4cb02e4af" id="r_a244fdfed03861cf2b5e59dc4cb02e4af"><td class="memItemLeft" align="right" valign="top"><a id="a244fdfed03861cf2b5e59dc4cb02e4af" name="a244fdfed03861cf2b5e59dc4cb02e4af"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>validY</b> (const int &amp;y) const</td></tr>
+<tr class="separator:a244fdfed03861cf2b5e59dc4cb02e4af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Интерфейс визуализации</div></td></tr>
+<tr class="memitem:a3be446e4fa6110c0f6ba99de95c6b85c" id="r_a3be446e4fa6110c0f6ba99de95c6b85c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3be446e4fa6110c0f6ba99de95c6b85c">createTexture</a> ()</td></tr>
+<tr class="separator:a3be446e4fa6110c0f6ba99de95c6b85c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39b074f23ac9d5872801ff4995bae504" id="r_a39b074f23ac9d5872801ff4995bae504"><td class="memItemLeft" align="right" valign="top"><a id="a39b074f23ac9d5872801ff4995bae504" name="a39b074f23ac9d5872801ff4995bae504"></a>
+void *&#160;</td><td class="memItemRight" valign="bottom"><b>getTexture</b> ()</td></tr>
+<tr class="memdesc:a39b074f23ac9d5872801ff4995bae504"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получить текстуру для работы с ImGui. <br /></td></tr>
+<tr class="separator:a39b074f23ac9d5872801ff4995bae504"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9af0a489b700af34e55923f1dfb26ac7" id="r_a9af0a489b700af34e55923f1dfb26ac7"><td class="memItemLeft" align="right" valign="top"><a id="a9af0a489b700af34e55923f1dfb26ac7" name="a9af0a489b700af34e55923f1dfb26ac7"></a>
+const GLuint &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getGLTexture</b> ()</td></tr>
+<tr class="memdesc:a9af0a489b700af34e55923f1dfb26ac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получить текстуру для работы с OpenGL. <br /></td></tr>
+<tr class="separator:a9af0a489b700af34e55923f1dfb26ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abade9bba2d33d3eac4ed6f6d7fe8b90f" id="r_abade9bba2d33d3eac4ed6f6d7fe8b90f"><td class="memItemLeft" align="right" valign="top"><a id="abade9bba2d33d3eac4ed6f6d7fe8b90f" name="abade9bba2d33d3eac4ed6f6d7fe8b90f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>updateTexture</b> ()</td></tr>
+<tr class="memdesc:abade9bba2d33d3eac4ed6f6d7fe8b90f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Синхронизировать текстуру с текущим состоянием поля. <br /></td></tr>
+<tr class="separator:abade9bba2d33d3eac4ed6f6d7fe8b90f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1766fb6415bab1ded094f6db5023cac" id="r_aa1766fb6415bab1ded094f6db5023cac"><td class="memItemLeft" align="right" valign="top"><a id="aa1766fb6415bab1ded094f6db5023cac" name="aa1766fb6415bab1ded094f6db5023cac"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>unbindTexture</b> ()</td></tr>
+<tr class="memdesc:aa1766fb6415bab1ded094f6db5023cac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Закончить синхронизацию с полем. <br /></td></tr>
+<tr class="separator:aa1766fb6415bab1ded094f6db5023cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Статические открытые данные</h2></td></tr>
+<tr class="memitem:a88710dca16f0f908ce3b1f95841bcfab" id="r_a88710dca16f0f908ce3b1f95841bcfab"><td class="memItemLeft" align="right" valign="top"><a id="a88710dca16f0f908ce3b1f95841bcfab" name="a88710dca16f0f908ce3b1f95841bcfab"></a>
+static <a class="el" href="classcellworld_1_1Creature.html">Creature</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bad_creature</b> =<a class="el" href="classcellworld_1_1Creature.html">Creature</a>()</td></tr>
+<tr class="separator:a88710dca16f0f908ce3b1f95841bcfab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Защищенные данные</h2></td></tr>
+<tr class="memitem:a1c9c170b6dc56b4dece6b4ec3ad4d5b2" id="r_a1c9c170b6dc56b4dece6b4ec3ad4d5b2"><td class="memItemLeft" align="right" valign="top"><a id="a1c9c170b6dc56b4dece6b4ec3ad4d5b2" name="a1c9c170b6dc56b4dece6b4ec3ad4d5b2"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>size_x_</b></td></tr>
+<tr class="memdesc:a1c9c170b6dc56b4dece6b4ec3ad4d5b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ширина <br /></td></tr>
+<tr class="separator:a1c9c170b6dc56b4dece6b4ec3ad4d5b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7129de1c1e6cd480c2d15a9283c48cf" id="r_af7129de1c1e6cd480c2d15a9283c48cf"><td class="memItemLeft" align="right" valign="top"><a id="af7129de1c1e6cd480c2d15a9283c48cf" name="af7129de1c1e6cd480c2d15a9283c48cf"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>size_y_</b></td></tr>
+<tr class="memdesc:af7129de1c1e6cd480c2d15a9283c48cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Высота <br /></td></tr>
+<tr class="separator:af7129de1c1e6cd480c2d15a9283c48cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77545030bcf5c1117eb831e6c660a6ac" id="r_a77545030bcf5c1117eb831e6c660a6ac"><td class="memItemLeft" align="right" valign="top"><a id="a77545030bcf5c1117eb831e6c660a6ac" name="a77545030bcf5c1117eb831e6c660a6ac"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>size_</b></td></tr>
+<tr class="memdesc:a77545030bcf5c1117eb831e6c660a6ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Площадь <br /></td></tr>
+<tr class="separator:a77545030bcf5c1117eb831e6c660a6ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae12f1f8e53df3086698cc3ae419e781a" id="r_ae12f1f8e53df3086698cc3ae419e781a"><td class="memItemLeft" align="right" valign="top"><a id="ae12f1f8e53df3086698cc3ae419e781a" name="ae12f1f8e53df3086698cc3ae419e781a"></a>
+std::vector&lt; <a class="el" href="classcellworld_1_1Creature.html">Creature</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>zoo_ptr_</b></td></tr>
+<tr class="memdesc:ae12f1f8e53df3086698cc3ae419e781a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Указатели на текущее состояние поля <br /></td></tr>
+<tr class="separator:ae12f1f8e53df3086698cc3ae419e781a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5afa3399a89452addb07f4052236471" id="r_ab5afa3399a89452addb07f4052236471"><td class="memItemLeft" align="right" valign="top"><a id="ab5afa3399a89452addb07f4052236471" name="ab5afa3399a89452addb07f4052236471"></a>
+std::vector&lt; <a class="el" href="classcellworld_1_1Creature.html">Creature</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>empty_zoo_ptr_</b></td></tr>
+<tr class="memdesc:ab5afa3399a89452addb07f4052236471"><td class="mdescLeft">&#160;</td><td class="mdescRight">Указатели на запасное состояние поля <br /></td></tr>
+<tr class="separator:ab5afa3399a89452addb07f4052236471"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3130253e1f43e3cd5d4439ce1eaf026" id="r_ab3130253e1f43e3cd5d4439ce1eaf026"><td class="memItemLeft" align="right" valign="top"><a id="ab3130253e1f43e3cd5d4439ce1eaf026" name="ab3130253e1f43e3cd5d4439ce1eaf026"></a>
+std::vector&lt; <a class="el" href="classcellworld_1_1Creature.html">Creature</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>storage_</b></td></tr>
+<tr class="memdesc:ab3130253e1f43e3cd5d4439ce1eaf026"><td class="mdescLeft">&#160;</td><td class="mdescRight">Хранилище существ <br /></td></tr>
+<tr class="separator:ab3130253e1f43e3cd5d4439ce1eaf026"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3830c3922d5340b256edd9202eef54da" id="r_a3830c3922d5340b256edd9202eef54da"><td class="memItemLeft" align="right" valign="top"><a id="a3830c3922d5340b256edd9202eef54da" name="a3830c3922d5340b256edd9202eef54da"></a>
+std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>colors_</b></td></tr>
+<tr class="memdesc:a3830c3922d5340b256edd9202eef54da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Хранит цвета каждого существа, используется при создании текстуры. <br /></td></tr>
+<tr class="separator:a3830c3922d5340b256edd9202eef54da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82606b718ce98ed857f643be92ea3405" id="r_a82606b718ce98ed857f643be92ea3405"><td class="memItemLeft" align="right" valign="top"><a id="a82606b718ce98ed857f643be92ea3405" name="a82606b718ce98ed857f643be92ea3405"></a>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>texture_</b></td></tr>
+<tr class="memdesc:a82606b718ce98ed857f643be92ea3405"><td class="mdescLeft">&#160;</td><td class="mdescRight">Указатель на текстуру <br /></td></tr>
+<tr class="separator:a82606b718ce98ed857f643be92ea3405"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc4fd2f0a12826de9ba4b99cea177306" id="r_acc4fd2f0a12826de9ba4b99cea177306"><td class="memItemLeft" align="right" valign="top"><a id="acc4fd2f0a12826de9ba4b99cea177306" name="acc4fd2f0a12826de9ba4b99cea177306"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>alive_count_</b></td></tr>
+<tr class="memdesc:acc4fd2f0a12826de9ba4b99cea177306"><td class="mdescLeft">&#160;</td><td class="mdescRight">Количество живых существ в мире <br /></td></tr>
+<tr class="separator:acc4fd2f0a12826de9ba4b99cea177306"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab70ccf4c449d184518b993cde2a45fec" id="r_ab70ccf4c449d184518b993cde2a45fec"><td class="memItemLeft" align="right" valign="top"><a id="ab70ccf4c449d184518b993cde2a45fec" name="ab70ccf4c449d184518b993cde2a45fec"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>dead_count_</b></td></tr>
+<tr class="memdesc:ab70ccf4c449d184518b993cde2a45fec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Количество мёртвых существ в мире <br /></td></tr>
+<tr class="separator:ab70ccf4c449d184518b993cde2a45fec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Друзья</h2></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Обработка коллизий (ситуаций, когда 2 существа претендуют на 1 позицию)</div></td></tr>
+<tr class="memitem:a73f54a83be4fbcf95be585bee81989cd" id="r_a73f54a83be4fbcf95be585bee81989cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a73f54a83be4fbcf95be585bee81989cd">conjoin</a> (<a class="el" href="classcellworld_1_1Creature.html">Creature</a> *&amp;master, <a class="el" href="classcellworld_1_1Creature.html">Creature</a> *&amp;candidate)</td></tr>
+<tr class="separator:a73f54a83be4fbcf95be585bee81989cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab67bbcce5ac8dc7901f03a98d9fc300f" id="r_ab67bbcce5ac8dc7901f03a98d9fc300f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab67bbcce5ac8dc7901f03a98d9fc300f">conjoin</a> (<a class="el" href="classcellworld_1_1Creature.html">Creature</a> &amp;master, <a class="el" href="classcellworld_1_1Creature.html">Creature</a> &amp;candidate)</td></tr>
+<tr class="separator:ab67bbcce5ac8dc7901f03a98d9fc300f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><p>Задачи поля:</p><ul>
+<li>Хранить конкретное состояние</li>
+<li>Обновлять состояние</li>
+<li>Контролировать поведение, состояние, взаимодействие существ</li>
+<li>Визуализировать симуляцию </li>
+</ul>
+</div><h2 class="groupheader">Методы</h2>
+<a id="a3be446e4fa6110c0f6ba99de95c6b85c" name="a3be446e4fa6110c0f6ba99de95c6b85c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3be446e4fa6110c0f6ba99de95c6b85c">&#9670;&#160;</a></span>createTexture()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void cellworld::Field::createTexture </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Создать текстуру </p>
+
+</div>
+</div>
+<a id="aefdc61cde8bf2ba6879b13a6d8fa8159" name="aefdc61cde8bf2ba6879b13a6d8fa8159"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefdc61cde8bf2ba6879b13a6d8fa8159">&#9670;&#160;</a></span>updatePositions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void cellworld::Field::updatePositions </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Ввод данных в нейросеть. Происходит вся работа нейросетей. Забирает энергии у существ за передвижение. Оставляет на предыдущей позиции остатки энергии. Обрабатывет коллизию существ. Работает в многопоточном режиме, без инициализаций. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Документация по друзьям класса и функциям, относящимся к классу</h2>
+<a id="ab67bbcce5ac8dc7901f03a98d9fc300f" name="ab67bbcce5ac8dc7901f03a98d9fc300f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab67bbcce5ac8dc7901f03a98d9fc300f">&#9670;&#160;</a></span>conjoin <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void conjoin </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classcellworld_1_1Creature.html">Creature</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>master</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classcellworld_1_1Creature.html">Creature</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>candidate</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">master</td><td>- cущество, занявшее эту позицию первым </td></tr>
+    <tr><td class="paramname">candidate</td><td>- cущество, занявшее эту позицию вторым </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a73f54a83be4fbcf95be585bee81989cd" name="a73f54a83be4fbcf95be585bee81989cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73f54a83be4fbcf95be585bee81989cd">&#9670;&#160;</a></span>conjoin <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void conjoin </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classcellworld_1_1Creature.html">Creature</a> *&amp;</td>          <td class="paramname"><span class="paramname"><em>master</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classcellworld_1_1Creature.html">Creature</a> *&amp;</td>          <td class="paramname"><span class="paramname"><em>candidate</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">master</td><td>- cущество, занявшее эту позицию первым </td></tr>
+    <tr><td class="paramname">candidate</td><td>- cущество, занявшее эту позицию вторым </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>Объявления и описания членов классов находятся в файлах:<ul>
+<li>creature/include/creature/<b>creature.h</b></li>
+<li>creature/<b>creature.cpp</b></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><b>cellworld</b></li><li class="navelem"><a class="el" href="classcellworld_1_1Field.html">Field</a></li>
+    <li class="footer">Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+  </ul>
+</div>
+</body>
+</html>

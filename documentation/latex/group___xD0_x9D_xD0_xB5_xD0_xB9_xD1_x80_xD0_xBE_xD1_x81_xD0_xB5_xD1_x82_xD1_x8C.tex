@@ -1,0 +1,146 @@
+\doxysubsection{Нейросеть}
+\hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C}{}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C}\index{Нейросеть@{Нейросеть}}
+
+
+Все упоминания нейронных сетей  
+
+
+\doxysubsubsubsection*{Определения типов}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ga07e195a4f346c893c97d65609239d082}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ga07e195a4f346c893c97d65609239d082} 
+using {\bfseries cellworld\+::\+Neuron\+Network} = Eigen\+::\+Matrix$<$float,\mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04ac9b59a9d67d78778f19869cfe3a7ec1a}{output\+\_\+neurons\+\_\+count}} , (4 \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaaba81b30040f7161dcd35e3d961290bed1a}{look\+\_\+input\+\_\+count}} + \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312ad96aee3073da7c75cc73c18cfcb2dd10}{input\+\_\+neurons\+\_\+count}})$>$
+\begin{DoxyCompactList}\small\item\em Хранит веса нейросети существа \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsubsection*{Перечисления}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gaf2b54f4c53a3d61400536d46a28b6312}{cellworld\+::\+Input\+Neurons}} \{ \newline
+\mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312a4c95b27af0c43bbe5cbb7f712cf29d0d}{cellworld\+::pos\+\_\+x}}
+, \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312a484df8e931b3bdf3ad064bfa04abf38f}{cellworld\+::pos\+\_\+y}}
+, \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312aadcf67abb42c438863ea02a5ea8cee60}{cellworld\+::speed\+\_\+module}}
+, \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312a87e3622c56483dca469047719067e380}{cellworld\+::energy}}
+, \newline
+\mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312acc692012e9253227ad314b28f88fb2f9}{cellworld\+::bias}}
+, \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312ad96aee3073da7c75cc73c18cfcb2dd10}{cellworld\+::input\+\_\+neurons\+\_\+count}}
+ \}
+\begin{DoxyCompactList}\small\item\em Основные входные нейроны существа Содержит информацию о внутреннем состоянии существа \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ga715af0e1c1d7143dc33f8ba05e0cce04}{cellworld\+::\+Output\+Neurons}} \{ \newline
+\mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04a5fa63864e1193a40714df6bcc83d626c}{cellworld\+::change\+\_\+speed\+\_\+module}}
+, \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04a05698019ac7b746fa67a3a2ff29d4b3b}{cellworld\+::vertical\+\_\+or\+\_\+horizontal}}
+, \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04ac45ec04b3610a6aa6f6490d23bb7f5b5}{cellworld\+::decrease\+\_\+or\+\_\+increase}}
+, \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04a1c3a1998f58f12877acef7b5c784d1a7}{cellworld\+::reproduce}}
+, \newline
+\mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04ac9b59a9d67d78778f19869cfe3a7ec1a}{cellworld\+::output\+\_\+neurons\+\_\+count}}
+ \}
+\begin{DoxyCompactList}\small\item\em Выходные нейроны существа \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ga6b3bb3c10db174f2d5416fb0dcecdaab}{cellworld\+::\+Look\+Input}} \{ \newline
+\mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaaba7d06a8c7fe73cdd4dac123c89c383e3d}{cellworld\+::distance}}
+, \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaabac8d3bf137f358373a2f25a8bd0215df4}{cellworld\+::color\+\_\+red}}
+, \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaaba3f497ef9462b4305c9647097a4d85abb}{cellworld\+::color\+\_\+green}}
+, \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaabadc38afa7352d80ab9d229020fba13dc8}{cellworld\+::color\+\_\+blue}}
+, \newline
+\mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaaba81b30040f7161dcd35e3d961290bed1a}{cellworld\+::look\+\_\+input\+\_\+count}}
+ \}
+\begin{DoxyCompactList}\small\item\em Дополнительные входные нейроны существа. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsubsection*{Функции}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gad26255db39662642bec61ea04447bfd6}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gad26255db39662642bec61ea04447bfd6} 
+std\+::uniform\+\_\+real\+\_\+distribution$<$ float $>$ {\bfseries cellworld\+::dis} (-\/4.\+0f, 4.\+0f)
+\begin{DoxyCompactList}\small\item\em Генератор случайных float в диапазоне \mbox{[}-\/4,4\mbox{]}. Определяет разброс значений у весов нейросети. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Подробное описание}
+
+
+\doxysubsubsection{Перечисления}
+\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gaf2b54f4c53a3d61400536d46a28b6312}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gaf2b54f4c53a3d61400536d46a28b6312} 
+\index{Нейросеть@{Нейросеть}!InputNeurons@{InputNeurons}}
+\index{InputNeurons@{InputNeurons}!Нейросеть@{Нейросеть}}
+\doxyparagraph{\texorpdfstring{InputNeurons}{InputNeurons}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gaf2b54f4c53a3d61400536d46a28b6312}{cellworld\+::\+Input\+Neurons}}}
+
+\begin{DoxyEnumFields}{Элементы перечислений}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{pos\_x@{pos\_x}!Нейросеть@{Нейросеть}}\index{Нейросеть@{Нейросеть}!pos\_x@{pos\_x}}}\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312a4c95b27af0c43bbe5cbb7f712cf29d0d}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312a4c95b27af0c43bbe5cbb7f712cf29d0d} 
+pos\+\_\+x&Координата X. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{pos\_y@{pos\_y}!Нейросеть@{Нейросеть}}\index{Нейросеть@{Нейросеть}!pos\_y@{pos\_y}}}\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312a484df8e931b3bdf3ad064bfa04abf38f}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312a484df8e931b3bdf3ad064bfa04abf38f} 
+pos\+\_\+y&Координата Y. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{speed\_module@{speed\_module}!Нейросеть@{Нейросеть}}\index{Нейросеть@{Нейросеть}!speed\_module@{speed\_module}}}\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312aadcf67abb42c438863ea02a5ea8cee60}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312aadcf67abb42c438863ea02a5ea8cee60} 
+speed\+\_\+module&Модуль скорости \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{energy@{energy}!Нейросеть@{Нейросеть}}\index{Нейросеть@{Нейросеть}!energy@{energy}}}\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312a87e3622c56483dca469047719067e380}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312a87e3622c56483dca469047719067e380} 
+energy&Энергия \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{bias@{bias}!Нейросеть@{Нейросеть}}\index{Нейросеть@{Нейросеть}!bias@{bias}}}\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312acc692012e9253227ad314b28f88fb2f9}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312acc692012e9253227ad314b28f88fb2f9} 
+bias&Cмещающий нейрон \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{input\_neurons\_count@{input\_neurons\_count}!Нейросеть@{Нейросеть}}\index{Нейросеть@{Нейросеть}!input\_neurons\_count@{input\_neurons\_count}}}\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312ad96aee3073da7c75cc73c18cfcb2dd10}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ggaf2b54f4c53a3d61400536d46a28b6312ad96aee3073da7c75cc73c18cfcb2dd10} 
+input\+\_\+neurons\+\_\+count&Количество входных нейронов \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ga6b3bb3c10db174f2d5416fb0dcecdaab}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ga6b3bb3c10db174f2d5416fb0dcecdaab} 
+\index{Нейросеть@{Нейросеть}!LookInput@{LookInput}}
+\index{LookInput@{LookInput}!Нейросеть@{Нейросеть}}
+\doxyparagraph{\texorpdfstring{LookInput}{LookInput}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ga6b3bb3c10db174f2d5416fb0dcecdaab}{cellworld\+::\+Look\+Input}}}
+
+Содержит информацию об внешнем окружении существа.~\newline
+Для каждого из 4 направлений(верх,низ,право,лево) существо имеет отдельный набор нейронов. ~\newline
+Поэтому общее количество входных нейронов равно 4 \texorpdfstring{$\ast$}{*} look\+\_\+input\+\_\+count + input\+\_\+neurons\+\_\+count. \begin{DoxyEnumFields}{Элементы перечислений}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{distance@{distance}!Нейросеть@{Нейросеть}}\index{Нейросеть@{Нейросеть}!distance@{distance}}}\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaaba7d06a8c7fe73cdd4dac123c89c383e3d}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaaba7d06a8c7fe73cdd4dac123c89c383e3d} 
+distance&расстояние от существа до ближайшего существа в одном из направлений \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{color\_red@{color\_red}!Нейросеть@{Нейросеть}}\index{Нейросеть@{Нейросеть}!color\_red@{color\_red}}}\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaabac8d3bf137f358373a2f25a8bd0215df4}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaabac8d3bf137f358373a2f25a8bd0215df4} 
+color\+\_\+red&уровень красного цвета ближайшего существа \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{color\_green@{color\_green}!Нейросеть@{Нейросеть}}\index{Нейросеть@{Нейросеть}!color\_green@{color\_green}}}\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaaba3f497ef9462b4305c9647097a4d85abb}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaaba3f497ef9462b4305c9647097a4d85abb} 
+color\+\_\+green&уровень зелёного цвета ближайшего существа \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{color\_blue@{color\_blue}!Нейросеть@{Нейросеть}}\index{Нейросеть@{Нейросеть}!color\_blue@{color\_blue}}}\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaabadc38afa7352d80ab9d229020fba13dc8}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaabadc38afa7352d80ab9d229020fba13dc8} 
+color\+\_\+blue&уровень синего цвета ближайшего существа \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{look\_input\_count@{look\_input\_count}!Нейросеть@{Нейросеть}}\index{Нейросеть@{Нейросеть}!look\_input\_count@{look\_input\_count}}}\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaaba81b30040f7161dcd35e3d961290bed1a}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga6b3bb3c10db174f2d5416fb0dcecdaaba81b30040f7161dcd35e3d961290bed1a} 
+look\+\_\+input\+\_\+count&Количество входных нейронов \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ga715af0e1c1d7143dc33f8ba05e0cce04}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ga715af0e1c1d7143dc33f8ba05e0cce04} 
+\index{Нейросеть@{Нейросеть}!OutputNeurons@{OutputNeurons}}
+\index{OutputNeurons@{OutputNeurons}!Нейросеть@{Нейросеть}}
+\doxyparagraph{\texorpdfstring{OutputNeurons}{OutputNeurons}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_ga715af0e1c1d7143dc33f8ba05e0cce04}{cellworld\+::\+Output\+Neurons}}}
+
+\begin{DoxyEnumFields}{Элементы перечислений}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{change\_speed\_module@{change\_speed\_module}!Нейросеть@{Нейросеть}}\index{Нейросеть@{Нейросеть}!change\_speed\_module@{change\_speed\_module}}}\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04a5fa63864e1193a40714df6bcc83d626c}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04a5fa63864e1193a40714df6bcc83d626c} 
+change\+\_\+speed\+\_\+module&Изменить модуль скорости \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{vertical\_or\_horizontal@{vertical\_or\_horizontal}!Нейросеть@{Нейросеть}}\index{Нейросеть@{Нейросеть}!vertical\_or\_horizontal@{vertical\_or\_horizontal}}}\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04a05698019ac7b746fa67a3a2ff29d4b3b}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04a05698019ac7b746fa67a3a2ff29d4b3b} 
+vertical\+\_\+or\+\_\+horizontal&По какой прямой перемещается существо, вертикальной или горизонтальной \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{decrease\_or\_increase@{decrease\_or\_increase}!Нейросеть@{Нейросеть}}\index{Нейросеть@{Нейросеть}!decrease\_or\_increase@{decrease\_or\_increase}}}\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04ac45ec04b3610a6aa6f6490d23bb7f5b5}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04ac45ec04b3610a6aa6f6490d23bb7f5b5} 
+decrease\+\_\+or\+\_\+increase&В какую сторону перемещается существо, по увеличению или уменьшению координаты \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{reproduce@{reproduce}!Нейросеть@{Нейросеть}}\index{Нейросеть@{Нейросеть}!reproduce@{reproduce}}}\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04a1c3a1998f58f12877acef7b5c784d1a7}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04a1c3a1998f58f12877acef7b5c784d1a7} 
+reproduce&Желание существа размножиться \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{output\_neurons\_count@{output\_neurons\_count}!Нейросеть@{Нейросеть}}\index{Нейросеть@{Нейросеть}!output\_neurons\_count@{output\_neurons\_count}}}\Hypertarget{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04ac9b59a9d67d78778f19869cfe3a7ec1a}\label{group___xD0_x9D_xD0_xB5_xD0_xB9_xD1_x80_xD0_xBE_xD1_x81_xD0_xB5_xD1_x82_xD1_x8C_gga715af0e1c1d7143dc33f8ba05e0cce04ac9b59a9d67d78778f19869cfe3a7ec1a} 
+output\+\_\+neurons\+\_\+count&Количество выходных нейронов \\
+\hline
+
+\end{DoxyEnumFields}

@@ -176,11 +176,11 @@ bool operator==(const Creature& lhs, const Creature& rhs)
 
 //Плохо работает в многопотоке
 void conjoin( Creature*& champion, Creature*& candidate) {
-        
+    //int test = candidate->getMass()*champion->getMass();
     if (champion->getState() == not_exist) {
         std::swap(champion,candidate);
         return;
-    } 
+    }
     if (candidate->getState() == alive && (champion->getState() == dead || (champion->getMass() * champion->getSpeed() < candidate->getMass() * candidate->getSpeed()))) {
         std::swap(champion, candidate);
     }

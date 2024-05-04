@@ -309,7 +309,6 @@ namespace cellworld{
         if (ImGui::Button("Настройки")) {
             options_window=1;
         }
-        ImGui::SameLine();
         if (ImGui::Button("Информация")) {
             info_window = 1;
         }

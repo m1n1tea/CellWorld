@@ -46,3 +46,4 @@ bin*
 build
 documentation
 test
+vcpkg_installed

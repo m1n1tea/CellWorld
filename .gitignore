@@ -9,7 +9,6 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
-
 # Prerequisites
 *.d
 
@@ -45,3 +44,5 @@ _deps
 
 bin*
 build
+documentation
+test

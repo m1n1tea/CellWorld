@@ -1,13 +1,13 @@
 # Cellworld
 ### Краткое описание
-Простой симулятор естественного отбора c графическим интерфейсом. Симуляция детерменирована и в некоторых частях использует многопоточность. Работает на linux и на windows. 
+Простой симулятор естественного отбора. Симуляция детерменирована и в некоторых частях использует многопоточность. Работает на linux и на windows. 
 
 
-<img src="/screenshots/create_world.png" alt="Creation of world"/>
+<img src="/screenshots/create_world.png" alt="Creation of world" width="250" height="180"/>
 
-<img src="/screenshots/load_world.png" alt="Load world" />
+<img src="/screenshots/load_world.png" alt="Load world" width="250" height="180"/>
 
-<img src="/screenshots/simulation.png" alt="Simulation"/>
+<img src="/screenshots/simulation.png" alt="Simulation" width="250" height="180"/>
 
 
 ### Краткий функционал

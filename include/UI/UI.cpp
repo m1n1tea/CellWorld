@@ -117,7 +117,7 @@ namespace cellworld{
 
         ImGui::Unindent(width_ * 0.35f);
         ImGui::NewLine();
-        ImGui::Indent(width_ * 0.15f);
+        ImGui::Indent(width_ * 0.1f);
         ImGui::Checkbox("Размножение", &Creature::is_breedable);
         ImGui::InputScalar("Сид", ImGuiDataType_U32, &seed_);  HelpMarker("если сид_=0,программа генерирует случайный сид", width_);
         ImGui::InputScalar("Ширина", ImGuiDataType_U32, &size_x);
@@ -185,7 +185,7 @@ namespace cellworld{
             scenario_.resetRewards();
             scenario_.updateRewardsTexture();
         }
-        ImGui::Unindent(width_ * 0.15f);
+        ImGui::Unindent(width_ * 0.1f);
         ImGui::NewLine();
 
 

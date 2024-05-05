@@ -3,11 +3,11 @@
 Простой симулятор естественного отбора. Симуляция детерменирована и в некоторых частях использует многопоточность. Работает на linux и на windows. 
 
 
-<img src="/screenshots/create_world.png" alt="Creation of world" width="250" height="180"/>
+<img src="/screenshots/create_world.png" alt="Creation of world" width="640" height="512"/>
 
-<img src="/screenshots/load_world.png" alt="Load world" width="250" height="180"/>
+<img src="/screenshots/load_world.png" alt="Load world" width="640" height="320"/>
 
-<img src="/screenshots/simulation.png" alt="Simulation" width="250" height="180"/>
+<img src="/screenshots/simulation.png" alt="Simulation" width="640" height="512"/>
 
 
 ### Краткий функционал
